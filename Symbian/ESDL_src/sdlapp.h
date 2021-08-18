@@ -5,18 +5,21 @@
 #define MY_IMPORT_C
 #define MY_EXPORT_C
 #endif
+
 #if defined (__AVKON_ELAF__)
 #include <aknapp.h>
-class CSDLApp:public CAknApplication
+typedef CAknApplication BaseApplication_t;
 #elif defined (UIQ) || defined(UIQ3)
 #include <qikapplication.h>
-class RWindow;
-class CSDLApp:public CQikApplication
+typedef CQikApplication BaseApplication_t;
 #else
 #include <eikapp.h>
-class RWindow;
-class CSDLApp:public CEikApplication
+typedef CEikApplication BaseApplication_t;
 #endif
+
+class RWindow;
+
+class CSDLApp: public BaseApplication_t
 {
 public:
 	MY_IMPORT_C CSDLApp();
