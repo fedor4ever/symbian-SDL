@@ -1,0 +1,4621 @@
+
+include \UIQ3\epoc32\tools\compilation_config\\GCCE.mk
+
+
+# CWD \SDL-1.2.13\Symbian\UIQ3\
+# MMPFile \SDL-1.2.13\Symbian\UIQ3\esdl_uiq3.MMP
+# Target ESDL.lib
+# TargetType LIB
+# BasicTargetType LIB
+# MakefileType GNU
+
+ERASE = @erase 2>>nul
+
+# EPOC DEFINITIONS
+
+EPOCBLD = ..\..\..\UIQ3\EPOC32\BUILD\SDL-1.2.13\Symbian\UIQ3\esdl_uiq3\GCCE
+EPOCTRG = ..\..\..\UIQ3\EPOC32\RELEASE\ARMV5
+EPOCLIB = ..\..\..\UIQ3\EPOC32\RELEASE\ARMV5
+EPOCLINK = ..\..\..\UIQ3\EPOC32\RELEASE\ARMV5
+EPOCSTATLINK = ..\..\..\UIQ3\EPOC32\RELEASE\ARMV5
+EPOCASSPLINK = ..\..\..\UIQ3\EPOC32\RELEASE\MARM
+EPOCDATA = \UIQ3\EPOC32\DATA
+EPOCINC = \UIQ3\EPOC32\INCLUDE
+TRGDIR = 
+DATADIR = Z\System\Data
+
+EPOCBLDUREL = $(EPOCBLD)\UREL
+EPOCTRGUREL = $(EPOCTRG)\UREL
+EPOCLIBUREL = $(EPOCLIB)\UREL
+EPOCLINKUREL = $(EPOCLINK)\UREL
+EPOCSTATLINKUREL = $(EPOCSTATLINK)\UREL
+EPOCASSPLINKUREL = $(EPOCASSPLINK)\UREL
+
+EPOCBLDUDEB = $(EPOCBLD)\UDEB
+EPOCTRGUDEB = $(EPOCTRG)\UDEB
+EPOCLIBUDEB = $(EPOCLIB)\UREL
+EPOCLINKUDEB = $(EPOCLINK)\UREL
+EPOCSTATLINKUDEB = $(EPOCSTATLINK)\UDEB
+EPOCASSPLINKUDEB = $(EPOCASSPLINK)\UREL
+
+# EPOC PSEUDOTARGETS
+
+UREL : MAKEWORKUREL RESOURCEUREL
+
+UDEB : MAKEWORKUDEB RESOURCEUDEB
+
+ALL : UREL UDEB
+
+CLEAN CLEANALL : CLEANBUILD CLEANRELEASE CLEANLIBRARY
+
+
+
+WHAT WHATALL : WHATUREL WHATUDEB
+
+RESOURCE RESOURCEALL : RESOURCEUREL RESOURCEUDEB
+
+CLEANBUILD CLEANBUILDALL : CLEANBUILDUREL CLEANBUILDUDEB
+
+CLEANRELEASE CLEANRELEASEALL : CLEANRELEASEUREL CLEANRELEASEUDEB
+
+MAKEWORK MAKEWORKALL : MAKEWORKUREL MAKEWORKUDEB
+
+LISTING LISTINGALL : LISTINGUREL LISTINGUDEB
+
+MAKEWORK : MAKEWORKLIBRARY
+
+RESOURCEUREL RESOURCEUDEB : GENERIC_RESOURCE
+
+
+# must set both PATH and Path to make it work correctly
+Path:=G:\UIQ3\EPOC32\gcc\bin;$(Path)
+PATH:=$(Path)
+
+INCDIR =  $(INCLUDE_OPTION) ..  $(INCLUDE_OPTION) ..\..\include  $(INCLUDE_OPTION) ..\..\src  $(INCLUDE_OPTION) ..\..\src\video  $(INCLUDE_OPTION) ..\..\src\video\symbian  $(INCLUDE_OPTION) ..\..\src\events  $(INCLUDE_OPTION) ..\..\src\main\symbian  $(INCLUDE_OPTION) ..\..\src\thread  $(INCLUDE_OPTION) ..\..\src\thread\generic  $(INCLUDE_OPTION) ..\..\src\thread\symbian  $(INCLUDE_OPTION) ..\..\src\timer  $(INCLUDE_OPTION) ..\..\src\joystick  $(INCLUDE_OPTION) ..\..\src\cdrom  $(INCLUDE_OPTION) ..\..\src\audio  $(INCLUDE_OPTION) ..\..\src\audio\symbian $(INCLUDE_OPTION) ..\..\..\UIQ3\EPOC32\include $(INCLUDE_OPTION) ..\..\..\UIQ3\EPOC32\include\libc $(INCLUDE_OPTION) ..\..\..\UIQ3\epoc32\include\variant $(INCLUDE_OPTION) "C:\Program\CSL Arm Toolchain\bin\..\lib\gcc\arm-none-symbianelf\3.4.3\include"
+
+OTHEROPTIONS= $(ARM_INSTRUCTION_SET)  $(SOFTVFPMODE_OPTION)  $(COMPILER_INTERWORK_DEFINES) 
+CCFLAGS += $(OTHEROPTIONS)
+CCDEFS = $(COMPILER_DEFINES)  -D__SYMBIAN32__ -D__GCCE__ -D__EPOC32__ -D__MARM__ -D__EABI__ -D__MARM_ARMV5__ -DUIQ3 -DNO_SIGNAL_H -D__SUPPORT_CPP_EXCEPTIONS__ $(PLATFORM_DEFINES)  -D__PRODUCT_INCLUDE__=\"/UIQ3/epoc32/include/variant/UIQ_3.0.hrh\" $(USERDEFS)
+
+CCUREL = $(CC)  $(SYMBIAN_UREL_CCFLAGS) $(RUNTIME_SYMBOL_VISIBILITY_OPTION) $(CCFLAGS)  -DNDEBUG -D_UNICODE $(CCDEFS)
+CCUDEB = $(CC)  $(SYMBIAN_UDEB_CCFLAGS) $(RUNTIME_SYMBOL_VISIBILITY_OPTION) $(CCFLAGS)  -D_DEBUG -D_UNICODE $(CCDEFS)
+
+
+UREL : \
+	$(EPOCTRGUREL)\ESDL.lib
+
+UDEB : \
+	$(EPOCTRGUDEB)\ESDL.lib
+
+
+RESOURCEUREL : MAKEWORKUREL
+RESOURCEUDEB : MAKEWORKUDEB
+
+LIBRARY : MAKEWORKLIBRARY UREL UDEB
+
+ : 
+	perl -S emkdir.pl $@
+
+
+FREEZE : 
+
+CLEANLIBRARY :
+
+
+GENERIC_RESOURCE : GENERIC_MAKEWORK
+
+# REAL TARGET - BUILD VARIANT UREL
+
+WHATUREL : WHATGENERIC
+
+CLEANUREL : CLEANBUILDUREL CLEANRELEASEUREL
+
+CLEANBUILDUREL : 
+	@perl -S ermdir.pl "$(EPOCBLDUREL)"
+
+CLEANRELEASEUREL : CLEANGENERIC
+
+
+UREL_RELEASEABLES1= \
+	\UIQ3\EPOC32\RELEASE\ARMV5\UREL\ESDL.lib
+
+WHATUREL:
+	@echo $(UREL_RELEASEABLES1)
+
+CLEANRELEASEUREL:
+	-$(ERASE) $(UREL_RELEASEABLES1)
+
+LISTINGUREL : MAKEWORKUREL \
+	LISTINGURELEBasicApp \
+	LISTINGURELIniFile \
+	LISTINGURELSDL \
+	LISTINGURELSDL_error \
+	LISTINGURELSDL_fatal \
+	LISTINGURELSDL_cpuinfo \
+	LISTINGURELSDL_cdrom \
+	LISTINGURELSDL_syscdrom \
+	LISTINGURELSDL_audio \
+	LISTINGURELSDL_audiocvt \
+	LISTINGURELSDL_audiodev \
+	LISTINGURELSDL_mixer \
+	LISTINGURELSDL_wave \
+	LISTINGURELSDL_SymbianAudio \
+	LISTINGURELSDL_blit \
+	LISTINGURELSDL_blit_0 \
+	LISTINGURELSDL_blit_1 \
+	LISTINGURELSDL_blit_A \
+	LISTINGURELSDL_blit_N \
+	LISTINGURELSDL_bmp \
+	LISTINGURELSDL_cursor \
+	LISTINGURELSDL_gamma \
+	LISTINGURELSDL_pixels \
+	LISTINGURELSDL_RLEaccel \
+	LISTINGURELSDL_stretch \
+	LISTINGURELSDL_surface \
+	LISTINGURELSDL_video \
+	LISTINGURELSDL_yuv \
+	LISTINGURELSDL_yuv_sw \
+	LISTINGURELSDL_epocvideo \
+	LISTINGURELSDL_epocevents \
+	LISTINGURELSDL_thread \
+	LISTINGURELSDL_syscond \
+	LISTINGURELSDL_sysmutex \
+	LISTINGURELSDL_syssem \
+	LISTINGURELSDL_systhread \
+	LISTINGURELSDL_active \
+	LISTINGURELSDL_events \
+	LISTINGURELSDL_keyboard \
+	LISTINGURELSDL_mouse \
+	LISTINGURELSDL_quit \
+	LISTINGURELSDL_resize \
+	LISTINGURELSDL_timer \
+	LISTINGURELSDL_systimer \
+	LISTINGURELSDL_rwops \
+	LISTINGURELSDL_joystick \
+	LISTINGURELSDL_SysJoystick \
+	LISTINGURELSDL_getenv \
+	LISTINGURELSDL_iconv \
+	LISTINGURELSDL_malloc \
+	LISTINGURELSDL_qsort \
+	LISTINGURELSDL_stdlib \
+	LISTINGURELSDL_string
+
+LIBSUREL= \
+	$(STATIC_LIBS_LIST)
+
+VTBLEXPORTSUREL=
+
+OBJECTSUREL= \
+	$(EPOCBLDUREL)\EBasicApp.o \
+	$(EPOCBLDUREL)\IniFile.o \
+	$(EPOCBLDUREL)\SDL.o \
+	$(EPOCBLDUREL)\SDL_error.o \
+	$(EPOCBLDUREL)\SDL_fatal.o \
+	$(EPOCBLDUREL)\SDL_cpuinfo.o \
+	$(EPOCBLDUREL)\SDL_cdrom.o \
+	$(EPOCBLDUREL)\SDL_syscdrom.o \
+	$(EPOCBLDUREL)\SDL_audio.o \
+	$(EPOCBLDUREL)\SDL_audiocvt.o \
+	$(EPOCBLDUREL)\SDL_audiodev.o \
+	$(EPOCBLDUREL)\SDL_mixer.o \
+	$(EPOCBLDUREL)\SDL_wave.o \
+	$(EPOCBLDUREL)\SDL_SymbianAudio.o \
+	$(EPOCBLDUREL)\SDL_blit.o \
+	$(EPOCBLDUREL)\SDL_blit_0.o \
+	$(EPOCBLDUREL)\SDL_blit_1.o \
+	$(EPOCBLDUREL)\SDL_blit_A.o \
+	$(EPOCBLDUREL)\SDL_blit_N.o \
+	$(EPOCBLDUREL)\SDL_bmp.o \
+	$(EPOCBLDUREL)\SDL_cursor.o \
+	$(EPOCBLDUREL)\SDL_gamma.o \
+	$(EPOCBLDUREL)\SDL_pixels.o \
+	$(EPOCBLDUREL)\SDL_RLEaccel.o \
+	$(EPOCBLDUREL)\SDL_stretch.o \
+	$(EPOCBLDUREL)\SDL_surface.o \
+	$(EPOCBLDUREL)\SDL_video.o \
+	$(EPOCBLDUREL)\SDL_yuv.o \
+	$(EPOCBLDUREL)\SDL_yuv_sw.o \
+	$(EPOCBLDUREL)\SDL_epocvideo.o \
+	$(EPOCBLDUREL)\SDL_epocevents.o \
+	$(EPOCBLDUREL)\SDL_thread.o \
+	$(EPOCBLDUREL)\SDL_syscond.o \
+	$(EPOCBLDUREL)\SDL_sysmutex.o \
+	$(EPOCBLDUREL)\SDL_syssem.o \
+	$(EPOCBLDUREL)\SDL_systhread.o \
+	$(EPOCBLDUREL)\SDL_active.o \
+	$(EPOCBLDUREL)\SDL_events.o \
+	$(EPOCBLDUREL)\SDL_keyboard.o \
+	$(EPOCBLDUREL)\SDL_mouse.o \
+	$(EPOCBLDUREL)\SDL_quit.o \
+	$(EPOCBLDUREL)\SDL_resize.o \
+	$(EPOCBLDUREL)\SDL_timer.o \
+	$(EPOCBLDUREL)\SDL_systimer.o \
+	$(EPOCBLDUREL)\SDL_rwops.o \
+	$(EPOCBLDUREL)\SDL_joystick.o \
+	$(EPOCBLDUREL)\SDL_SysJoystick.o \
+	$(EPOCBLDUREL)\SDL_getenv.o \
+	$(EPOCBLDUREL)\SDL_iconv.o \
+	$(EPOCBLDUREL)\SDL_malloc.o \
+	$(EPOCBLDUREL)\SDL_qsort.o \
+	$(EPOCBLDUREL)\SDL_stdlib.o \
+	$(EPOCBLDUREL)\SDL_string.o
+
+$(EPOCTRGUREL)\ESDL.lib : $(OBJECTSUREL)
+	$(ARCHIVER)  $(ARCHIVER_CREATE_OPTION)  $(EPOCSTATLINKUREL)\ESDL.lib $(OBJECTSUREL)
+
+
+# REAL TARGET - BUILD VARIANT UDEB
+
+WHATUDEB : WHATGENERIC
+
+CLEANUDEB : CLEANBUILDUDEB CLEANRELEASEUDEB
+
+CLEANBUILDUDEB : 
+	@perl -S ermdir.pl "$(EPOCBLDUDEB)"
+
+CLEANRELEASEUDEB : CLEANGENERIC
+
+
+UDEB_RELEASEABLES1= \
+	\UIQ3\EPOC32\RELEASE\ARMV5\UDEB\ESDL.lib
+
+WHATUDEB:
+	@echo $(UDEB_RELEASEABLES1)
+
+CLEANRELEASEUDEB:
+	-$(ERASE) $(UDEB_RELEASEABLES1)
+
+LISTINGUDEB : MAKEWORKUDEB \
+	LISTINGUDEBEBasicApp \
+	LISTINGUDEBIniFile \
+	LISTINGUDEBSDL \
+	LISTINGUDEBSDL_error \
+	LISTINGUDEBSDL_fatal \
+	LISTINGUDEBSDL_cpuinfo \
+	LISTINGUDEBSDL_cdrom \
+	LISTINGUDEBSDL_syscdrom \
+	LISTINGUDEBSDL_audio \
+	LISTINGUDEBSDL_audiocvt \
+	LISTINGUDEBSDL_audiodev \
+	LISTINGUDEBSDL_mixer \
+	LISTINGUDEBSDL_wave \
+	LISTINGUDEBSDL_SymbianAudio \
+	LISTINGUDEBSDL_blit \
+	LISTINGUDEBSDL_blit_0 \
+	LISTINGUDEBSDL_blit_1 \
+	LISTINGUDEBSDL_blit_A \
+	LISTINGUDEBSDL_blit_N \
+	LISTINGUDEBSDL_bmp \
+	LISTINGUDEBSDL_cursor \
+	LISTINGUDEBSDL_gamma \
+	LISTINGUDEBSDL_pixels \
+	LISTINGUDEBSDL_RLEaccel \
+	LISTINGUDEBSDL_stretch \
+	LISTINGUDEBSDL_surface \
+	LISTINGUDEBSDL_video \
+	LISTINGUDEBSDL_yuv \
+	LISTINGUDEBSDL_yuv_sw \
+	LISTINGUDEBSDL_epocvideo \
+	LISTINGUDEBSDL_epocevents \
+	LISTINGUDEBSDL_thread \
+	LISTINGUDEBSDL_syscond \
+	LISTINGUDEBSDL_sysmutex \
+	LISTINGUDEBSDL_syssem \
+	LISTINGUDEBSDL_systhread \
+	LISTINGUDEBSDL_active \
+	LISTINGUDEBSDL_events \
+	LISTINGUDEBSDL_keyboard \
+	LISTINGUDEBSDL_mouse \
+	LISTINGUDEBSDL_quit \
+	LISTINGUDEBSDL_resize \
+	LISTINGUDEBSDL_timer \
+	LISTINGUDEBSDL_systimer \
+	LISTINGUDEBSDL_rwops \
+	LISTINGUDEBSDL_joystick \
+	LISTINGUDEBSDL_SysJoystick \
+	LISTINGUDEBSDL_getenv \
+	LISTINGUDEBSDL_iconv \
+	LISTINGUDEBSDL_malloc \
+	LISTINGUDEBSDL_qsort \
+	LISTINGUDEBSDL_stdlib \
+	LISTINGUDEBSDL_string
+
+LIBSUDEB= \
+	$(STATIC_LIBS_LIST)
+
+VTBLEXPORTSUDEB=
+
+OBJECTSUDEB= \
+	$(EPOCBLDUDEB)\EBasicApp.o \
+	$(EPOCBLDUDEB)\IniFile.o \
+	$(EPOCBLDUDEB)\SDL.o \
+	$(EPOCBLDUDEB)\SDL_error.o \
+	$(EPOCBLDUDEB)\SDL_fatal.o \
+	$(EPOCBLDUDEB)\SDL_cpuinfo.o \
+	$(EPOCBLDUDEB)\SDL_cdrom.o \
+	$(EPOCBLDUDEB)\SDL_syscdrom.o \
+	$(EPOCBLDUDEB)\SDL_audio.o \
+	$(EPOCBLDUDEB)\SDL_audiocvt.o \
+	$(EPOCBLDUDEB)\SDL_audiodev.o \
+	$(EPOCBLDUDEB)\SDL_mixer.o \
+	$(EPOCBLDUDEB)\SDL_wave.o \
+	$(EPOCBLDUDEB)\SDL_SymbianAudio.o \
+	$(EPOCBLDUDEB)\SDL_blit.o \
+	$(EPOCBLDUDEB)\SDL_blit_0.o \
+	$(EPOCBLDUDEB)\SDL_blit_1.o \
+	$(EPOCBLDUDEB)\SDL_blit_A.o \
+	$(EPOCBLDUDEB)\SDL_blit_N.o \
+	$(EPOCBLDUDEB)\SDL_bmp.o \
+	$(EPOCBLDUDEB)\SDL_cursor.o \
+	$(EPOCBLDUDEB)\SDL_gamma.o \
+	$(EPOCBLDUDEB)\SDL_pixels.o \
+	$(EPOCBLDUDEB)\SDL_RLEaccel.o \
+	$(EPOCBLDUDEB)\SDL_stretch.o \
+	$(EPOCBLDUDEB)\SDL_surface.o \
+	$(EPOCBLDUDEB)\SDL_video.o \
+	$(EPOCBLDUDEB)\SDL_yuv.o \
+	$(EPOCBLDUDEB)\SDL_yuv_sw.o \
+	$(EPOCBLDUDEB)\SDL_epocvideo.o \
+	$(EPOCBLDUDEB)\SDL_epocevents.o \
+	$(EPOCBLDUDEB)\SDL_thread.o \
+	$(EPOCBLDUDEB)\SDL_syscond.o \
+	$(EPOCBLDUDEB)\SDL_sysmutex.o \
+	$(EPOCBLDUDEB)\SDL_syssem.o \
+	$(EPOCBLDUDEB)\SDL_systhread.o \
+	$(EPOCBLDUDEB)\SDL_active.o \
+	$(EPOCBLDUDEB)\SDL_events.o \
+	$(EPOCBLDUDEB)\SDL_keyboard.o \
+	$(EPOCBLDUDEB)\SDL_mouse.o \
+	$(EPOCBLDUDEB)\SDL_quit.o \
+	$(EPOCBLDUDEB)\SDL_resize.o \
+	$(EPOCBLDUDEB)\SDL_timer.o \
+	$(EPOCBLDUDEB)\SDL_systimer.o \
+	$(EPOCBLDUDEB)\SDL_rwops.o \
+	$(EPOCBLDUDEB)\SDL_joystick.o \
+	$(EPOCBLDUDEB)\SDL_SysJoystick.o \
+	$(EPOCBLDUDEB)\SDL_getenv.o \
+	$(EPOCBLDUDEB)\SDL_iconv.o \
+	$(EPOCBLDUDEB)\SDL_malloc.o \
+	$(EPOCBLDUDEB)\SDL_qsort.o \
+	$(EPOCBLDUDEB)\SDL_stdlib.o \
+	$(EPOCBLDUDEB)\SDL_string.o
+
+$(EPOCTRGUDEB)\ESDL.lib : $(OBJECTSUDEB)
+	$(ARCHIVER)  $(ARCHIVER_CREATE_OPTION)  $(EPOCSTATLINKUDEB)\ESDL.lib $(OBJECTSUDEB)
+
+
+# SOURCES
+
+# Source EBasicApp.cpp
+
+$(EPOCBLDUREL)\EBasicApp.lis $(EPOCBLDUREL)\EBasicApp.o \
+$(EPOCBLDUDEB)\EBasicApp.lis $(EPOCBLDUDEB)\EBasicApp.o \
+: \
+	\SDL-1.2.13\Symbian\EBasicApp.h \
+	\SDL-1.2.13\Symbian\IniFile.h \
+	\SDL-1.2.13\Symbian\ebasicapp.h \
+	\SDL-1.2.13\Symbian\sdlapp.h \
+	\SDL-1.2.13\include\SDL_active.h \
+	\SDL-1.2.13\include\SDL_audio.h \
+	\SDL-1.2.13\include\SDL_cdrom.h \
+	\SDL-1.2.13\include\SDL_config.h \
+	\SDL-1.2.13\include\SDL_config_symbian.h \
+	\SDL-1.2.13\include\SDL_cpuinfo.h \
+	\SDL-1.2.13\include\SDL_endian.h \
+	\SDL-1.2.13\include\SDL_error.h \
+	\SDL-1.2.13\include\SDL_events.h \
+	\SDL-1.2.13\include\SDL_joystick.h \
+	\SDL-1.2.13\include\SDL_keyboard.h \
+	\SDL-1.2.13\include\SDL_keysym.h \
+	\SDL-1.2.13\include\SDL_loadso.h \
+	\SDL-1.2.13\include\SDL_main.h \
+	\SDL-1.2.13\include\SDL_mouse.h \
+	\SDL-1.2.13\include\SDL_mutex.h \
+	\SDL-1.2.13\include\SDL_platform.h \
+	\SDL-1.2.13\include\SDL_quit.h \
+	\SDL-1.2.13\include\SDL_rwops.h \
+	\SDL-1.2.13\include\SDL_stdinc.h \
+	\SDL-1.2.13\include\SDL_syswm.h \
+	\SDL-1.2.13\include\SDL_thread.h \
+	\SDL-1.2.13\include\SDL_timer.h \
+	\SDL-1.2.13\include\SDL_version.h \
+	\SDL-1.2.13\include\SDL_video.h \
+	\SDL-1.2.13\include\begin_code.h \
+	\SDL-1.2.13\include\close_code.h \
+	\SDL-1.2.13\include\sdl.h \
+	\SDL-1.2.13\include\sdl_audio.h \
+	\SDL-1.2.13\include\sdl_main.h \
+	\SDL-1.2.13\src\events\sdl_events_c.h \
+	\SDL-1.2.13\src\video\SDL_sysvideo.h \
+	\SDL-1.2.13\src\video\SDL_sysvideo.h \
+	\SDL-1.2.13\src\video\symbian\SDL_epocevents_c.h \
+	\SDL-1.2.13\src\video\symbian\SDL_epocvideo.h \
+	$(PREFIXFILE) \
+	\UIQ3\EPOC32\include\Babitflags.h \
+	\UIQ3\EPOC32\include\CoeLayoutMan.h \
+	\UIQ3\EPOC32\include\Ecom\EComErrorCodes.h \
+	\UIQ3\EPOC32\include\Ecom\EComResolverParams.h \
+	\UIQ3\EPOC32\include\Ecom\EComResolverParams.inl \
+	\UIQ3\EPOC32\include\Ecom\Ecom.h \
+	\UIQ3\EPOC32\include\Ecom\ImplementationInformation.h \
+	\UIQ3\EPOC32\include\Ecom\ImplementationInformation.inl \
+	\UIQ3\EPOC32\include\FbsMessage.h \
+	\UIQ3\EPOC32\include\LineBreak.h \
+	\UIQ3\EPOC32\include\QUiConfigClient.h \
+	\UIQ3\EPOC32\include\QikCategory.hrh \
+	\UIQ3\EPOC32\include\QikCategoryModel.h \
+	\UIQ3\EPOC32\include\QikCommand.hrh \
+	\UIQ3\EPOC32\include\QikCommandManager.h \
+	\UIQ3\EPOC32\include\QikContainer.h \
+	\UIQ3\EPOC32\include\QikControlProvider.h \
+	\UIQ3\EPOC32\include\QikDef.h \
+	\UIQ3\EPOC32\include\QikFactories.h \
+	\UIQ3\EPOC32\include\QikFlowLayoutManager.h \
+	\UIQ3\EPOC32\include\QikLayoutManager.h \
+	\UIQ3\EPOC32\include\QikLayoutValues.h \
+	\UIQ3\EPOC32\include\QikUiConfigDataTypes.h \
+	\UIQ3\EPOC32\include\QikViewFurniture.h \
+	\UIQ3\EPOC32\include\Qikon.hrh \
+	\UIQ3\EPOC32\include\apacmdln.h \
+	\UIQ3\EPOC32\include\apadef.h \
+	\UIQ3\EPOC32\include\apaflrec.h \
+	\UIQ3\EPOC32\include\apaid.h \
+	\UIQ3\EPOC32\include\apmstd.h \
+	\UIQ3\EPOC32\include\apparc.h \
+	\UIQ3\EPOC32\include\babitflags.h \
+	\UIQ3\EPOC32\include\badesca.h \
+	\UIQ3\EPOC32\include\baerrhan.h \
+	\UIQ3\EPOC32\include\bamdesca.h \
+	\UIQ3\EPOC32\include\barsc.h \
+	\UIQ3\EPOC32\include\barsread.h \
+	\UIQ3\EPOC32\include\basched.h \
+	\UIQ3\EPOC32\include\bautils.h \
+	\UIQ3\EPOC32\include\bidi.h \
+	\UIQ3\EPOC32\include\biditext.h \
+	\UIQ3\EPOC32\include\bitbase.h \
+	\UIQ3\EPOC32\include\bitdev.h \
+	\UIQ3\EPOC32\include\bitdev.inl \
+	\UIQ3\EPOC32\include\bitmap.h \
+	\UIQ3\EPOC32\include\bitstd.h \
+	\UIQ3\EPOC32\include\coeaui.h \
+	\UIQ3\EPOC32\include\coecntrl.h \
+	\UIQ3\EPOC32\include\coecobs.h \
+	\UIQ3\EPOC32\include\coecontrolarray.h \
+	\UIQ3\EPOC32\include\coedef.h \
+	\UIQ3\EPOC32\include\coefont.h \
+	\UIQ3\EPOC32\include\coehelp.h \
+	\UIQ3\EPOC32\include\coeinput.h \
+	\UIQ3\EPOC32\include\coemain.h \
+	\UIQ3\EPOC32\include\coemop.h \
+	\UIQ3\EPOC32\include\coetextdrawer.h \
+	\UIQ3\EPOC32\include\coeview.h \
+	\UIQ3\EPOC32\include\d32locd.h \
+	\UIQ3\EPOC32\include\d32locd.inl \
+	\UIQ3\EPOC32\include\devicekeys.h \
+	\UIQ3\EPOC32\include\e32base.h \
+	\UIQ3\EPOC32\include\e32base.inl \
+	\UIQ3\EPOC32\include\e32capability.h \
+	\UIQ3\EPOC32\include\e32cmn.h \
+	\UIQ3\EPOC32\include\e32cmn.inl \
+	\UIQ3\EPOC32\include\e32const.h \
+	\UIQ3\EPOC32\include\e32debug.h \
+	\UIQ3\EPOC32\include\e32def.h \
+	\UIQ3\EPOC32\include\e32des16.h \
+	\UIQ3\EPOC32\include\e32des8.h \
+	\UIQ3\EPOC32\include\e32err.h \
+	\UIQ3\EPOC32\include\e32event.h \
+	\UIQ3\EPOC32\include\e32hal.h \
+	\UIQ3\EPOC32\include\e32keys.h \
+	\UIQ3\EPOC32\include\e32ktran.h \
+	\UIQ3\EPOC32\include\e32ldr.h \
+	\UIQ3\EPOC32\include\e32lmsg.h \
+	\UIQ3\EPOC32\include\e32notif.h \
+	\UIQ3\EPOC32\include\e32std.h \
+	\UIQ3\EPOC32\include\e32std.inl \
+	\UIQ3\EPOC32\include\e32svr.h \
+	\UIQ3\EPOC32\include\eikamnt.h \
+	\UIQ3\EPOC32\include\eikapp.h \
+	\UIQ3\EPOC32\include\eikappui.h \
+	\UIQ3\EPOC32\include\eikaufty.h \
+	\UIQ3\EPOC32\include\eikbctrl.h \
+	\UIQ3\EPOC32\include\eikbtgrp.h \
+	\UIQ3\EPOC32\include\eikcmobs.h \
+	\UIQ3\EPOC32\include\eikcolor.hrh \
+	\UIQ3\EPOC32\include\eikdef.h \
+	\UIQ3\EPOC32\include\eikdgfty.h \
+	\UIQ3\EPOC32\include\eikdoc.h \
+	\UIQ3\EPOC32\include\eikenv.h \
+	\UIQ3\EPOC32\include\eikfctry.h \
+	\UIQ3\EPOC32\include\eiklibry.h \
+	\UIQ3\EPOC32\include\eikmobs.h \
+	\UIQ3\EPOC32\include\eikon.hrh \
+	\UIQ3\EPOC32\include\eikprogi.h \
+	\UIQ3\EPOC32\include\eikvcurs.h \
+	\UIQ3\EPOC32\include\f32file.h \
+	\UIQ3\EPOC32\include\f32file.inl \
+	\UIQ3\EPOC32\include\fbs.h \
+	\UIQ3\EPOC32\include\fldbase.h \
+	\UIQ3\EPOC32\include\fldbltin.h \
+	\UIQ3\EPOC32\include\fldinfo.h \
+	\UIQ3\EPOC32\include\fldset.h \
+	\UIQ3\EPOC32\include\fntstore.h \
+	\UIQ3\EPOC32\include\frmlaydt.h \
+	\UIQ3\EPOC32\include\frmparam.h \
+	\UIQ3\EPOC32\include\frmtlay.h \
+	\UIQ3\EPOC32\include\frmvis.h \
+	\UIQ3\EPOC32\include\gdi.h \
+	\UIQ3\EPOC32\include\gdi.inl \
+	\UIQ3\EPOC32\include\graphicsaccelerator.h \
+	\UIQ3\EPOC32\include\gulalign.h \
+	\UIQ3\EPOC32\include\gulbordr.h \
+	\UIQ3\EPOC32\include\gulcolor.h \
+	\UIQ3\EPOC32\include\guldef.h \
+	\UIQ3\EPOC32\include\gulftflg.hrh \
+	\UIQ3\EPOC32\include\gulutil.h \
+	\UIQ3\EPOC32\include\lafmain.h \
+	\UIQ3\EPOC32\include\libc\_ansi.h \
+	\UIQ3\EPOC32\include\libc\ctype.h \
+	\UIQ3\EPOC32\include\libc\machine\types.h \
+	\UIQ3\EPOC32\include\libc\reent.h \
+	\UIQ3\EPOC32\include\libc\stdarg.h \
+	\UIQ3\EPOC32\include\libc\stdarg_e.h \
+	\UIQ3\EPOC32\include\libc\stddef.h \
+	\UIQ3\EPOC32\include\libc\stdio.h \
+	\UIQ3\EPOC32\include\libc\stdlib.h \
+	\UIQ3\EPOC32\include\libc\string.h \
+	\UIQ3\EPOC32\include\libc\sys\_types.h \
+	\UIQ3\EPOC32\include\libc\sys\reent.h \
+	\UIQ3\EPOC32\include\libc\sys\stdio_t.h \
+	\UIQ3\EPOC32\include\libc\sys\types.h \
+	\UIQ3\EPOC32\include\libc\sys\types.h \
+	\UIQ3\EPOC32\include\libc\sys\unistd.h \
+	\UIQ3\EPOC32\include\libc\time.h \
+	\UIQ3\EPOC32\include\libc\unistd.h \
+	\UIQ3\EPOC32\include\openfont.h \
+	\UIQ3\EPOC32\include\partitions.h \
+	\UIQ3\EPOC32\include\qikapplication.h \
+	\UIQ3\EPOC32\include\qikappui.h \
+	\UIQ3\EPOC32\include\qikcommand.h \
+	\UIQ3\EPOC32\include\qikdocument.h \
+	\UIQ3\EPOC32\include\qikon.hrh \
+	\UIQ3\EPOC32\include\qikstockcontrols.hrh \
+	\UIQ3\EPOC32\include\qiktoolbar.h \
+	\UIQ3\EPOC32\include\qikviewbase.h \
+	\UIQ3\EPOC32\include\qikviewswitcher.h \
+	\UIQ3\EPOC32\include\quartz.mbg \
+	\UIQ3\EPOC32\include\s32buf.h \
+	\UIQ3\EPOC32\include\s32buf.inl \
+	\UIQ3\EPOC32\include\s32file.h \
+	\UIQ3\EPOC32\include\s32file.inl \
+	\UIQ3\EPOC32\include\s32page.h \
+	\UIQ3\EPOC32\include\s32page.inl \
+	\UIQ3\EPOC32\include\s32share.h \
+	\UIQ3\EPOC32\include\s32share.inl \
+	\UIQ3\EPOC32\include\s32std.h \
+	\UIQ3\EPOC32\include\s32std.inl \
+	\UIQ3\EPOC32\include\s32stor.h \
+	\UIQ3\EPOC32\include\s32stor.inl \
+	\UIQ3\EPOC32\include\s32strm.h \
+	\UIQ3\EPOC32\include\s32strm.inl \
+	\UIQ3\EPOC32\include\savenotf.h \
+	\UIQ3\EPOC32\include\symcpp.h \
+	\UIQ3\EPOC32\include\tagma.h \
+	\UIQ3\EPOC32\include\txtetext.h \
+	\UIQ3\EPOC32\include\txtetext.inl \
+	\UIQ3\EPOC32\include\txtfmlyr.h \
+	\UIQ3\EPOC32\include\txtfmlyr.inl \
+	\UIQ3\EPOC32\include\txtfmstm.h \
+	\UIQ3\EPOC32\include\txtfrmat.h \
+	\UIQ3\EPOC32\include\txtfrmat.inl \
+	\UIQ3\EPOC32\include\txtstyle.h \
+	\UIQ3\EPOC32\include\txtstyle.inl \
+	\UIQ3\EPOC32\include\uikon.hrh \
+	\UIQ3\EPOC32\include\vwsdef.h \
+	\UIQ3\EPOC32\include\w32std.h \
+	\UIQ3\epoc32\include\variant\Symbian_OS_v9.1.hrh \
+	\UIQ3\epoc32\include\variant\UIQ_3.0.hrh
+
+$(EPOCBLDUREL)\EBasicApp.o : \SDL-1.2.13\Symbian\Ebasicapp.cpp
+	@echo Ebasicapp.cpp
+	$(CCUREL)   $(CPP_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(INCLUDE_OPTION) .. $(INCDIR) $(OUTPUT_OPTION) $@ ..\Ebasicapp.cpp
+
+LISTINGURELEBasicApp : $(EPOCBLDUREL)\EBasicApp.lis
+	perl -S ecopyfile.pl $? \SDL-1.2.13\Symbian\EBasicApp.ARMV5.lst
+
+$(EPOCBLDUREL)\EBasicApp.lis : \SDL-1.2.13\Symbian\Ebasicapp.cpp
+	$(CCUREL)  $(CPP_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(ASSEMBLER_LISTING_OPTION) $(INCLUDE_OPTION) .. $(INCDIR) $(OUTPUT_OPTION) $@ ..\Ebasicapp.cpp 
+
+$(EPOCBLDUDEB)\EBasicApp.o : \SDL-1.2.13\Symbian\Ebasicapp.cpp
+	@echo Ebasicapp.cpp
+	$(CCUDEB)   $(CPP_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(INCLUDE_OPTION) .. $(INCDIR) $(OUTPUT_OPTION) $@ ..\Ebasicapp.cpp
+
+LISTINGUDEBEBasicApp : $(EPOCBLDUDEB)\EBasicApp.lis
+	perl -S ecopyfile.pl $? \SDL-1.2.13\Symbian\EBasicApp.ARMV5.lst
+
+$(EPOCBLDUDEB)\EBasicApp.lis : \SDL-1.2.13\Symbian\Ebasicapp.cpp
+	$(CCUDEB)  $(CPP_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(ASSEMBLER_LISTING_OPTION) $(INCLUDE_OPTION) .. $(INCDIR) $(OUTPUT_OPTION) $@ ..\Ebasicapp.cpp 
+
+
+
+# Source IniFile.cpp
+
+$(EPOCBLDUREL)\IniFile.lis $(EPOCBLDUREL)\IniFile.o \
+$(EPOCBLDUDEB)\IniFile.lis $(EPOCBLDUDEB)\IniFile.o \
+: \
+	\SDL-1.2.13\Symbian\IniFile.h \
+	$(PREFIXFILE) \
+	\UIQ3\EPOC32\include\Ecom\EComErrorCodes.h \
+	\UIQ3\EPOC32\include\Ecom\EComResolverParams.h \
+	\UIQ3\EPOC32\include\Ecom\EComResolverParams.inl \
+	\UIQ3\EPOC32\include\Ecom\Ecom.h \
+	\UIQ3\EPOC32\include\Ecom\ImplementationInformation.h \
+	\UIQ3\EPOC32\include\Ecom\ImplementationInformation.inl \
+	\UIQ3\EPOC32\include\FbsMessage.h \
+	\UIQ3\EPOC32\include\LineBreak.h \
+	\UIQ3\EPOC32\include\apacmdln.h \
+	\UIQ3\EPOC32\include\apadef.h \
+	\UIQ3\EPOC32\include\apaflrec.h \
+	\UIQ3\EPOC32\include\apaid.h \
+	\UIQ3\EPOC32\include\apmstd.h \
+	\UIQ3\EPOC32\include\babitflags.h \
+	\UIQ3\EPOC32\include\badesca.h \
+	\UIQ3\EPOC32\include\baerrhan.h \
+	\UIQ3\EPOC32\include\bamdesca.h \
+	\UIQ3\EPOC32\include\barsc.h \
+	\UIQ3\EPOC32\include\basched.h \
+	\UIQ3\EPOC32\include\bidi.h \
+	\UIQ3\EPOC32\include\biditext.h \
+	\UIQ3\EPOC32\include\bitbase.h \
+	\UIQ3\EPOC32\include\bitdev.h \
+	\UIQ3\EPOC32\include\bitdev.inl \
+	\UIQ3\EPOC32\include\bitmap.h \
+	\UIQ3\EPOC32\include\bitstd.h \
+	\UIQ3\EPOC32\include\coedef.h \
+	\UIQ3\EPOC32\include\coemain.h \
+	\UIQ3\EPOC32\include\coemop.h \
+	\UIQ3\EPOC32\include\coetextdrawer.h \
+	\UIQ3\EPOC32\include\d32locd.h \
+	\UIQ3\EPOC32\include\d32locd.inl \
+	\UIQ3\EPOC32\include\e32base.h \
+	\UIQ3\EPOC32\include\e32base.inl \
+	\UIQ3\EPOC32\include\e32capability.h \
+	\UIQ3\EPOC32\include\e32cmn.h \
+	\UIQ3\EPOC32\include\e32cmn.inl \
+	\UIQ3\EPOC32\include\e32const.h \
+	\UIQ3\EPOC32\include\e32debug.h \
+	\UIQ3\EPOC32\include\e32def.h \
+	\UIQ3\EPOC32\include\e32des16.h \
+	\UIQ3\EPOC32\include\e32des8.h \
+	\UIQ3\EPOC32\include\e32err.h \
+	\UIQ3\EPOC32\include\e32event.h \
+	\UIQ3\EPOC32\include\e32hal.h \
+	\UIQ3\EPOC32\include\e32keys.h \
+	\UIQ3\EPOC32\include\e32ktran.h \
+	\UIQ3\EPOC32\include\e32ldr.h \
+	\UIQ3\EPOC32\include\e32lmsg.h \
+	\UIQ3\EPOC32\include\e32notif.h \
+	\UIQ3\EPOC32\include\e32std.h \
+	\UIQ3\EPOC32\include\e32std.inl \
+	\UIQ3\EPOC32\include\e32svr.h \
+	\UIQ3\EPOC32\include\eikamnt.h \
+	\UIQ3\EPOC32\include\eikaufty.h \
+	\UIQ3\EPOC32\include\eikcolor.hrh \
+	\UIQ3\EPOC32\include\eikdef.h \
+	\UIQ3\EPOC32\include\eikdgfty.h \
+	\UIQ3\EPOC32\include\eikenv.h \
+	\UIQ3\EPOC32\include\eikfctry.h \
+	\UIQ3\EPOC32\include\eiklibry.h \
+	\UIQ3\EPOC32\include\eikvcurs.h \
+	\UIQ3\EPOC32\include\f32file.h \
+	\UIQ3\EPOC32\include\f32file.inl \
+	\UIQ3\EPOC32\include\fbs.h \
+	\UIQ3\EPOC32\include\fldbase.h \
+	\UIQ3\EPOC32\include\fldbltin.h \
+	\UIQ3\EPOC32\include\fldinfo.h \
+	\UIQ3\EPOC32\include\fldset.h \
+	\UIQ3\EPOC32\include\fntstore.h \
+	\UIQ3\EPOC32\include\frmlaydt.h \
+	\UIQ3\EPOC32\include\frmparam.h \
+	\UIQ3\EPOC32\include\frmtlay.h \
+	\UIQ3\EPOC32\include\frmvis.h \
+	\UIQ3\EPOC32\include\gdi.h \
+	\UIQ3\EPOC32\include\gdi.inl \
+	\UIQ3\EPOC32\include\graphicsaccelerator.h \
+	\UIQ3\EPOC32\include\gulalign.h \
+	\UIQ3\EPOC32\include\gulbordr.h \
+	\UIQ3\EPOC32\include\gulcolor.h \
+	\UIQ3\EPOC32\include\guldef.h \
+	\UIQ3\EPOC32\include\gulftflg.hrh \
+	\UIQ3\EPOC32\include\gulutil.h \
+	\UIQ3\EPOC32\include\lafmain.h \
+	\UIQ3\EPOC32\include\libc\_ansi.h \
+	\UIQ3\EPOC32\include\libc\machine\types.h \
+	\UIQ3\EPOC32\include\libc\stdarg_e.h \
+	\UIQ3\EPOC32\include\libc\stddef.h \
+	\UIQ3\EPOC32\include\libc\stdio.h \
+	\UIQ3\EPOC32\include\libc\stdlib.h \
+	\UIQ3\EPOC32\include\libc\string.h \
+	\UIQ3\EPOC32\include\libc\sys\reent.h \
+	\UIQ3\EPOC32\include\libc\sys\stdio_t.h \
+	\UIQ3\EPOC32\include\libc\time.h \
+	\UIQ3\EPOC32\include\openfont.h \
+	\UIQ3\EPOC32\include\partitions.h \
+	\UIQ3\EPOC32\include\s32buf.h \
+	\UIQ3\EPOC32\include\s32buf.inl \
+	\UIQ3\EPOC32\include\s32page.h \
+	\UIQ3\EPOC32\include\s32page.inl \
+	\UIQ3\EPOC32\include\s32share.h \
+	\UIQ3\EPOC32\include\s32share.inl \
+	\UIQ3\EPOC32\include\s32std.h \
+	\UIQ3\EPOC32\include\s32std.inl \
+	\UIQ3\EPOC32\include\s32stor.h \
+	\UIQ3\EPOC32\include\s32stor.inl \
+	\UIQ3\EPOC32\include\s32strm.h \
+	\UIQ3\EPOC32\include\s32strm.inl \
+	\UIQ3\EPOC32\include\symcpp.h \
+	\UIQ3\EPOC32\include\tagma.h \
+	\UIQ3\EPOC32\include\txtetext.h \
+	\UIQ3\EPOC32\include\txtetext.inl \
+	\UIQ3\EPOC32\include\txtfmlyr.h \
+	\UIQ3\EPOC32\include\txtfmlyr.inl \
+	\UIQ3\EPOC32\include\txtfmstm.h \
+	\UIQ3\EPOC32\include\txtfrmat.h \
+	\UIQ3\EPOC32\include\txtfrmat.inl \
+	\UIQ3\EPOC32\include\txtstyle.h \
+	\UIQ3\EPOC32\include\txtstyle.inl \
+	\UIQ3\EPOC32\include\uikon.hrh \
+	\UIQ3\EPOC32\include\w32std.h \
+	\UIQ3\epoc32\include\variant\Symbian_OS_v9.1.hrh \
+	\UIQ3\epoc32\include\variant\UIQ_3.0.hrh
+
+$(EPOCBLDUREL)\IniFile.o : \SDL-1.2.13\Symbian\Inifile.cpp
+	@echo Inifile.cpp
+	$(CCUREL)   $(CPP_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(INCLUDE_OPTION) .. $(INCDIR) $(OUTPUT_OPTION) $@ ..\Inifile.cpp
+
+LISTINGURELIniFile : $(EPOCBLDUREL)\IniFile.lis
+	perl -S ecopyfile.pl $? \SDL-1.2.13\Symbian\IniFile.ARMV5.lst
+
+$(EPOCBLDUREL)\IniFile.lis : \SDL-1.2.13\Symbian\Inifile.cpp
+	$(CCUREL)  $(CPP_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(ASSEMBLER_LISTING_OPTION) $(INCLUDE_OPTION) .. $(INCDIR) $(OUTPUT_OPTION) $@ ..\Inifile.cpp 
+
+$(EPOCBLDUDEB)\IniFile.o : \SDL-1.2.13\Symbian\Inifile.cpp
+	@echo Inifile.cpp
+	$(CCUDEB)   $(CPP_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(INCLUDE_OPTION) .. $(INCDIR) $(OUTPUT_OPTION) $@ ..\Inifile.cpp
+
+LISTINGUDEBIniFile : $(EPOCBLDUDEB)\IniFile.lis
+	perl -S ecopyfile.pl $? \SDL-1.2.13\Symbian\IniFile.ARMV5.lst
+
+$(EPOCBLDUDEB)\IniFile.lis : \SDL-1.2.13\Symbian\Inifile.cpp
+	$(CCUDEB)  $(CPP_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(ASSEMBLER_LISTING_OPTION) $(INCLUDE_OPTION) .. $(INCDIR) $(OUTPUT_OPTION) $@ ..\Inifile.cpp 
+
+
+
+# Source SDL.c
+
+$(EPOCBLDUREL)\SDL.lis $(EPOCBLDUREL)\SDL.o \
+$(EPOCBLDUDEB)\SDL.lis $(EPOCBLDUDEB)\SDL.o \
+: \
+	\SDL-1.2.13\include\SDL.h \
+	\SDL-1.2.13\include\SDL_active.h \
+	\SDL-1.2.13\include\SDL_audio.h \
+	\SDL-1.2.13\include\SDL_cdrom.h \
+	\SDL-1.2.13\include\SDL_config.h \
+	\SDL-1.2.13\include\SDL_config_symbian.h \
+	\SDL-1.2.13\include\SDL_cpuinfo.h \
+	\SDL-1.2.13\include\SDL_endian.h \
+	\SDL-1.2.13\include\SDL_error.h \
+	\SDL-1.2.13\include\SDL_events.h \
+	\SDL-1.2.13\include\SDL_joystick.h \
+	\SDL-1.2.13\include\SDL_keyboard.h \
+	\SDL-1.2.13\include\SDL_keysym.h \
+	\SDL-1.2.13\include\SDL_loadso.h \
+	\SDL-1.2.13\include\SDL_main.h \
+	\SDL-1.2.13\include\SDL_mouse.h \
+	\SDL-1.2.13\include\SDL_mutex.h \
+	\SDL-1.2.13\include\SDL_platform.h \
+	\SDL-1.2.13\include\SDL_quit.h \
+	\SDL-1.2.13\include\SDL_rwops.h \
+	\SDL-1.2.13\include\SDL_stdinc.h \
+	\SDL-1.2.13\include\SDL_thread.h \
+	\SDL-1.2.13\include\SDL_timer.h \
+	\SDL-1.2.13\include\SDL_version.h \
+	\SDL-1.2.13\include\SDL_video.h \
+	\SDL-1.2.13\include\begin_code.h \
+	\SDL-1.2.13\include\close_code.h \
+	\SDL-1.2.13\src\SDL_fatal.h \
+	\SDL-1.2.13\src\video\SDL_leaks.h \
+	$(PREFIXFILE) \
+	\UIQ3\EPOC32\include\libc\_ansi.h \
+	\UIQ3\EPOC32\include\libc\ctype.h \
+	\UIQ3\EPOC32\include\libc\machine\types.h \
+	\UIQ3\EPOC32\include\libc\stdarg.h \
+	\UIQ3\EPOC32\include\libc\stdarg_e.h \
+	\UIQ3\EPOC32\include\libc\stddef.h \
+	\UIQ3\EPOC32\include\libc\stdio.h \
+	\UIQ3\EPOC32\include\libc\stdlib.h \
+	\UIQ3\EPOC32\include\libc\string.h \
+	\UIQ3\EPOC32\include\libc\sys\reent.h \
+	\UIQ3\EPOC32\include\libc\sys\stdio_t.h \
+	\UIQ3\EPOC32\include\libc\sys\types.h \
+	\UIQ3\EPOC32\include\libc\time.h \
+	\UIQ3\EPOC32\include\symcpp.h \
+	\UIQ3\epoc32\include\variant\Symbian_OS_v9.1.hrh \
+	\UIQ3\epoc32\include\variant\UIQ_3.0.hrh
+
+$(EPOCBLDUREL)\SDL.o : \SDL-1.2.13\src\Sdl.c
+	@echo Sdl.c
+	$(CCUREL)   $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(INCLUDE_OPTION) ..\..\src $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\Sdl.c
+
+LISTINGURELSDL : $(EPOCBLDUREL)\SDL.lis
+	perl -S ecopyfile.pl $? \SDL-1.2.13\src\SDL.ARMV5.lst
+
+$(EPOCBLDUREL)\SDL.lis : \SDL-1.2.13\src\Sdl.c
+	$(CCUREL)  $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(ASSEMBLER_LISTING_OPTION) $(INCLUDE_OPTION) ..\..\src $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\Sdl.c 
+
+$(EPOCBLDUDEB)\SDL.o : \SDL-1.2.13\src\Sdl.c
+	@echo Sdl.c
+	$(CCUDEB)   $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(INCLUDE_OPTION) ..\..\src $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\Sdl.c
+
+LISTINGUDEBSDL : $(EPOCBLDUDEB)\SDL.lis
+	perl -S ecopyfile.pl $? \SDL-1.2.13\src\SDL.ARMV5.lst
+
+$(EPOCBLDUDEB)\SDL.lis : \SDL-1.2.13\src\Sdl.c
+	$(CCUDEB)  $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(ASSEMBLER_LISTING_OPTION) $(INCLUDE_OPTION) ..\..\src $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\Sdl.c 
+
+
+
+# Source SDL_error.c
+
+$(EPOCBLDUREL)\SDL_error.lis $(EPOCBLDUREL)\SDL_error.o \
+$(EPOCBLDUDEB)\SDL_error.lis $(EPOCBLDUDEB)\SDL_error.o \
+: \
+	\SDL-1.2.13\include\SDL_config.h \
+	\SDL-1.2.13\include\SDL_config_symbian.h \
+	\SDL-1.2.13\include\SDL_error.h \
+	\SDL-1.2.13\include\SDL_platform.h \
+	\SDL-1.2.13\include\SDL_stdinc.h \
+	\SDL-1.2.13\include\begin_code.h \
+	\SDL-1.2.13\include\close_code.h \
+	\SDL-1.2.13\src\SDL_error_c.h \
+	$(PREFIXFILE) \
+	\UIQ3\EPOC32\include\libc\_ansi.h \
+	\UIQ3\EPOC32\include\libc\ctype.h \
+	\UIQ3\EPOC32\include\libc\machine\types.h \
+	\UIQ3\EPOC32\include\libc\stdarg.h \
+	\UIQ3\EPOC32\include\libc\stdarg_e.h \
+	\UIQ3\EPOC32\include\libc\stddef.h \
+	\UIQ3\EPOC32\include\libc\stdio.h \
+	\UIQ3\EPOC32\include\libc\stdlib.h \
+	\UIQ3\EPOC32\include\libc\string.h \
+	\UIQ3\EPOC32\include\libc\sys\reent.h \
+	\UIQ3\EPOC32\include\libc\sys\stdio_t.h \
+	\UIQ3\EPOC32\include\libc\sys\types.h \
+	\UIQ3\EPOC32\include\libc\time.h \
+	\UIQ3\EPOC32\include\symcpp.h \
+	\UIQ3\epoc32\include\variant\Symbian_OS_v9.1.hrh \
+	\UIQ3\epoc32\include\variant\UIQ_3.0.hrh
+
+$(EPOCBLDUREL)\SDL_error.o : \SDL-1.2.13\src\Sdl_error.c
+	@echo Sdl_error.c
+	$(CCUREL)   $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(INCLUDE_OPTION) ..\..\src $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\Sdl_error.c
+
+LISTINGURELSDL_error : $(EPOCBLDUREL)\SDL_error.lis
+	perl -S ecopyfile.pl $? \SDL-1.2.13\src\SDL_error.ARMV5.lst
+
+$(EPOCBLDUREL)\SDL_error.lis : \SDL-1.2.13\src\Sdl_error.c
+	$(CCUREL)  $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(ASSEMBLER_LISTING_OPTION) $(INCLUDE_OPTION) ..\..\src $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\Sdl_error.c 
+
+$(EPOCBLDUDEB)\SDL_error.o : \SDL-1.2.13\src\Sdl_error.c
+	@echo Sdl_error.c
+	$(CCUDEB)   $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(INCLUDE_OPTION) ..\..\src $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\Sdl_error.c
+
+LISTINGUDEBSDL_error : $(EPOCBLDUDEB)\SDL_error.lis
+	perl -S ecopyfile.pl $? \SDL-1.2.13\src\SDL_error.ARMV5.lst
+
+$(EPOCBLDUDEB)\SDL_error.lis : \SDL-1.2.13\src\Sdl_error.c
+	$(CCUDEB)  $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(ASSEMBLER_LISTING_OPTION) $(INCLUDE_OPTION) ..\..\src $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\Sdl_error.c 
+
+
+
+# Source SDL_fatal.c
+
+$(EPOCBLDUREL)\SDL_fatal.lis $(EPOCBLDUREL)\SDL_fatal.o \
+$(EPOCBLDUDEB)\SDL_fatal.lis $(EPOCBLDUDEB)\SDL_fatal.o \
+: \
+	\SDL-1.2.13\include\SDL_config.h \
+	\SDL-1.2.13\include\SDL_config_symbian.h \
+	\SDL-1.2.13\include\SDL_platform.h \
+	$(PREFIXFILE) \
+	\UIQ3\EPOC32\include\libc\machine\types.h \
+	\UIQ3\EPOC32\include\libc\stdarg.h \
+	\UIQ3\EPOC32\include\libc\stddef.h \
+	\UIQ3\EPOC32\include\libc\sys\types.h \
+	\UIQ3\EPOC32\include\symcpp.h \
+	\UIQ3\epoc32\include\variant\Symbian_OS_v9.1.hrh \
+	\UIQ3\epoc32\include\variant\UIQ_3.0.hrh
+
+$(EPOCBLDUREL)\SDL_fatal.o : \SDL-1.2.13\src\Sdl_fatal.c
+	@echo Sdl_fatal.c
+	$(CCUREL)   $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(INCLUDE_OPTION) ..\..\src $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\Sdl_fatal.c
+
+LISTINGURELSDL_fatal : $(EPOCBLDUREL)\SDL_fatal.lis
+	perl -S ecopyfile.pl $? \SDL-1.2.13\src\SDL_fatal.ARMV5.lst
+
+$(EPOCBLDUREL)\SDL_fatal.lis : \SDL-1.2.13\src\Sdl_fatal.c
+	$(CCUREL)  $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(ASSEMBLER_LISTING_OPTION) $(INCLUDE_OPTION) ..\..\src $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\Sdl_fatal.c 
+
+$(EPOCBLDUDEB)\SDL_fatal.o : \SDL-1.2.13\src\Sdl_fatal.c
+	@echo Sdl_fatal.c
+	$(CCUDEB)   $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(INCLUDE_OPTION) ..\..\src $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\Sdl_fatal.c
+
+LISTINGUDEBSDL_fatal : $(EPOCBLDUDEB)\SDL_fatal.lis
+	perl -S ecopyfile.pl $? \SDL-1.2.13\src\SDL_fatal.ARMV5.lst
+
+$(EPOCBLDUDEB)\SDL_fatal.lis : \SDL-1.2.13\src\Sdl_fatal.c
+	$(CCUDEB)  $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(ASSEMBLER_LISTING_OPTION) $(INCLUDE_OPTION) ..\..\src $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\Sdl_fatal.c 
+
+
+
+# Source SDL_cpuinfo.c
+
+$(EPOCBLDUREL)\SDL_cpuinfo.lis $(EPOCBLDUREL)\SDL_cpuinfo.o \
+$(EPOCBLDUDEB)\SDL_cpuinfo.lis $(EPOCBLDUDEB)\SDL_cpuinfo.o \
+: \
+	\SDL-1.2.13\include\SDL.h \
+	\SDL-1.2.13\include\SDL_active.h \
+	\SDL-1.2.13\include\SDL_audio.h \
+	\SDL-1.2.13\include\SDL_cdrom.h \
+	\SDL-1.2.13\include\SDL_config.h \
+	\SDL-1.2.13\include\SDL_config_symbian.h \
+	\SDL-1.2.13\include\SDL_cpuinfo.h \
+	\SDL-1.2.13\include\SDL_endian.h \
+	\SDL-1.2.13\include\SDL_error.h \
+	\SDL-1.2.13\include\SDL_events.h \
+	\SDL-1.2.13\include\SDL_joystick.h \
+	\SDL-1.2.13\include\SDL_keyboard.h \
+	\SDL-1.2.13\include\SDL_keysym.h \
+	\SDL-1.2.13\include\SDL_loadso.h \
+	\SDL-1.2.13\include\SDL_main.h \
+	\SDL-1.2.13\include\SDL_mouse.h \
+	\SDL-1.2.13\include\SDL_mutex.h \
+	\SDL-1.2.13\include\SDL_platform.h \
+	\SDL-1.2.13\include\SDL_quit.h \
+	\SDL-1.2.13\include\SDL_rwops.h \
+	\SDL-1.2.13\include\SDL_stdinc.h \
+	\SDL-1.2.13\include\SDL_thread.h \
+	\SDL-1.2.13\include\SDL_timer.h \
+	\SDL-1.2.13\include\SDL_version.h \
+	\SDL-1.2.13\include\SDL_video.h \
+	\SDL-1.2.13\include\begin_code.h \
+	\SDL-1.2.13\include\close_code.h \
+	$(PREFIXFILE) \
+	\UIQ3\EPOC32\include\libc\_ansi.h \
+	\UIQ3\EPOC32\include\libc\ctype.h \
+	\UIQ3\EPOC32\include\libc\machine\types.h \
+	\UIQ3\EPOC32\include\libc\stdarg.h \
+	\UIQ3\EPOC32\include\libc\stdarg_e.h \
+	\UIQ3\EPOC32\include\libc\stddef.h \
+	\UIQ3\EPOC32\include\libc\stdio.h \
+	\UIQ3\EPOC32\include\libc\stdlib.h \
+	\UIQ3\EPOC32\include\libc\string.h \
+	\UIQ3\EPOC32\include\libc\sys\reent.h \
+	\UIQ3\EPOC32\include\libc\sys\stdio_t.h \
+	\UIQ3\EPOC32\include\libc\sys\types.h \
+	\UIQ3\EPOC32\include\libc\time.h \
+	\UIQ3\EPOC32\include\symcpp.h \
+	\UIQ3\epoc32\include\variant\Symbian_OS_v9.1.hrh \
+	\UIQ3\epoc32\include\variant\UIQ_3.0.hrh
+
+$(EPOCBLDUREL)\SDL_cpuinfo.o : \SDL-1.2.13\src\cpuinfo\Sdl_cpuinfo.c
+	@echo Sdl_cpuinfo.c
+	$(CCUREL)   $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(INCLUDE_OPTION) ..\..\src\cpuinfo $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\cpuinfo\Sdl_cpuinfo.c
+
+LISTINGURELSDL_cpuinfo : $(EPOCBLDUREL)\SDL_cpuinfo.lis
+	perl -S ecopyfile.pl $? \SDL-1.2.13\src\cpuinfo\SDL_cpuinfo.ARMV5.lst
+
+$(EPOCBLDUREL)\SDL_cpuinfo.lis : \SDL-1.2.13\src\cpuinfo\Sdl_cpuinfo.c
+	$(CCUREL)  $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(ASSEMBLER_LISTING_OPTION) $(INCLUDE_OPTION) ..\..\src\cpuinfo $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\cpuinfo\Sdl_cpuinfo.c 
+
+$(EPOCBLDUDEB)\SDL_cpuinfo.o : \SDL-1.2.13\src\cpuinfo\Sdl_cpuinfo.c
+	@echo Sdl_cpuinfo.c
+	$(CCUDEB)   $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(INCLUDE_OPTION) ..\..\src\cpuinfo $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\cpuinfo\Sdl_cpuinfo.c
+
+LISTINGUDEBSDL_cpuinfo : $(EPOCBLDUDEB)\SDL_cpuinfo.lis
+	perl -S ecopyfile.pl $? \SDL-1.2.13\src\cpuinfo\SDL_cpuinfo.ARMV5.lst
+
+$(EPOCBLDUDEB)\SDL_cpuinfo.lis : \SDL-1.2.13\src\cpuinfo\Sdl_cpuinfo.c
+	$(CCUDEB)  $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(ASSEMBLER_LISTING_OPTION) $(INCLUDE_OPTION) ..\..\src\cpuinfo $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\cpuinfo\Sdl_cpuinfo.c 
+
+
+
+# Source SDL_cdrom.c
+
+$(EPOCBLDUREL)\SDL_cdrom.lis $(EPOCBLDUREL)\SDL_cdrom.o \
+$(EPOCBLDUDEB)\SDL_cdrom.lis $(EPOCBLDUDEB)\SDL_cdrom.o \
+: \
+	\SDL-1.2.13\include\SDL_cdrom.h \
+	\SDL-1.2.13\include\SDL_config.h \
+	\SDL-1.2.13\include\SDL_config_symbian.h \
+	\SDL-1.2.13\include\SDL_error.h \
+	\SDL-1.2.13\include\SDL_platform.h \
+	\SDL-1.2.13\include\SDL_stdinc.h \
+	\SDL-1.2.13\include\begin_code.h \
+	\SDL-1.2.13\include\close_code.h \
+	\SDL-1.2.13\src\cdrom\SDL_syscdrom.h \
+	$(PREFIXFILE) \
+	\UIQ3\EPOC32\include\libc\_ansi.h \
+	\UIQ3\EPOC32\include\libc\ctype.h \
+	\UIQ3\EPOC32\include\libc\machine\types.h \
+	\UIQ3\EPOC32\include\libc\stdarg.h \
+	\UIQ3\EPOC32\include\libc\stdarg_e.h \
+	\UIQ3\EPOC32\include\libc\stddef.h \
+	\UIQ3\EPOC32\include\libc\stdio.h \
+	\UIQ3\EPOC32\include\libc\stdlib.h \
+	\UIQ3\EPOC32\include\libc\string.h \
+	\UIQ3\EPOC32\include\libc\sys\reent.h \
+	\UIQ3\EPOC32\include\libc\sys\stdio_t.h \
+	\UIQ3\EPOC32\include\libc\sys\types.h \
+	\UIQ3\EPOC32\include\libc\time.h \
+	\UIQ3\EPOC32\include\symcpp.h \
+	\UIQ3\epoc32\include\variant\Symbian_OS_v9.1.hrh \
+	\UIQ3\epoc32\include\variant\UIQ_3.0.hrh
+
+$(EPOCBLDUREL)\SDL_cdrom.o : \SDL-1.2.13\src\cdrom\Sdl_cdrom.c
+	@echo Sdl_cdrom.c
+	$(CCUREL)   $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(INCLUDE_OPTION) ..\..\src\cdrom $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\cdrom\Sdl_cdrom.c
+
+LISTINGURELSDL_cdrom : $(EPOCBLDUREL)\SDL_cdrom.lis
+	perl -S ecopyfile.pl $? \SDL-1.2.13\src\cdrom\SDL_cdrom.ARMV5.lst
+
+$(EPOCBLDUREL)\SDL_cdrom.lis : \SDL-1.2.13\src\cdrom\Sdl_cdrom.c
+	$(CCUREL)  $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(ASSEMBLER_LISTING_OPTION) $(INCLUDE_OPTION) ..\..\src\cdrom $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\cdrom\Sdl_cdrom.c 
+
+$(EPOCBLDUDEB)\SDL_cdrom.o : \SDL-1.2.13\src\cdrom\Sdl_cdrom.c
+	@echo Sdl_cdrom.c
+	$(CCUDEB)   $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(INCLUDE_OPTION) ..\..\src\cdrom $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\cdrom\Sdl_cdrom.c
+
+LISTINGUDEBSDL_cdrom : $(EPOCBLDUDEB)\SDL_cdrom.lis
+	perl -S ecopyfile.pl $? \SDL-1.2.13\src\cdrom\SDL_cdrom.ARMV5.lst
+
+$(EPOCBLDUDEB)\SDL_cdrom.lis : \SDL-1.2.13\src\cdrom\Sdl_cdrom.c
+	$(CCUDEB)  $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(ASSEMBLER_LISTING_OPTION) $(INCLUDE_OPTION) ..\..\src\cdrom $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\cdrom\Sdl_cdrom.c 
+
+
+
+# Source SDL_syscdrom.c
+
+$(EPOCBLDUREL)\SDL_syscdrom.lis $(EPOCBLDUREL)\SDL_syscdrom.o \
+$(EPOCBLDUDEB)\SDL_syscdrom.lis $(EPOCBLDUDEB)\SDL_syscdrom.o \
+: \
+	\SDL-1.2.13\include\SDL_cdrom.h \
+	\SDL-1.2.13\include\SDL_config.h \
+	\SDL-1.2.13\include\SDL_config_symbian.h \
+	\SDL-1.2.13\include\SDL_error.h \
+	\SDL-1.2.13\include\SDL_platform.h \
+	\SDL-1.2.13\include\SDL_stdinc.h \
+	\SDL-1.2.13\include\begin_code.h \
+	\SDL-1.2.13\include\close_code.h \
+	\SDL-1.2.13\src\cdrom\SDL_syscdrom.h \
+	$(PREFIXFILE) \
+	\UIQ3\EPOC32\include\libc\_ansi.h \
+	\UIQ3\EPOC32\include\libc\ctype.h \
+	\UIQ3\EPOC32\include\libc\machine\types.h \
+	\UIQ3\EPOC32\include\libc\stdarg.h \
+	\UIQ3\EPOC32\include\libc\stdarg_e.h \
+	\UIQ3\EPOC32\include\libc\stddef.h \
+	\UIQ3\EPOC32\include\libc\stdio.h \
+	\UIQ3\EPOC32\include\libc\stdlib.h \
+	\UIQ3\EPOC32\include\libc\string.h \
+	\UIQ3\EPOC32\include\libc\sys\reent.h \
+	\UIQ3\EPOC32\include\libc\sys\stdio_t.h \
+	\UIQ3\EPOC32\include\libc\sys\types.h \
+	\UIQ3\EPOC32\include\libc\time.h \
+	\UIQ3\EPOC32\include\symcpp.h \
+	\UIQ3\epoc32\include\variant\Symbian_OS_v9.1.hrh \
+	\UIQ3\epoc32\include\variant\UIQ_3.0.hrh
+
+$(EPOCBLDUREL)\SDL_syscdrom.o : \SDL-1.2.13\src\cdrom\dummy\Sdl_syscdrom.c
+	@echo Sdl_syscdrom.c
+	$(CCUREL)   $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(INCLUDE_OPTION) ..\..\src\cdrom\dummy $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\cdrom\dummy\Sdl_syscdrom.c
+
+LISTINGURELSDL_syscdrom : $(EPOCBLDUREL)\SDL_syscdrom.lis
+	perl -S ecopyfile.pl $? \SDL-1.2.13\src\cdrom\dummy\SDL_syscdrom.ARMV5.lst
+
+$(EPOCBLDUREL)\SDL_syscdrom.lis : \SDL-1.2.13\src\cdrom\dummy\Sdl_syscdrom.c
+	$(CCUREL)  $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(ASSEMBLER_LISTING_OPTION) $(INCLUDE_OPTION) ..\..\src\cdrom\dummy $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\cdrom\dummy\Sdl_syscdrom.c 
+
+$(EPOCBLDUDEB)\SDL_syscdrom.o : \SDL-1.2.13\src\cdrom\dummy\Sdl_syscdrom.c
+	@echo Sdl_syscdrom.c
+	$(CCUDEB)   $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(INCLUDE_OPTION) ..\..\src\cdrom\dummy $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\cdrom\dummy\Sdl_syscdrom.c
+
+LISTINGUDEBSDL_syscdrom : $(EPOCBLDUDEB)\SDL_syscdrom.lis
+	perl -S ecopyfile.pl $? \SDL-1.2.13\src\cdrom\dummy\SDL_syscdrom.ARMV5.lst
+
+$(EPOCBLDUDEB)\SDL_syscdrom.lis : \SDL-1.2.13\src\cdrom\dummy\Sdl_syscdrom.c
+	$(CCUDEB)  $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(ASSEMBLER_LISTING_OPTION) $(INCLUDE_OPTION) ..\..\src\cdrom\dummy $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\cdrom\dummy\Sdl_syscdrom.c 
+
+
+
+# Source SDL_audio.c
+
+$(EPOCBLDUREL)\SDL_audio.lis $(EPOCBLDUREL)\SDL_audio.o \
+$(EPOCBLDUDEB)\SDL_audio.lis $(EPOCBLDUDEB)\SDL_audio.o \
+: \
+	\SDL-1.2.13\include\SDL.h \
+	\SDL-1.2.13\include\SDL_active.h \
+	\SDL-1.2.13\include\SDL_audio.h \
+	\SDL-1.2.13\include\SDL_cdrom.h \
+	\SDL-1.2.13\include\SDL_config.h \
+	\SDL-1.2.13\include\SDL_config_symbian.h \
+	\SDL-1.2.13\include\SDL_cpuinfo.h \
+	\SDL-1.2.13\include\SDL_endian.h \
+	\SDL-1.2.13\include\SDL_error.h \
+	\SDL-1.2.13\include\SDL_events.h \
+	\SDL-1.2.13\include\SDL_joystick.h \
+	\SDL-1.2.13\include\SDL_keyboard.h \
+	\SDL-1.2.13\include\SDL_keysym.h \
+	\SDL-1.2.13\include\SDL_loadso.h \
+	\SDL-1.2.13\include\SDL_main.h \
+	\SDL-1.2.13\include\SDL_mouse.h \
+	\SDL-1.2.13\include\SDL_mutex.h \
+	\SDL-1.2.13\include\SDL_platform.h \
+	\SDL-1.2.13\include\SDL_quit.h \
+	\SDL-1.2.13\include\SDL_rwops.h \
+	\SDL-1.2.13\include\SDL_stdinc.h \
+	\SDL-1.2.13\include\SDL_thread.h \
+	\SDL-1.2.13\include\SDL_timer.h \
+	\SDL-1.2.13\include\SDL_version.h \
+	\SDL-1.2.13\include\SDL_video.h \
+	\SDL-1.2.13\include\begin_code.h \
+	\SDL-1.2.13\include\close_code.h \
+	\SDL-1.2.13\src\SDL_error_c.h \
+	\SDL-1.2.13\src\audio\SDL_audio_c.h \
+	\SDL-1.2.13\src\audio\SDL_audiomem.h \
+	\SDL-1.2.13\src\audio\SDL_sysaudio.h \
+	\SDL-1.2.13\src\thread\SDL_thread_c.h \
+	\SDL-1.2.13\src\thread\symbian\SDL_systhread_c.h \
+	$(PREFIXFILE) \
+	\UIQ3\EPOC32\include\libc\_ansi.h \
+	\UIQ3\EPOC32\include\libc\ctype.h \
+	\UIQ3\EPOC32\include\libc\machine\types.h \
+	\UIQ3\EPOC32\include\libc\stdarg.h \
+	\UIQ3\EPOC32\include\libc\stdarg_e.h \
+	\UIQ3\EPOC32\include\libc\stddef.h \
+	\UIQ3\EPOC32\include\libc\stdio.h \
+	\UIQ3\EPOC32\include\libc\stdlib.h \
+	\UIQ3\EPOC32\include\libc\string.h \
+	\UIQ3\EPOC32\include\libc\sys\reent.h \
+	\UIQ3\EPOC32\include\libc\sys\stdio_t.h \
+	\UIQ3\EPOC32\include\libc\sys\types.h \
+	\UIQ3\EPOC32\include\libc\time.h \
+	\UIQ3\EPOC32\include\symcpp.h \
+	\UIQ3\epoc32\include\variant\Symbian_OS_v9.1.hrh \
+	\UIQ3\epoc32\include\variant\UIQ_3.0.hrh
+
+$(EPOCBLDUREL)\SDL_audio.o : \SDL-1.2.13\src\audio\Sdl_audio.c
+	@echo Sdl_audio.c
+	$(CCUREL)   $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(INCLUDE_OPTION) ..\..\src\audio $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\audio\Sdl_audio.c
+
+LISTINGURELSDL_audio : $(EPOCBLDUREL)\SDL_audio.lis
+	perl -S ecopyfile.pl $? \SDL-1.2.13\src\audio\SDL_audio.ARMV5.lst
+
+$(EPOCBLDUREL)\SDL_audio.lis : \SDL-1.2.13\src\audio\Sdl_audio.c
+	$(CCUREL)  $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(ASSEMBLER_LISTING_OPTION) $(INCLUDE_OPTION) ..\..\src\audio $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\audio\Sdl_audio.c 
+
+$(EPOCBLDUDEB)\SDL_audio.o : \SDL-1.2.13\src\audio\Sdl_audio.c
+	@echo Sdl_audio.c
+	$(CCUDEB)   $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(INCLUDE_OPTION) ..\..\src\audio $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\audio\Sdl_audio.c
+
+LISTINGUDEBSDL_audio : $(EPOCBLDUDEB)\SDL_audio.lis
+	perl -S ecopyfile.pl $? \SDL-1.2.13\src\audio\SDL_audio.ARMV5.lst
+
+$(EPOCBLDUDEB)\SDL_audio.lis : \SDL-1.2.13\src\audio\Sdl_audio.c
+	$(CCUDEB)  $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(ASSEMBLER_LISTING_OPTION) $(INCLUDE_OPTION) ..\..\src\audio $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\audio\Sdl_audio.c 
+
+
+
+# Source SDL_audiocvt.c
+
+$(EPOCBLDUREL)\SDL_audiocvt.lis $(EPOCBLDUREL)\SDL_audiocvt.o \
+$(EPOCBLDUDEB)\SDL_audiocvt.lis $(EPOCBLDUDEB)\SDL_audiocvt.o \
+: \
+	\SDL-1.2.13\include\SDL_audio.h \
+	\SDL-1.2.13\include\SDL_config.h \
+	\SDL-1.2.13\include\SDL_config_symbian.h \
+	\SDL-1.2.13\include\SDL_endian.h \
+	\SDL-1.2.13\include\SDL_error.h \
+	\SDL-1.2.13\include\SDL_mutex.h \
+	\SDL-1.2.13\include\SDL_platform.h \
+	\SDL-1.2.13\include\SDL_rwops.h \
+	\SDL-1.2.13\include\SDL_stdinc.h \
+	\SDL-1.2.13\include\SDL_thread.h \
+	\SDL-1.2.13\include\begin_code.h \
+	\SDL-1.2.13\include\close_code.h \
+	$(PREFIXFILE) \
+	\UIQ3\EPOC32\include\libc\_ansi.h \
+	\UIQ3\EPOC32\include\libc\ctype.h \
+	\UIQ3\EPOC32\include\libc\machine\types.h \
+	\UIQ3\EPOC32\include\libc\stdarg.h \
+	\UIQ3\EPOC32\include\libc\stdarg_e.h \
+	\UIQ3\EPOC32\include\libc\stddef.h \
+	\UIQ3\EPOC32\include\libc\stdio.h \
+	\UIQ3\EPOC32\include\libc\stdlib.h \
+	\UIQ3\EPOC32\include\libc\string.h \
+	\UIQ3\EPOC32\include\libc\sys\reent.h \
+	\UIQ3\EPOC32\include\libc\sys\stdio_t.h \
+	\UIQ3\EPOC32\include\libc\sys\types.h \
+	\UIQ3\EPOC32\include\libc\time.h \
+	\UIQ3\EPOC32\include\symcpp.h \
+	\UIQ3\epoc32\include\variant\Symbian_OS_v9.1.hrh \
+	\UIQ3\epoc32\include\variant\UIQ_3.0.hrh
+
+$(EPOCBLDUREL)\SDL_audiocvt.o : \SDL-1.2.13\src\audio\Sdl_audiocvt.c
+	@echo Sdl_audiocvt.c
+	$(CCUREL)   $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(INCLUDE_OPTION) ..\..\src\audio $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\audio\Sdl_audiocvt.c
+
+LISTINGURELSDL_audiocvt : $(EPOCBLDUREL)\SDL_audiocvt.lis
+	perl -S ecopyfile.pl $? \SDL-1.2.13\src\audio\SDL_audiocvt.ARMV5.lst
+
+$(EPOCBLDUREL)\SDL_audiocvt.lis : \SDL-1.2.13\src\audio\Sdl_audiocvt.c
+	$(CCUREL)  $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(ASSEMBLER_LISTING_OPTION) $(INCLUDE_OPTION) ..\..\src\audio $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\audio\Sdl_audiocvt.c 
+
+$(EPOCBLDUDEB)\SDL_audiocvt.o : \SDL-1.2.13\src\audio\Sdl_audiocvt.c
+	@echo Sdl_audiocvt.c
+	$(CCUDEB)   $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(INCLUDE_OPTION) ..\..\src\audio $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\audio\Sdl_audiocvt.c
+
+LISTINGUDEBSDL_audiocvt : $(EPOCBLDUDEB)\SDL_audiocvt.lis
+	perl -S ecopyfile.pl $? \SDL-1.2.13\src\audio\SDL_audiocvt.ARMV5.lst
+
+$(EPOCBLDUDEB)\SDL_audiocvt.lis : \SDL-1.2.13\src\audio\Sdl_audiocvt.c
+	$(CCUDEB)  $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(ASSEMBLER_LISTING_OPTION) $(INCLUDE_OPTION) ..\..\src\audio $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\audio\Sdl_audiocvt.c 
+
+
+
+# Source SDL_audiodev.c
+
+$(EPOCBLDUREL)\SDL_audiodev.lis $(EPOCBLDUREL)\SDL_audiodev.o \
+$(EPOCBLDUDEB)\SDL_audiodev.lis $(EPOCBLDUDEB)\SDL_audiodev.o \
+: \
+	\SDL-1.2.13\include\SDL_config.h \
+	\SDL-1.2.13\include\SDL_config_symbian.h \
+	\SDL-1.2.13\include\SDL_platform.h \
+	$(PREFIXFILE) \
+	\UIQ3\EPOC32\include\libc\machine\types.h \
+	\UIQ3\EPOC32\include\libc\stdarg.h \
+	\UIQ3\EPOC32\include\libc\stddef.h \
+	\UIQ3\EPOC32\include\libc\sys\types.h \
+	\UIQ3\EPOC32\include\symcpp.h \
+	\UIQ3\epoc32\include\variant\Symbian_OS_v9.1.hrh \
+	\UIQ3\epoc32\include\variant\UIQ_3.0.hrh
+
+$(EPOCBLDUREL)\SDL_audiodev.o : \SDL-1.2.13\src\audio\Sdl_audiodev.c
+	@echo Sdl_audiodev.c
+	$(CCUREL)   $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(INCLUDE_OPTION) ..\..\src\audio $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\audio\Sdl_audiodev.c
+
+LISTINGURELSDL_audiodev : $(EPOCBLDUREL)\SDL_audiodev.lis
+	perl -S ecopyfile.pl $? \SDL-1.2.13\src\audio\SDL_audiodev.ARMV5.lst
+
+$(EPOCBLDUREL)\SDL_audiodev.lis : \SDL-1.2.13\src\audio\Sdl_audiodev.c
+	$(CCUREL)  $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(ASSEMBLER_LISTING_OPTION) $(INCLUDE_OPTION) ..\..\src\audio $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\audio\Sdl_audiodev.c 
+
+$(EPOCBLDUDEB)\SDL_audiodev.o : \SDL-1.2.13\src\audio\Sdl_audiodev.c
+	@echo Sdl_audiodev.c
+	$(CCUDEB)   $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(INCLUDE_OPTION) ..\..\src\audio $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\audio\Sdl_audiodev.c
+
+LISTINGUDEBSDL_audiodev : $(EPOCBLDUDEB)\SDL_audiodev.lis
+	perl -S ecopyfile.pl $? \SDL-1.2.13\src\audio\SDL_audiodev.ARMV5.lst
+
+$(EPOCBLDUDEB)\SDL_audiodev.lis : \SDL-1.2.13\src\audio\Sdl_audiodev.c
+	$(CCUDEB)  $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(ASSEMBLER_LISTING_OPTION) $(INCLUDE_OPTION) ..\..\src\audio $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\audio\Sdl_audiodev.c 
+
+
+
+# Source SDL_mixer.c
+
+$(EPOCBLDUREL)\SDL_mixer.lis $(EPOCBLDUREL)\SDL_mixer.o \
+$(EPOCBLDUDEB)\SDL_mixer.lis $(EPOCBLDUDEB)\SDL_mixer.o \
+: \
+	\SDL-1.2.13\include\SDL_audio.h \
+	\SDL-1.2.13\include\SDL_config.h \
+	\SDL-1.2.13\include\SDL_config_symbian.h \
+	\SDL-1.2.13\include\SDL_cpuinfo.h \
+	\SDL-1.2.13\include\SDL_endian.h \
+	\SDL-1.2.13\include\SDL_error.h \
+	\SDL-1.2.13\include\SDL_mutex.h \
+	\SDL-1.2.13\include\SDL_platform.h \
+	\SDL-1.2.13\include\SDL_rwops.h \
+	\SDL-1.2.13\include\SDL_stdinc.h \
+	\SDL-1.2.13\include\SDL_thread.h \
+	\SDL-1.2.13\include\SDL_timer.h \
+	\SDL-1.2.13\include\begin_code.h \
+	\SDL-1.2.13\include\close_code.h \
+	\SDL-1.2.13\src\audio\SDL_mixer_MMX.h \
+	\SDL-1.2.13\src\audio\SDL_mixer_MMX_VC.h \
+	\SDL-1.2.13\src\audio\SDL_mixer_m68k.h \
+	\SDL-1.2.13\src\audio\SDL_sysaudio.h \
+	$(PREFIXFILE) \
+	\UIQ3\EPOC32\include\libc\_ansi.h \
+	\UIQ3\EPOC32\include\libc\ctype.h \
+	\UIQ3\EPOC32\include\libc\machine\types.h \
+	\UIQ3\EPOC32\include\libc\stdarg.h \
+	\UIQ3\EPOC32\include\libc\stdarg_e.h \
+	\UIQ3\EPOC32\include\libc\stddef.h \
+	\UIQ3\EPOC32\include\libc\stdio.h \
+	\UIQ3\EPOC32\include\libc\stdlib.h \
+	\UIQ3\EPOC32\include\libc\string.h \
+	\UIQ3\EPOC32\include\libc\sys\reent.h \
+	\UIQ3\EPOC32\include\libc\sys\stdio_t.h \
+	\UIQ3\EPOC32\include\libc\sys\types.h \
+	\UIQ3\EPOC32\include\libc\time.h \
+	\UIQ3\EPOC32\include\symcpp.h \
+	\UIQ3\epoc32\include\variant\Symbian_OS_v9.1.hrh \
+	\UIQ3\epoc32\include\variant\UIQ_3.0.hrh
+
+$(EPOCBLDUREL)\SDL_mixer.o : \SDL-1.2.13\src\audio\Sdl_mixer.c
+	@echo Sdl_mixer.c
+	$(CCUREL)   $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(INCLUDE_OPTION) ..\..\src\audio $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\audio\Sdl_mixer.c
+
+LISTINGURELSDL_mixer : $(EPOCBLDUREL)\SDL_mixer.lis
+	perl -S ecopyfile.pl $? \SDL-1.2.13\src\audio\SDL_mixer.ARMV5.lst
+
+$(EPOCBLDUREL)\SDL_mixer.lis : \SDL-1.2.13\src\audio\Sdl_mixer.c
+	$(CCUREL)  $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(ASSEMBLER_LISTING_OPTION) $(INCLUDE_OPTION) ..\..\src\audio $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\audio\Sdl_mixer.c 
+
+$(EPOCBLDUDEB)\SDL_mixer.o : \SDL-1.2.13\src\audio\Sdl_mixer.c
+	@echo Sdl_mixer.c
+	$(CCUDEB)   $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(INCLUDE_OPTION) ..\..\src\audio $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\audio\Sdl_mixer.c
+
+LISTINGUDEBSDL_mixer : $(EPOCBLDUDEB)\SDL_mixer.lis
+	perl -S ecopyfile.pl $? \SDL-1.2.13\src\audio\SDL_mixer.ARMV5.lst
+
+$(EPOCBLDUDEB)\SDL_mixer.lis : \SDL-1.2.13\src\audio\Sdl_mixer.c
+	$(CCUDEB)  $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(ASSEMBLER_LISTING_OPTION) $(INCLUDE_OPTION) ..\..\src\audio $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\audio\Sdl_mixer.c 
+
+
+
+# Source SDL_wave.c
+
+$(EPOCBLDUREL)\SDL_wave.lis $(EPOCBLDUREL)\SDL_wave.o \
+$(EPOCBLDUDEB)\SDL_wave.lis $(EPOCBLDUDEB)\SDL_wave.o \
+: \
+	\SDL-1.2.13\include\SDL_audio.h \
+	\SDL-1.2.13\include\SDL_config.h \
+	\SDL-1.2.13\include\SDL_config_symbian.h \
+	\SDL-1.2.13\include\SDL_endian.h \
+	\SDL-1.2.13\include\SDL_error.h \
+	\SDL-1.2.13\include\SDL_mutex.h \
+	\SDL-1.2.13\include\SDL_platform.h \
+	\SDL-1.2.13\include\SDL_rwops.h \
+	\SDL-1.2.13\include\SDL_stdinc.h \
+	\SDL-1.2.13\include\SDL_thread.h \
+	\SDL-1.2.13\include\begin_code.h \
+	\SDL-1.2.13\include\close_code.h \
+	\SDL-1.2.13\src\audio\SDL_wave.h \
+	$(PREFIXFILE) \
+	\UIQ3\EPOC32\include\libc\_ansi.h \
+	\UIQ3\EPOC32\include\libc\ctype.h \
+	\UIQ3\EPOC32\include\libc\machine\types.h \
+	\UIQ3\EPOC32\include\libc\stdarg.h \
+	\UIQ3\EPOC32\include\libc\stdarg_e.h \
+	\UIQ3\EPOC32\include\libc\stddef.h \
+	\UIQ3\EPOC32\include\libc\stdio.h \
+	\UIQ3\EPOC32\include\libc\stdlib.h \
+	\UIQ3\EPOC32\include\libc\string.h \
+	\UIQ3\EPOC32\include\libc\sys\reent.h \
+	\UIQ3\EPOC32\include\libc\sys\stdio_t.h \
+	\UIQ3\EPOC32\include\libc\sys\types.h \
+	\UIQ3\EPOC32\include\libc\time.h \
+	\UIQ3\EPOC32\include\symcpp.h \
+	\UIQ3\epoc32\include\variant\Symbian_OS_v9.1.hrh \
+	\UIQ3\epoc32\include\variant\UIQ_3.0.hrh
+
+$(EPOCBLDUREL)\SDL_wave.o : \SDL-1.2.13\src\audio\Sdl_wave.c
+	@echo Sdl_wave.c
+	$(CCUREL)   $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(INCLUDE_OPTION) ..\..\src\audio $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\audio\Sdl_wave.c
+
+LISTINGURELSDL_wave : $(EPOCBLDUREL)\SDL_wave.lis
+	perl -S ecopyfile.pl $? \SDL-1.2.13\src\audio\SDL_wave.ARMV5.lst
+
+$(EPOCBLDUREL)\SDL_wave.lis : \SDL-1.2.13\src\audio\Sdl_wave.c
+	$(CCUREL)  $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(ASSEMBLER_LISTING_OPTION) $(INCLUDE_OPTION) ..\..\src\audio $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\audio\Sdl_wave.c 
+
+$(EPOCBLDUDEB)\SDL_wave.o : \SDL-1.2.13\src\audio\Sdl_wave.c
+	@echo Sdl_wave.c
+	$(CCUDEB)   $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(INCLUDE_OPTION) ..\..\src\audio $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\audio\Sdl_wave.c
+
+LISTINGUDEBSDL_wave : $(EPOCBLDUDEB)\SDL_wave.lis
+	perl -S ecopyfile.pl $? \SDL-1.2.13\src\audio\SDL_wave.ARMV5.lst
+
+$(EPOCBLDUDEB)\SDL_wave.lis : \SDL-1.2.13\src\audio\Sdl_wave.c
+	$(CCUDEB)  $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(ASSEMBLER_LISTING_OPTION) $(INCLUDE_OPTION) ..\..\src\audio $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\audio\Sdl_wave.c 
+
+
+
+# Source SDL_SymbianAudio.cpp
+
+$(EPOCBLDUREL)\SDL_SymbianAudio.lis $(EPOCBLDUREL)\SDL_SymbianAudio.o \
+$(EPOCBLDUDEB)\SDL_SymbianAudio.lis $(EPOCBLDUDEB)\SDL_SymbianAudio.o \
+: \
+	\SDL-1.2.13\Symbian\IniFile.h \
+	\SDL-1.2.13\Symbian\ebasicapp.h \
+	\SDL-1.2.13\include\SDL_audio.h \
+	\SDL-1.2.13\include\SDL_config.h \
+	\SDL-1.2.13\include\SDL_config_symbian.h \
+	\SDL-1.2.13\include\SDL_endian.h \
+	\SDL-1.2.13\include\SDL_error.h \
+	\SDL-1.2.13\include\SDL_mutex.h \
+	\SDL-1.2.13\include\SDL_platform.h \
+	\SDL-1.2.13\include\SDL_rwops.h \
+	\SDL-1.2.13\include\SDL_stdinc.h \
+	\SDL-1.2.13\include\SDL_thread.h \
+	\SDL-1.2.13\include\SDL_timer.h \
+	\SDL-1.2.13\include\begin_code.h \
+	\SDL-1.2.13\include\close_code.h \
+	\SDL-1.2.13\src\audio\SDL_sysaudio.h \
+	\SDL-1.2.13\src\audio\symbian\SDL_SymbianAudio.h \
+	$(PREFIXFILE) \
+	\UIQ3\EPOC32\include\Babitflags.h \
+	\UIQ3\EPOC32\include\CoeLayoutMan.h \
+	\UIQ3\EPOC32\include\E32Base.h \
+	\UIQ3\EPOC32\include\Ecom\EComErrorCodes.h \
+	\UIQ3\EPOC32\include\Ecom\EComResolverParams.h \
+	\UIQ3\EPOC32\include\Ecom\EComResolverParams.inl \
+	\UIQ3\EPOC32\include\Ecom\Ecom.h \
+	\UIQ3\EPOC32\include\Ecom\ImplementationInformation.h \
+	\UIQ3\EPOC32\include\Ecom\ImplementationInformation.inl \
+	\UIQ3\EPOC32\include\F32File.h \
+	\UIQ3\EPOC32\include\FbsMessage.h \
+	\UIQ3\EPOC32\include\LineBreak.h \
+	\UIQ3\EPOC32\include\MdaAudioOutputStream.h \
+	\UIQ3\EPOC32\include\Mda\Common\Audio.hrh \
+	\UIQ3\EPOC32\include\Mda\Common\AudioStream.hrh \
+	\UIQ3\EPOC32\include\Mda\Common\Base.h \
+	\UIQ3\EPOC32\include\Mda\Common\Base.h \
+	\UIQ3\EPOC32\include\Mda\Common\Base.hrh \
+	\UIQ3\EPOC32\include\Mda\Common\Base.inl \
+	\UIQ3\EPOC32\include\Mda\Common\Controller.h \
+	\UIQ3\EPOC32\include\Mda\Common\Port.h \
+	\UIQ3\EPOC32\include\Mda\Common\Port.hrh \
+	\UIQ3\EPOC32\include\Mda\Common\Resource.h \
+	\UIQ3\EPOC32\include\Mda\Common\Resource.hrh \
+	\UIQ3\EPOC32\include\Mmf\Common\MmfBase.h \
+	\UIQ3\EPOC32\include\Mmf\Common\MmfUtilities.h \
+	\UIQ3\EPOC32\include\Mmfclntutility.h \
+	\UIQ3\EPOC32\include\QUiConfigClient.h \
+	\UIQ3\EPOC32\include\QikCategory.hrh \
+	\UIQ3\EPOC32\include\QikCategoryModel.h \
+	\UIQ3\EPOC32\include\QikCommand.hrh \
+	\UIQ3\EPOC32\include\QikCommandManager.h \
+	\UIQ3\EPOC32\include\QikContainer.h \
+	\UIQ3\EPOC32\include\QikControlProvider.h \
+	\UIQ3\EPOC32\include\QikFactories.h \
+	\UIQ3\EPOC32\include\QikFlowLayoutManager.h \
+	\UIQ3\EPOC32\include\QikLayoutManager.h \
+	\UIQ3\EPOC32\include\QikLayoutValues.h \
+	\UIQ3\EPOC32\include\QikUiConfigDataTypes.h \
+	\UIQ3\EPOC32\include\QikViewFurniture.h \
+	\UIQ3\EPOC32\include\Qikon.hrh \
+	\UIQ3\EPOC32\include\apacmdln.h \
+	\UIQ3\EPOC32\include\apadef.h \
+	\UIQ3\EPOC32\include\apaflrec.h \
+	\UIQ3\EPOC32\include\apaid.h \
+	\UIQ3\EPOC32\include\apmstd.h \
+	\UIQ3\EPOC32\include\apparc.h \
+	\UIQ3\EPOC32\include\babitflags.h \
+	\UIQ3\EPOC32\include\badesca.h \
+	\UIQ3\EPOC32\include\baerrhan.h \
+	\UIQ3\EPOC32\include\bamdesca.h \
+	\UIQ3\EPOC32\include\barsc.h \
+	\UIQ3\EPOC32\include\basched.h \
+	\UIQ3\EPOC32\include\bidi.h \
+	\UIQ3\EPOC32\include\biditext.h \
+	\UIQ3\EPOC32\include\bitbase.h \
+	\UIQ3\EPOC32\include\bitdev.h \
+	\UIQ3\EPOC32\include\bitdev.inl \
+	\UIQ3\EPOC32\include\bitmap.h \
+	\UIQ3\EPOC32\include\bitstd.h \
+	\UIQ3\EPOC32\include\caf\agent.h \
+	\UIQ3\EPOC32\include\caf\attribute.h \
+	\UIQ3\EPOC32\include\caf\attributeset.h \
+	\UIQ3\EPOC32\include\caf\caf.h \
+	\UIQ3\EPOC32\include\caf\caferr.h \
+	\UIQ3\EPOC32\include\caf\cafmimeheader.h \
+	\UIQ3\EPOC32\include\caf\cafpanic.h \
+	\UIQ3\EPOC32\include\caf\caftypes.h \
+	\UIQ3\EPOC32\include\caf\caftypes.h \
+	\UIQ3\EPOC32\include\caf\content.h \
+	\UIQ3\EPOC32\include\caf\data.h \
+	\UIQ3\EPOC32\include\caf\dirstreamable.h \
+	\UIQ3\EPOC32\include\caf\embeddedobject.h \
+	\UIQ3\EPOC32\include\caf\importfile.h \
+	\UIQ3\EPOC32\include\caf\manager.h \
+	\UIQ3\EPOC32\include\caf\metadata.h \
+	\UIQ3\EPOC32\include\caf\metadataarray.h \
+	\UIQ3\EPOC32\include\caf\rightsinfo.h \
+	\UIQ3\EPOC32\include\caf\rightsmanager.h \
+	\UIQ3\EPOC32\include\caf\streamableptrarray.h \
+	\UIQ3\EPOC32\include\caf\streamableptrarray.inl \
+	\UIQ3\EPOC32\include\caf\stringattributeset.h \
+	\UIQ3\EPOC32\include\caf\supplier.h \
+	\UIQ3\EPOC32\include\caf\supplieroutputfile.h \
+	\UIQ3\EPOC32\include\caf\virtualpath.h \
+	\UIQ3\EPOC32\include\caf\virtualpathptr.h \
+	\UIQ3\EPOC32\include\coeaui.h \
+	\UIQ3\EPOC32\include\coecntrl.h \
+	\UIQ3\EPOC32\include\coecobs.h \
+	\UIQ3\EPOC32\include\coecontrolarray.h \
+	\UIQ3\EPOC32\include\coedef.h \
+	\UIQ3\EPOC32\include\coefont.h \
+	\UIQ3\EPOC32\include\coehelp.h \
+	\UIQ3\EPOC32\include\coeinput.h \
+	\UIQ3\EPOC32\include\coemain.h \
+	\UIQ3\EPOC32\include\coemop.h \
+	\UIQ3\EPOC32\include\coetextdrawer.h \
+	\UIQ3\EPOC32\include\coeview.h \
+	\UIQ3\EPOC32\include\d32locd.h \
+	\UIQ3\EPOC32\include\d32locd.inl \
+	\UIQ3\EPOC32\include\e32base.h \
+	\UIQ3\EPOC32\include\e32base.inl \
+	\UIQ3\EPOC32\include\e32capability.h \
+	\UIQ3\EPOC32\include\e32cmn.h \
+	\UIQ3\EPOC32\include\e32cmn.inl \
+	\UIQ3\EPOC32\include\e32const.h \
+	\UIQ3\EPOC32\include\e32debug.h \
+	\UIQ3\EPOC32\include\e32def.h \
+	\UIQ3\EPOC32\include\e32des16.h \
+	\UIQ3\EPOC32\include\e32des8.h \
+	\UIQ3\EPOC32\include\e32err.h \
+	\UIQ3\EPOC32\include\e32event.h \
+	\UIQ3\EPOC32\include\e32hal.h \
+	\UIQ3\EPOC32\include\e32keys.h \
+	\UIQ3\EPOC32\include\e32ktran.h \
+	\UIQ3\EPOC32\include\e32ldr.h \
+	\UIQ3\EPOC32\include\e32lmsg.h \
+	\UIQ3\EPOC32\include\e32notif.h \
+	\UIQ3\EPOC32\include\e32std.h \
+	\UIQ3\EPOC32\include\e32std.inl \
+	\UIQ3\EPOC32\include\e32svr.h \
+	\UIQ3\EPOC32\include\ecom\ECom.h \
+	\UIQ3\EPOC32\include\ecom\ecom.h \
+	\UIQ3\EPOC32\include\eikamnt.h \
+	\UIQ3\EPOC32\include\eikapp.h \
+	\UIQ3\EPOC32\include\eikappui.h \
+	\UIQ3\EPOC32\include\eikaufty.h \
+	\UIQ3\EPOC32\include\eikbctrl.h \
+	\UIQ3\EPOC32\include\eikbtgrp.h \
+	\UIQ3\EPOC32\include\eikcmobs.h \
+	\UIQ3\EPOC32\include\eikcolor.hrh \
+	\UIQ3\EPOC32\include\eikdef.h \
+	\UIQ3\EPOC32\include\eikdgfty.h \
+	\UIQ3\EPOC32\include\eikdoc.h \
+	\UIQ3\EPOC32\include\eikenv.h \
+	\UIQ3\EPOC32\include\eikfctry.h \
+	\UIQ3\EPOC32\include\eiklibry.h \
+	\UIQ3\EPOC32\include\eikmobs.h \
+	\UIQ3\EPOC32\include\eikon.hrh \
+	\UIQ3\EPOC32\include\eikprogi.h \
+	\UIQ3\EPOC32\include\eikvcurs.h \
+	\UIQ3\EPOC32\include\f32file.h \
+	\UIQ3\EPOC32\include\f32file.inl \
+	\UIQ3\EPOC32\include\fbs.h \
+	\UIQ3\EPOC32\include\fldbase.h \
+	\UIQ3\EPOC32\include\fldbltin.h \
+	\UIQ3\EPOC32\include\fldinfo.h \
+	\UIQ3\EPOC32\include\fldset.h \
+	\UIQ3\EPOC32\include\fntstore.h \
+	\UIQ3\EPOC32\include\frmlaydt.h \
+	\UIQ3\EPOC32\include\frmparam.h \
+	\UIQ3\EPOC32\include\frmtlay.h \
+	\UIQ3\EPOC32\include\frmvis.h \
+	\UIQ3\EPOC32\include\gdi.h \
+	\UIQ3\EPOC32\include\gdi.inl \
+	\UIQ3\EPOC32\include\graphicsaccelerator.h \
+	\UIQ3\EPOC32\include\gulalign.h \
+	\UIQ3\EPOC32\include\gulbordr.h \
+	\UIQ3\EPOC32\include\gulcolor.h \
+	\UIQ3\EPOC32\include\guldef.h \
+	\UIQ3\EPOC32\include\gulftflg.hrh \
+	\UIQ3\EPOC32\include\gulutil.h \
+	\UIQ3\EPOC32\include\lafmain.h \
+	\UIQ3\EPOC32\include\libc\_ansi.h \
+	\UIQ3\EPOC32\include\libc\ctype.h \
+	\UIQ3\EPOC32\include\libc\machine\types.h \
+	\UIQ3\EPOC32\include\libc\stdarg.h \
+	\UIQ3\EPOC32\include\libc\stdarg_e.h \
+	\UIQ3\EPOC32\include\libc\stddef.h \
+	\UIQ3\EPOC32\include\libc\stdio.h \
+	\UIQ3\EPOC32\include\libc\stdlib.h \
+	\UIQ3\EPOC32\include\libc\string.h \
+	\UIQ3\EPOC32\include\libc\sys\reent.h \
+	\UIQ3\EPOC32\include\libc\sys\stdio_t.h \
+	\UIQ3\EPOC32\include\libc\sys\types.h \
+	\UIQ3\EPOC32\include\libc\time.h \
+	\UIQ3\EPOC32\include\mda\client\utility.h \
+	\UIQ3\EPOC32\include\mda\common\audio.h \
+	\UIQ3\EPOC32\include\mda\common\base.h \
+	\UIQ3\EPOC32\include\mm\mmcaf.h \
+	\UIQ3\EPOC32\include\mmfPluginInterfaceUIDs.hrh \
+	\UIQ3\EPOC32\include\mmf\common\MmfFourCC.h \
+	\UIQ3\EPOC32\include\mmf\common\MmfIpc.inl \
+	\UIQ3\EPOC32\include\mmf\common\MmfUtilities.h \
+	\UIQ3\EPOC32\include\mmf\common\MmfUtilities.inl \
+	\UIQ3\EPOC32\include\mmf\common\Mmfbase.h \
+	\UIQ3\EPOC32\include\mmf\common\mmcaf.h \
+	\UIQ3\EPOC32\include\mmf\common\mmfaudio.h \
+	\UIQ3\EPOC32\include\mmf\common\mmfbase.h \
+	\UIQ3\EPOC32\include\mmf\common\mmfcontroller.h \
+	\UIQ3\EPOC32\include\mmf\common\mmfcontrollerframework.h \
+	\UIQ3\EPOC32\include\mmf\common\mmfcontrollerframeworkbase.h \
+	\UIQ3\EPOC32\include\mmf\common\mmfcontrollerpluginresolver.h \
+	\UIQ3\EPOC32\include\mmf\common\mmfipc.h \
+	\UIQ3\EPOC32\include\mmf\common\mmfstandardcustomcommands.h \
+	\UIQ3\EPOC32\include\mmf\common\mmfutilities.h \
+	\UIQ3\EPOC32\include\mmf\common\mmfvideo.h \
+	\UIQ3\EPOC32\include\mmf\server\mmfbuffer.h \
+	\UIQ3\EPOC32\include\mmf\server\mmfbuffer.hrh \
+	\UIQ3\EPOC32\include\mmf\server\mmfdatabuffer.h \
+	\UIQ3\EPOC32\include\mmf\server\mmfdatasink.h \
+	\UIQ3\EPOC32\include\mmf\server\mmfdatasource.h \
+	\UIQ3\EPOC32\include\mmf\server\mmfdatasourcesink.hrh \
+	\UIQ3\EPOC32\include\openfont.h \
+	\UIQ3\EPOC32\include\partitions.h \
+	\UIQ3\EPOC32\include\qikappui.h \
+	\UIQ3\EPOC32\include\qikdocument.h \
+	\UIQ3\EPOC32\include\qikon.hrh \
+	\UIQ3\EPOC32\include\qikstockcontrols.hrh \
+	\UIQ3\EPOC32\include\qiktoolbar.h \
+	\UIQ3\EPOC32\include\qikviewbase.h \
+	\UIQ3\EPOC32\include\quartz.mbg \
+	\UIQ3\EPOC32\include\s32buf.h \
+	\UIQ3\EPOC32\include\s32buf.inl \
+	\UIQ3\EPOC32\include\s32file.h \
+	\UIQ3\EPOC32\include\s32file.inl \
+	\UIQ3\EPOC32\include\s32mem.h \
+	\UIQ3\EPOC32\include\s32mem.inl \
+	\UIQ3\EPOC32\include\s32page.h \
+	\UIQ3\EPOC32\include\s32page.inl \
+	\UIQ3\EPOC32\include\s32share.h \
+	\UIQ3\EPOC32\include\s32share.inl \
+	\UIQ3\EPOC32\include\s32std.h \
+	\UIQ3\EPOC32\include\s32std.inl \
+	\UIQ3\EPOC32\include\s32stor.h \
+	\UIQ3\EPOC32\include\s32stor.inl \
+	\UIQ3\EPOC32\include\s32strm.h \
+	\UIQ3\EPOC32\include\s32strm.inl \
+	\UIQ3\EPOC32\include\savenotf.h \
+	\UIQ3\EPOC32\include\symcpp.h \
+	\UIQ3\EPOC32\include\tagma.h \
+	\UIQ3\EPOC32\include\txtetext.h \
+	\UIQ3\EPOC32\include\txtetext.inl \
+	\UIQ3\EPOC32\include\txtfmlyr.h \
+	\UIQ3\EPOC32\include\txtfmlyr.inl \
+	\UIQ3\EPOC32\include\txtfmstm.h \
+	\UIQ3\EPOC32\include\txtfrmat.h \
+	\UIQ3\EPOC32\include\txtfrmat.inl \
+	\UIQ3\EPOC32\include\txtstyle.h \
+	\UIQ3\EPOC32\include\txtstyle.inl \
+	\UIQ3\EPOC32\include\uikon.hrh \
+	\UIQ3\EPOC32\include\vwsdef.h \
+	\UIQ3\EPOC32\include\w32std.h \
+	\UIQ3\epoc32\include\variant\Symbian_OS_v9.1.hrh \
+	\UIQ3\epoc32\include\variant\UIQ_3.0.hrh
+
+$(EPOCBLDUREL)\SDL_SymbianAudio.o : \SDL-1.2.13\src\audio\symbian\Sdl_symbianaudio.cpp
+	@echo Sdl_symbianaudio.cpp
+	$(CCUREL)   $(CPP_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(INCLUDE_OPTION) ..\..\src\audio\symbian $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\audio\symbian\Sdl_symbianaudio.cpp
+
+LISTINGURELSDL_SymbianAudio : $(EPOCBLDUREL)\SDL_SymbianAudio.lis
+	perl -S ecopyfile.pl $? \SDL-1.2.13\src\audio\symbian\SDL_SymbianAudio.ARMV5.lst
+
+$(EPOCBLDUREL)\SDL_SymbianAudio.lis : \SDL-1.2.13\src\audio\symbian\Sdl_symbianaudio.cpp
+	$(CCUREL)  $(CPP_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(ASSEMBLER_LISTING_OPTION) $(INCLUDE_OPTION) ..\..\src\audio\symbian $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\audio\symbian\Sdl_symbianaudio.cpp 
+
+$(EPOCBLDUDEB)\SDL_SymbianAudio.o : \SDL-1.2.13\src\audio\symbian\Sdl_symbianaudio.cpp
+	@echo Sdl_symbianaudio.cpp
+	$(CCUDEB)   $(CPP_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(INCLUDE_OPTION) ..\..\src\audio\symbian $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\audio\symbian\Sdl_symbianaudio.cpp
+
+LISTINGUDEBSDL_SymbianAudio : $(EPOCBLDUDEB)\SDL_SymbianAudio.lis
+	perl -S ecopyfile.pl $? \SDL-1.2.13\src\audio\symbian\SDL_SymbianAudio.ARMV5.lst
+
+$(EPOCBLDUDEB)\SDL_SymbianAudio.lis : \SDL-1.2.13\src\audio\symbian\Sdl_symbianaudio.cpp
+	$(CCUDEB)  $(CPP_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(ASSEMBLER_LISTING_OPTION) $(INCLUDE_OPTION) ..\..\src\audio\symbian $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\audio\symbian\Sdl_symbianaudio.cpp 
+
+
+
+# Source SDL_blit.c
+
+$(EPOCBLDUREL)\SDL_blit.lis $(EPOCBLDUREL)\SDL_blit.o \
+$(EPOCBLDUDEB)\SDL_blit.lis $(EPOCBLDUDEB)\SDL_blit.o \
+: \
+	\SDL-1.2.13\include\SDL_config.h \
+	\SDL-1.2.13\include\SDL_config_symbian.h \
+	\SDL-1.2.13\include\SDL_endian.h \
+	\SDL-1.2.13\include\SDL_error.h \
+	\SDL-1.2.13\include\SDL_mouse.h \
+	\SDL-1.2.13\include\SDL_platform.h \
+	\SDL-1.2.13\include\SDL_rwops.h \
+	\SDL-1.2.13\include\SDL_stdinc.h \
+	\SDL-1.2.13\include\SDL_syswm.h \
+	\SDL-1.2.13\include\SDL_version.h \
+	\SDL-1.2.13\include\SDL_video.h \
+	\SDL-1.2.13\include\begin_code.h \
+	\SDL-1.2.13\include\close_code.h \
+	\SDL-1.2.13\src\video\SDL_RLEaccel_c.h \
+	\SDL-1.2.13\src\video\SDL_blit.h \
+	\SDL-1.2.13\src\video\SDL_pixels_c.h \
+	\SDL-1.2.13\src\video\SDL_sysvideo.h \
+	$(PREFIXFILE) \
+	\UIQ3\EPOC32\include\libc\_ansi.h \
+	\UIQ3\EPOC32\include\libc\ctype.h \
+	\UIQ3\EPOC32\include\libc\machine\types.h \
+	\UIQ3\EPOC32\include\libc\stdarg.h \
+	\UIQ3\EPOC32\include\libc\stdarg_e.h \
+	\UIQ3\EPOC32\include\libc\stddef.h \
+	\UIQ3\EPOC32\include\libc\stdio.h \
+	\UIQ3\EPOC32\include\libc\stdlib.h \
+	\UIQ3\EPOC32\include\libc\string.h \
+	\UIQ3\EPOC32\include\libc\sys\reent.h \
+	\UIQ3\EPOC32\include\libc\sys\stdio_t.h \
+	\UIQ3\EPOC32\include\libc\sys\types.h \
+	\UIQ3\EPOC32\include\libc\time.h \
+	\UIQ3\EPOC32\include\symcpp.h \
+	\UIQ3\epoc32\include\variant\Symbian_OS_v9.1.hrh \
+	\UIQ3\epoc32\include\variant\UIQ_3.0.hrh
+
+$(EPOCBLDUREL)\SDL_blit.o : \SDL-1.2.13\src\video\Sdl_blit.c
+	@echo Sdl_blit.c
+	$(CCUREL)   $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(INCLUDE_OPTION) ..\..\src\video $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\video\Sdl_blit.c
+
+LISTINGURELSDL_blit : $(EPOCBLDUREL)\SDL_blit.lis
+	perl -S ecopyfile.pl $? \SDL-1.2.13\src\video\SDL_blit.ARMV5.lst
+
+$(EPOCBLDUREL)\SDL_blit.lis : \SDL-1.2.13\src\video\Sdl_blit.c
+	$(CCUREL)  $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(ASSEMBLER_LISTING_OPTION) $(INCLUDE_OPTION) ..\..\src\video $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\video\Sdl_blit.c 
+
+$(EPOCBLDUDEB)\SDL_blit.o : \SDL-1.2.13\src\video\Sdl_blit.c
+	@echo Sdl_blit.c
+	$(CCUDEB)   $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(INCLUDE_OPTION) ..\..\src\video $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\video\Sdl_blit.c
+
+LISTINGUDEBSDL_blit : $(EPOCBLDUDEB)\SDL_blit.lis
+	perl -S ecopyfile.pl $? \SDL-1.2.13\src\video\SDL_blit.ARMV5.lst
+
+$(EPOCBLDUDEB)\SDL_blit.lis : \SDL-1.2.13\src\video\Sdl_blit.c
+	$(CCUDEB)  $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(ASSEMBLER_LISTING_OPTION) $(INCLUDE_OPTION) ..\..\src\video $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\video\Sdl_blit.c 
+
+
+
+# Source SDL_blit_0.c
+
+$(EPOCBLDUREL)\SDL_blit_0.lis $(EPOCBLDUREL)\SDL_blit_0.o \
+$(EPOCBLDUDEB)\SDL_blit_0.lis $(EPOCBLDUDEB)\SDL_blit_0.o \
+: \
+	\SDL-1.2.13\include\SDL_config.h \
+	\SDL-1.2.13\include\SDL_config_symbian.h \
+	\SDL-1.2.13\include\SDL_endian.h \
+	\SDL-1.2.13\include\SDL_error.h \
+	\SDL-1.2.13\include\SDL_platform.h \
+	\SDL-1.2.13\include\SDL_rwops.h \
+	\SDL-1.2.13\include\SDL_stdinc.h \
+	\SDL-1.2.13\include\SDL_video.h \
+	\SDL-1.2.13\include\begin_code.h \
+	\SDL-1.2.13\include\close_code.h \
+	\SDL-1.2.13\src\video\SDL_blit.h \
+	$(PREFIXFILE) \
+	\UIQ3\EPOC32\include\libc\_ansi.h \
+	\UIQ3\EPOC32\include\libc\ctype.h \
+	\UIQ3\EPOC32\include\libc\machine\types.h \
+	\UIQ3\EPOC32\include\libc\stdarg.h \
+	\UIQ3\EPOC32\include\libc\stdarg_e.h \
+	\UIQ3\EPOC32\include\libc\stddef.h \
+	\UIQ3\EPOC32\include\libc\stdio.h \
+	\UIQ3\EPOC32\include\libc\stdlib.h \
+	\UIQ3\EPOC32\include\libc\string.h \
+	\UIQ3\EPOC32\include\libc\sys\reent.h \
+	\UIQ3\EPOC32\include\libc\sys\stdio_t.h \
+	\UIQ3\EPOC32\include\libc\sys\types.h \
+	\UIQ3\EPOC32\include\libc\time.h \
+	\UIQ3\EPOC32\include\symcpp.h \
+	\UIQ3\epoc32\include\variant\Symbian_OS_v9.1.hrh \
+	\UIQ3\epoc32\include\variant\UIQ_3.0.hrh
+
+$(EPOCBLDUREL)\SDL_blit_0.o : \SDL-1.2.13\src\video\Sdl_blit_0.c
+	@echo Sdl_blit_0.c
+	$(CCUREL)   $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(INCLUDE_OPTION) ..\..\src\video $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\video\Sdl_blit_0.c
+
+LISTINGURELSDL_blit_0 : $(EPOCBLDUREL)\SDL_blit_0.lis
+	perl -S ecopyfile.pl $? \SDL-1.2.13\src\video\SDL_blit_0.ARMV5.lst
+
+$(EPOCBLDUREL)\SDL_blit_0.lis : \SDL-1.2.13\src\video\Sdl_blit_0.c
+	$(CCUREL)  $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(ASSEMBLER_LISTING_OPTION) $(INCLUDE_OPTION) ..\..\src\video $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\video\Sdl_blit_0.c 
+
+$(EPOCBLDUDEB)\SDL_blit_0.o : \SDL-1.2.13\src\video\Sdl_blit_0.c
+	@echo Sdl_blit_0.c
+	$(CCUDEB)   $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(INCLUDE_OPTION) ..\..\src\video $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\video\Sdl_blit_0.c
+
+LISTINGUDEBSDL_blit_0 : $(EPOCBLDUDEB)\SDL_blit_0.lis
+	perl -S ecopyfile.pl $? \SDL-1.2.13\src\video\SDL_blit_0.ARMV5.lst
+
+$(EPOCBLDUDEB)\SDL_blit_0.lis : \SDL-1.2.13\src\video\Sdl_blit_0.c
+	$(CCUDEB)  $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(ASSEMBLER_LISTING_OPTION) $(INCLUDE_OPTION) ..\..\src\video $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\video\Sdl_blit_0.c 
+
+
+
+# Source SDL_blit_1.c
+
+$(EPOCBLDUREL)\SDL_blit_1.lis $(EPOCBLDUREL)\SDL_blit_1.o \
+$(EPOCBLDUDEB)\SDL_blit_1.lis $(EPOCBLDUDEB)\SDL_blit_1.o \
+: \
+	\SDL-1.2.13\include\SDL_config.h \
+	\SDL-1.2.13\include\SDL_config_symbian.h \
+	\SDL-1.2.13\include\SDL_endian.h \
+	\SDL-1.2.13\include\SDL_error.h \
+	\SDL-1.2.13\include\SDL_mouse.h \
+	\SDL-1.2.13\include\SDL_platform.h \
+	\SDL-1.2.13\include\SDL_rwops.h \
+	\SDL-1.2.13\include\SDL_stdinc.h \
+	\SDL-1.2.13\include\SDL_syswm.h \
+	\SDL-1.2.13\include\SDL_version.h \
+	\SDL-1.2.13\include\SDL_video.h \
+	\SDL-1.2.13\include\begin_code.h \
+	\SDL-1.2.13\include\close_code.h \
+	\SDL-1.2.13\src\video\SDL_blit.h \
+	\SDL-1.2.13\src\video\SDL_sysvideo.h \
+	$(PREFIXFILE) \
+	\UIQ3\EPOC32\include\libc\_ansi.h \
+	\UIQ3\EPOC32\include\libc\ctype.h \
+	\UIQ3\EPOC32\include\libc\machine\types.h \
+	\UIQ3\EPOC32\include\libc\stdarg.h \
+	\UIQ3\EPOC32\include\libc\stdarg_e.h \
+	\UIQ3\EPOC32\include\libc\stddef.h \
+	\UIQ3\EPOC32\include\libc\stdio.h \
+	\UIQ3\EPOC32\include\libc\stdlib.h \
+	\UIQ3\EPOC32\include\libc\string.h \
+	\UIQ3\EPOC32\include\libc\sys\reent.h \
+	\UIQ3\EPOC32\include\libc\sys\stdio_t.h \
+	\UIQ3\EPOC32\include\libc\sys\types.h \
+	\UIQ3\EPOC32\include\libc\time.h \
+	\UIQ3\EPOC32\include\symcpp.h \
+	\UIQ3\epoc32\include\variant\Symbian_OS_v9.1.hrh \
+	\UIQ3\epoc32\include\variant\UIQ_3.0.hrh
+
+$(EPOCBLDUREL)\SDL_blit_1.o : \SDL-1.2.13\src\video\Sdl_blit_1.c
+	@echo Sdl_blit_1.c
+	$(CCUREL)   $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(INCLUDE_OPTION) ..\..\src\video $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\video\Sdl_blit_1.c
+
+LISTINGURELSDL_blit_1 : $(EPOCBLDUREL)\SDL_blit_1.lis
+	perl -S ecopyfile.pl $? \SDL-1.2.13\src\video\SDL_blit_1.ARMV5.lst
+
+$(EPOCBLDUREL)\SDL_blit_1.lis : \SDL-1.2.13\src\video\Sdl_blit_1.c
+	$(CCUREL)  $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(ASSEMBLER_LISTING_OPTION) $(INCLUDE_OPTION) ..\..\src\video $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\video\Sdl_blit_1.c 
+
+$(EPOCBLDUDEB)\SDL_blit_1.o : \SDL-1.2.13\src\video\Sdl_blit_1.c
+	@echo Sdl_blit_1.c
+	$(CCUDEB)   $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(INCLUDE_OPTION) ..\..\src\video $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\video\Sdl_blit_1.c
+
+LISTINGUDEBSDL_blit_1 : $(EPOCBLDUDEB)\SDL_blit_1.lis
+	perl -S ecopyfile.pl $? \SDL-1.2.13\src\video\SDL_blit_1.ARMV5.lst
+
+$(EPOCBLDUDEB)\SDL_blit_1.lis : \SDL-1.2.13\src\video\Sdl_blit_1.c
+	$(CCUDEB)  $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(ASSEMBLER_LISTING_OPTION) $(INCLUDE_OPTION) ..\..\src\video $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\video\Sdl_blit_1.c 
+
+
+
+# Source SDL_blit_A.c
+
+$(EPOCBLDUREL)\SDL_blit_A.lis $(EPOCBLDUREL)\SDL_blit_A.o \
+$(EPOCBLDUDEB)\SDL_blit_A.lis $(EPOCBLDUDEB)\SDL_blit_A.o \
+: \
+	\SDL-1.2.13\include\SDL_config.h \
+	\SDL-1.2.13\include\SDL_config_symbian.h \
+	\SDL-1.2.13\include\SDL_cpuinfo.h \
+	\SDL-1.2.13\include\SDL_endian.h \
+	\SDL-1.2.13\include\SDL_error.h \
+	\SDL-1.2.13\include\SDL_platform.h \
+	\SDL-1.2.13\include\SDL_rwops.h \
+	\SDL-1.2.13\include\SDL_stdinc.h \
+	\SDL-1.2.13\include\SDL_video.h \
+	\SDL-1.2.13\include\begin_code.h \
+	\SDL-1.2.13\include\close_code.h \
+	\SDL-1.2.13\src\video\SDL_blit.h \
+	$(PREFIXFILE) \
+	\UIQ3\EPOC32\include\libc\_ansi.h \
+	\UIQ3\EPOC32\include\libc\ctype.h \
+	\UIQ3\EPOC32\include\libc\machine\types.h \
+	\UIQ3\EPOC32\include\libc\stdarg.h \
+	\UIQ3\EPOC32\include\libc\stdarg_e.h \
+	\UIQ3\EPOC32\include\libc\stddef.h \
+	\UIQ3\EPOC32\include\libc\stdio.h \
+	\UIQ3\EPOC32\include\libc\stdlib.h \
+	\UIQ3\EPOC32\include\libc\string.h \
+	\UIQ3\EPOC32\include\libc\sys\reent.h \
+	\UIQ3\EPOC32\include\libc\sys\stdio_t.h \
+	\UIQ3\EPOC32\include\libc\sys\types.h \
+	\UIQ3\EPOC32\include\libc\time.h \
+	\UIQ3\EPOC32\include\symcpp.h \
+	\UIQ3\epoc32\include\variant\Symbian_OS_v9.1.hrh \
+	\UIQ3\epoc32\include\variant\UIQ_3.0.hrh
+
+$(EPOCBLDUREL)\SDL_blit_A.o : \SDL-1.2.13\src\video\Sdl_blit_a.c
+	@echo Sdl_blit_a.c
+	$(CCUREL)   $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(INCLUDE_OPTION) ..\..\src\video $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\video\Sdl_blit_a.c
+
+LISTINGURELSDL_blit_A : $(EPOCBLDUREL)\SDL_blit_A.lis
+	perl -S ecopyfile.pl $? \SDL-1.2.13\src\video\SDL_blit_A.ARMV5.lst
+
+$(EPOCBLDUREL)\SDL_blit_A.lis : \SDL-1.2.13\src\video\Sdl_blit_a.c
+	$(CCUREL)  $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(ASSEMBLER_LISTING_OPTION) $(INCLUDE_OPTION) ..\..\src\video $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\video\Sdl_blit_a.c 
+
+$(EPOCBLDUDEB)\SDL_blit_A.o : \SDL-1.2.13\src\video\Sdl_blit_a.c
+	@echo Sdl_blit_a.c
+	$(CCUDEB)   $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(INCLUDE_OPTION) ..\..\src\video $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\video\Sdl_blit_a.c
+
+LISTINGUDEBSDL_blit_A : $(EPOCBLDUDEB)\SDL_blit_A.lis
+	perl -S ecopyfile.pl $? \SDL-1.2.13\src\video\SDL_blit_A.ARMV5.lst
+
+$(EPOCBLDUDEB)\SDL_blit_A.lis : \SDL-1.2.13\src\video\Sdl_blit_a.c
+	$(CCUDEB)  $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(ASSEMBLER_LISTING_OPTION) $(INCLUDE_OPTION) ..\..\src\video $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\video\Sdl_blit_a.c 
+
+
+
+# Source SDL_blit_N.c
+
+$(EPOCBLDUREL)\SDL_blit_N.lis $(EPOCBLDUREL)\SDL_blit_N.o \
+$(EPOCBLDUDEB)\SDL_blit_N.lis $(EPOCBLDUDEB)\SDL_blit_N.o \
+: \
+	\SDL-1.2.13\include\SDL_config.h \
+	\SDL-1.2.13\include\SDL_config_symbian.h \
+	\SDL-1.2.13\include\SDL_cpuinfo.h \
+	\SDL-1.2.13\include\SDL_endian.h \
+	\SDL-1.2.13\include\SDL_error.h \
+	\SDL-1.2.13\include\SDL_platform.h \
+	\SDL-1.2.13\include\SDL_rwops.h \
+	\SDL-1.2.13\include\SDL_stdinc.h \
+	\SDL-1.2.13\include\SDL_video.h \
+	\SDL-1.2.13\include\begin_code.h \
+	\SDL-1.2.13\include\close_code.h \
+	\SDL-1.2.13\src\video\SDL_blit.h \
+	$(PREFIXFILE) \
+	\UIQ3\EPOC32\include\libc\_ansi.h \
+	\UIQ3\EPOC32\include\libc\ctype.h \
+	\UIQ3\EPOC32\include\libc\machine\types.h \
+	\UIQ3\EPOC32\include\libc\stdarg.h \
+	\UIQ3\EPOC32\include\libc\stdarg_e.h \
+	\UIQ3\EPOC32\include\libc\stddef.h \
+	\UIQ3\EPOC32\include\libc\stdio.h \
+	\UIQ3\EPOC32\include\libc\stdlib.h \
+	\UIQ3\EPOC32\include\libc\string.h \
+	\UIQ3\EPOC32\include\libc\sys\reent.h \
+	\UIQ3\EPOC32\include\libc\sys\stdio_t.h \
+	\UIQ3\EPOC32\include\libc\sys\types.h \
+	\UIQ3\EPOC32\include\libc\time.h \
+	\UIQ3\EPOC32\include\symcpp.h \
+	\UIQ3\epoc32\include\variant\Symbian_OS_v9.1.hrh \
+	\UIQ3\epoc32\include\variant\UIQ_3.0.hrh
+
+$(EPOCBLDUREL)\SDL_blit_N.o : \SDL-1.2.13\src\video\Sdl_blit_n.c
+	@echo Sdl_blit_n.c
+	$(CCUREL)   $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(INCLUDE_OPTION) ..\..\src\video $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\video\Sdl_blit_n.c
+
+LISTINGURELSDL_blit_N : $(EPOCBLDUREL)\SDL_blit_N.lis
+	perl -S ecopyfile.pl $? \SDL-1.2.13\src\video\SDL_blit_N.ARMV5.lst
+
+$(EPOCBLDUREL)\SDL_blit_N.lis : \SDL-1.2.13\src\video\Sdl_blit_n.c
+	$(CCUREL)  $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(ASSEMBLER_LISTING_OPTION) $(INCLUDE_OPTION) ..\..\src\video $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\video\Sdl_blit_n.c 
+
+$(EPOCBLDUDEB)\SDL_blit_N.o : \SDL-1.2.13\src\video\Sdl_blit_n.c
+	@echo Sdl_blit_n.c
+	$(CCUDEB)   $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(INCLUDE_OPTION) ..\..\src\video $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\video\Sdl_blit_n.c
+
+LISTINGUDEBSDL_blit_N : $(EPOCBLDUDEB)\SDL_blit_N.lis
+	perl -S ecopyfile.pl $? \SDL-1.2.13\src\video\SDL_blit_N.ARMV5.lst
+
+$(EPOCBLDUDEB)\SDL_blit_N.lis : \SDL-1.2.13\src\video\Sdl_blit_n.c
+	$(CCUDEB)  $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(ASSEMBLER_LISTING_OPTION) $(INCLUDE_OPTION) ..\..\src\video $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\video\Sdl_blit_n.c 
+
+
+
+# Source SDL_bmp.c
+
+$(EPOCBLDUREL)\SDL_bmp.lis $(EPOCBLDUREL)\SDL_bmp.o \
+$(EPOCBLDUDEB)\SDL_bmp.lis $(EPOCBLDUDEB)\SDL_bmp.o \
+: \
+	\SDL-1.2.13\include\SDL_config.h \
+	\SDL-1.2.13\include\SDL_config_symbian.h \
+	\SDL-1.2.13\include\SDL_endian.h \
+	\SDL-1.2.13\include\SDL_error.h \
+	\SDL-1.2.13\include\SDL_platform.h \
+	\SDL-1.2.13\include\SDL_rwops.h \
+	\SDL-1.2.13\include\SDL_stdinc.h \
+	\SDL-1.2.13\include\SDL_video.h \
+	\SDL-1.2.13\include\begin_code.h \
+	\SDL-1.2.13\include\close_code.h \
+	$(PREFIXFILE) \
+	\UIQ3\EPOC32\include\libc\_ansi.h \
+	\UIQ3\EPOC32\include\libc\ctype.h \
+	\UIQ3\EPOC32\include\libc\machine\types.h \
+	\UIQ3\EPOC32\include\libc\stdarg.h \
+	\UIQ3\EPOC32\include\libc\stdarg_e.h \
+	\UIQ3\EPOC32\include\libc\stddef.h \
+	\UIQ3\EPOC32\include\libc\stdio.h \
+	\UIQ3\EPOC32\include\libc\stdlib.h \
+	\UIQ3\EPOC32\include\libc\string.h \
+	\UIQ3\EPOC32\include\libc\sys\reent.h \
+	\UIQ3\EPOC32\include\libc\sys\stdio_t.h \
+	\UIQ3\EPOC32\include\libc\sys\types.h \
+	\UIQ3\EPOC32\include\libc\time.h \
+	\UIQ3\EPOC32\include\symcpp.h \
+	\UIQ3\epoc32\include\variant\Symbian_OS_v9.1.hrh \
+	\UIQ3\epoc32\include\variant\UIQ_3.0.hrh
+
+$(EPOCBLDUREL)\SDL_bmp.o : \SDL-1.2.13\src\video\Sdl_bmp.c
+	@echo Sdl_bmp.c
+	$(CCUREL)   $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(INCLUDE_OPTION) ..\..\src\video $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\video\Sdl_bmp.c
+
+LISTINGURELSDL_bmp : $(EPOCBLDUREL)\SDL_bmp.lis
+	perl -S ecopyfile.pl $? \SDL-1.2.13\src\video\SDL_bmp.ARMV5.lst
+
+$(EPOCBLDUREL)\SDL_bmp.lis : \SDL-1.2.13\src\video\Sdl_bmp.c
+	$(CCUREL)  $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(ASSEMBLER_LISTING_OPTION) $(INCLUDE_OPTION) ..\..\src\video $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\video\Sdl_bmp.c 
+
+$(EPOCBLDUDEB)\SDL_bmp.o : \SDL-1.2.13\src\video\Sdl_bmp.c
+	@echo Sdl_bmp.c
+	$(CCUDEB)   $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(INCLUDE_OPTION) ..\..\src\video $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\video\Sdl_bmp.c
+
+LISTINGUDEBSDL_bmp : $(EPOCBLDUDEB)\SDL_bmp.lis
+	perl -S ecopyfile.pl $? \SDL-1.2.13\src\video\SDL_bmp.ARMV5.lst
+
+$(EPOCBLDUDEB)\SDL_bmp.lis : \SDL-1.2.13\src\video\Sdl_bmp.c
+	$(CCUDEB)  $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(ASSEMBLER_LISTING_OPTION) $(INCLUDE_OPTION) ..\..\src\video $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\video\Sdl_bmp.c 
+
+
+
+# Source SDL_cursor.c
+
+$(EPOCBLDUREL)\SDL_cursor.lis $(EPOCBLDUREL)\SDL_cursor.o \
+$(EPOCBLDUDEB)\SDL_cursor.lis $(EPOCBLDUDEB)\SDL_cursor.o \
+: \
+	\SDL-1.2.13\include\SDL_active.h \
+	\SDL-1.2.13\include\SDL_config.h \
+	\SDL-1.2.13\include\SDL_config_symbian.h \
+	\SDL-1.2.13\include\SDL_endian.h \
+	\SDL-1.2.13\include\SDL_error.h \
+	\SDL-1.2.13\include\SDL_events.h \
+	\SDL-1.2.13\include\SDL_joystick.h \
+	\SDL-1.2.13\include\SDL_keyboard.h \
+	\SDL-1.2.13\include\SDL_keysym.h \
+	\SDL-1.2.13\include\SDL_mouse.h \
+	\SDL-1.2.13\include\SDL_mutex.h \
+	\SDL-1.2.13\include\SDL_platform.h \
+	\SDL-1.2.13\include\SDL_quit.h \
+	\SDL-1.2.13\include\SDL_rwops.h \
+	\SDL-1.2.13\include\SDL_stdinc.h \
+	\SDL-1.2.13\include\SDL_syswm.h \
+	\SDL-1.2.13\include\SDL_version.h \
+	\SDL-1.2.13\include\SDL_video.h \
+	\SDL-1.2.13\include\begin_code.h \
+	\SDL-1.2.13\include\close_code.h \
+	\SDL-1.2.13\src\events\SDL_events_c.h \
+	\SDL-1.2.13\src\events\SDL_sysevents.h \
+	\SDL-1.2.13\src\video\SDL_blit.h \
+	\SDL-1.2.13\src\video\SDL_cursor_c.h \
+	\SDL-1.2.13\src\video\SDL_pixels_c.h \
+	\SDL-1.2.13\src\video\SDL_sysvideo.h \
+	\SDL-1.2.13\src\video\SDL_sysvideo.h \
+	\SDL-1.2.13\src\video\default_cursor.h \
+	$(PREFIXFILE) \
+	\UIQ3\EPOC32\include\libc\_ansi.h \
+	\UIQ3\EPOC32\include\libc\ctype.h \
+	\UIQ3\EPOC32\include\libc\machine\types.h \
+	\UIQ3\EPOC32\include\libc\stdarg.h \
+	\UIQ3\EPOC32\include\libc\stdarg_e.h \
+	\UIQ3\EPOC32\include\libc\stddef.h \
+	\UIQ3\EPOC32\include\libc\stdio.h \
+	\UIQ3\EPOC32\include\libc\stdlib.h \
+	\UIQ3\EPOC32\include\libc\string.h \
+	\UIQ3\EPOC32\include\libc\sys\reent.h \
+	\UIQ3\EPOC32\include\libc\sys\stdio_t.h \
+	\UIQ3\EPOC32\include\libc\sys\types.h \
+	\UIQ3\EPOC32\include\libc\time.h \
+	\UIQ3\EPOC32\include\symcpp.h \
+	\UIQ3\epoc32\include\variant\Symbian_OS_v9.1.hrh \
+	\UIQ3\epoc32\include\variant\UIQ_3.0.hrh
+
+$(EPOCBLDUREL)\SDL_cursor.o : \SDL-1.2.13\src\video\Sdl_cursor.c
+	@echo Sdl_cursor.c
+	$(CCUREL)   $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(INCLUDE_OPTION) ..\..\src\video $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\video\Sdl_cursor.c
+
+LISTINGURELSDL_cursor : $(EPOCBLDUREL)\SDL_cursor.lis
+	perl -S ecopyfile.pl $? \SDL-1.2.13\src\video\SDL_cursor.ARMV5.lst
+
+$(EPOCBLDUREL)\SDL_cursor.lis : \SDL-1.2.13\src\video\Sdl_cursor.c
+	$(CCUREL)  $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(ASSEMBLER_LISTING_OPTION) $(INCLUDE_OPTION) ..\..\src\video $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\video\Sdl_cursor.c 
+
+$(EPOCBLDUDEB)\SDL_cursor.o : \SDL-1.2.13\src\video\Sdl_cursor.c
+	@echo Sdl_cursor.c
+	$(CCUDEB)   $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(INCLUDE_OPTION) ..\..\src\video $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\video\Sdl_cursor.c
+
+LISTINGUDEBSDL_cursor : $(EPOCBLDUDEB)\SDL_cursor.lis
+	perl -S ecopyfile.pl $? \SDL-1.2.13\src\video\SDL_cursor.ARMV5.lst
+
+$(EPOCBLDUDEB)\SDL_cursor.lis : \SDL-1.2.13\src\video\Sdl_cursor.c
+	$(CCUDEB)  $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(ASSEMBLER_LISTING_OPTION) $(INCLUDE_OPTION) ..\..\src\video $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\video\Sdl_cursor.c 
+
+
+
+# Source SDL_gamma.c
+
+$(EPOCBLDUREL)\SDL_gamma.lis $(EPOCBLDUREL)\SDL_gamma.o \
+$(EPOCBLDUDEB)\SDL_gamma.lis $(EPOCBLDUDEB)\SDL_gamma.o \
+: \
+	\SDL-1.2.13\include\SDL_config.h \
+	\SDL-1.2.13\include\SDL_config_symbian.h \
+	\SDL-1.2.13\include\SDL_error.h \
+	\SDL-1.2.13\include\SDL_mouse.h \
+	\SDL-1.2.13\include\SDL_platform.h \
+	\SDL-1.2.13\include\SDL_rwops.h \
+	\SDL-1.2.13\include\SDL_stdinc.h \
+	\SDL-1.2.13\include\SDL_syswm.h \
+	\SDL-1.2.13\include\SDL_version.h \
+	\SDL-1.2.13\include\SDL_video.h \
+	\SDL-1.2.13\include\begin_code.h \
+	\SDL-1.2.13\include\close_code.h \
+	\SDL-1.2.13\src\video\SDL_sysvideo.h \
+	$(PREFIXFILE) \
+	\UIQ3\EPOC32\include\libc\_ansi.h \
+	\UIQ3\EPOC32\include\libc\ctype.h \
+	\UIQ3\EPOC32\include\libc\machine\ieeefp.h \
+	\UIQ3\EPOC32\include\libc\machine\types.h \
+	\UIQ3\EPOC32\include\libc\math.h \
+	\UIQ3\EPOC32\include\libc\stdarg.h \
+	\UIQ3\EPOC32\include\libc\stdarg_e.h \
+	\UIQ3\EPOC32\include\libc\stddef.h \
+	\UIQ3\EPOC32\include\libc\stdio.h \
+	\UIQ3\EPOC32\include\libc\stdlib.h \
+	\UIQ3\EPOC32\include\libc\string.h \
+	\UIQ3\EPOC32\include\libc\sys\reent.h \
+	\UIQ3\EPOC32\include\libc\sys\stdio_t.h \
+	\UIQ3\EPOC32\include\libc\sys\types.h \
+	\UIQ3\EPOC32\include\libc\time.h \
+	\UIQ3\EPOC32\include\symcpp.h \
+	\UIQ3\epoc32\include\variant\Symbian_OS_v9.1.hrh \
+	\UIQ3\epoc32\include\variant\UIQ_3.0.hrh
+
+$(EPOCBLDUREL)\SDL_gamma.o : \SDL-1.2.13\src\video\Sdl_gamma.c
+	@echo Sdl_gamma.c
+	$(CCUREL)   $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(INCLUDE_OPTION) ..\..\src\video $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\video\Sdl_gamma.c
+
+LISTINGURELSDL_gamma : $(EPOCBLDUREL)\SDL_gamma.lis
+	perl -S ecopyfile.pl $? \SDL-1.2.13\src\video\SDL_gamma.ARMV5.lst
+
+$(EPOCBLDUREL)\SDL_gamma.lis : \SDL-1.2.13\src\video\Sdl_gamma.c
+	$(CCUREL)  $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(ASSEMBLER_LISTING_OPTION) $(INCLUDE_OPTION) ..\..\src\video $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\video\Sdl_gamma.c 
+
+$(EPOCBLDUDEB)\SDL_gamma.o : \SDL-1.2.13\src\video\Sdl_gamma.c
+	@echo Sdl_gamma.c
+	$(CCUDEB)   $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(INCLUDE_OPTION) ..\..\src\video $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\video\Sdl_gamma.c
+
+LISTINGUDEBSDL_gamma : $(EPOCBLDUDEB)\SDL_gamma.lis
+	perl -S ecopyfile.pl $? \SDL-1.2.13\src\video\SDL_gamma.ARMV5.lst
+
+$(EPOCBLDUDEB)\SDL_gamma.lis : \SDL-1.2.13\src\video\Sdl_gamma.c
+	$(CCUDEB)  $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(ASSEMBLER_LISTING_OPTION) $(INCLUDE_OPTION) ..\..\src\video $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\video\Sdl_gamma.c 
+
+
+
+# Source SDL_pixels.c
+
+$(EPOCBLDUREL)\SDL_pixels.lis $(EPOCBLDUREL)\SDL_pixels.o \
+$(EPOCBLDUDEB)\SDL_pixels.lis $(EPOCBLDUDEB)\SDL_pixels.o \
+: \
+	\SDL-1.2.13\include\SDL_config.h \
+	\SDL-1.2.13\include\SDL_config_symbian.h \
+	\SDL-1.2.13\include\SDL_endian.h \
+	\SDL-1.2.13\include\SDL_error.h \
+	\SDL-1.2.13\include\SDL_mouse.h \
+	\SDL-1.2.13\include\SDL_platform.h \
+	\SDL-1.2.13\include\SDL_rwops.h \
+	\SDL-1.2.13\include\SDL_stdinc.h \
+	\SDL-1.2.13\include\SDL_syswm.h \
+	\SDL-1.2.13\include\SDL_version.h \
+	\SDL-1.2.13\include\SDL_video.h \
+	\SDL-1.2.13\include\begin_code.h \
+	\SDL-1.2.13\include\close_code.h \
+	\SDL-1.2.13\src\video\SDL_RLEaccel_c.h \
+	\SDL-1.2.13\src\video\SDL_blit.h \
+	\SDL-1.2.13\src\video\SDL_pixels_c.h \
+	\SDL-1.2.13\src\video\SDL_sysvideo.h \
+	$(PREFIXFILE) \
+	\UIQ3\EPOC32\include\libc\_ansi.h \
+	\UIQ3\EPOC32\include\libc\ctype.h \
+	\UIQ3\EPOC32\include\libc\machine\types.h \
+	\UIQ3\EPOC32\include\libc\stdarg.h \
+	\UIQ3\EPOC32\include\libc\stdarg_e.h \
+	\UIQ3\EPOC32\include\libc\stddef.h \
+	\UIQ3\EPOC32\include\libc\stdio.h \
+	\UIQ3\EPOC32\include\libc\stdlib.h \
+	\UIQ3\EPOC32\include\libc\string.h \
+	\UIQ3\EPOC32\include\libc\sys\reent.h \
+	\UIQ3\EPOC32\include\libc\sys\stdio_t.h \
+	\UIQ3\EPOC32\include\libc\sys\types.h \
+	\UIQ3\EPOC32\include\libc\time.h \
+	\UIQ3\EPOC32\include\symcpp.h \
+	\UIQ3\epoc32\include\variant\Symbian_OS_v9.1.hrh \
+	\UIQ3\epoc32\include\variant\UIQ_3.0.hrh
+
+$(EPOCBLDUREL)\SDL_pixels.o : \SDL-1.2.13\src\video\Sdl_pixels.c
+	@echo Sdl_pixels.c
+	$(CCUREL)   $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(INCLUDE_OPTION) ..\..\src\video $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\video\Sdl_pixels.c
+
+LISTINGURELSDL_pixels : $(EPOCBLDUREL)\SDL_pixels.lis
+	perl -S ecopyfile.pl $? \SDL-1.2.13\src\video\SDL_pixels.ARMV5.lst
+
+$(EPOCBLDUREL)\SDL_pixels.lis : \SDL-1.2.13\src\video\Sdl_pixels.c
+	$(CCUREL)  $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(ASSEMBLER_LISTING_OPTION) $(INCLUDE_OPTION) ..\..\src\video $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\video\Sdl_pixels.c 
+
+$(EPOCBLDUDEB)\SDL_pixels.o : \SDL-1.2.13\src\video\Sdl_pixels.c
+	@echo Sdl_pixels.c
+	$(CCUDEB)   $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(INCLUDE_OPTION) ..\..\src\video $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\video\Sdl_pixels.c
+
+LISTINGUDEBSDL_pixels : $(EPOCBLDUDEB)\SDL_pixels.lis
+	perl -S ecopyfile.pl $? \SDL-1.2.13\src\video\SDL_pixels.ARMV5.lst
+
+$(EPOCBLDUDEB)\SDL_pixels.lis : \SDL-1.2.13\src\video\Sdl_pixels.c
+	$(CCUDEB)  $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(ASSEMBLER_LISTING_OPTION) $(INCLUDE_OPTION) ..\..\src\video $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\video\Sdl_pixels.c 
+
+
+
+# Source SDL_RLEaccel.c
+
+$(EPOCBLDUREL)\SDL_RLEaccel.lis $(EPOCBLDUREL)\SDL_RLEaccel.o \
+$(EPOCBLDUDEB)\SDL_RLEaccel.lis $(EPOCBLDUDEB)\SDL_RLEaccel.o \
+: \
+	\SDL-1.2.13\include\SDL_config.h \
+	\SDL-1.2.13\include\SDL_config_symbian.h \
+	\SDL-1.2.13\include\SDL_endian.h \
+	\SDL-1.2.13\include\SDL_error.h \
+	\SDL-1.2.13\include\SDL_mouse.h \
+	\SDL-1.2.13\include\SDL_platform.h \
+	\SDL-1.2.13\include\SDL_rwops.h \
+	\SDL-1.2.13\include\SDL_stdinc.h \
+	\SDL-1.2.13\include\SDL_syswm.h \
+	\SDL-1.2.13\include\SDL_version.h \
+	\SDL-1.2.13\include\SDL_video.h \
+	\SDL-1.2.13\include\begin_code.h \
+	\SDL-1.2.13\include\close_code.h \
+	\SDL-1.2.13\src\video\SDL_RLEaccel_c.h \
+	\SDL-1.2.13\src\video\SDL_blit.h \
+	\SDL-1.2.13\src\video\SDL_sysvideo.h \
+	$(PREFIXFILE) \
+	\UIQ3\EPOC32\include\libc\_ansi.h \
+	\UIQ3\EPOC32\include\libc\ctype.h \
+	\UIQ3\EPOC32\include\libc\machine\types.h \
+	\UIQ3\EPOC32\include\libc\stdarg.h \
+	\UIQ3\EPOC32\include\libc\stdarg_e.h \
+	\UIQ3\EPOC32\include\libc\stddef.h \
+	\UIQ3\EPOC32\include\libc\stdio.h \
+	\UIQ3\EPOC32\include\libc\stdlib.h \
+	\UIQ3\EPOC32\include\libc\string.h \
+	\UIQ3\EPOC32\include\libc\sys\reent.h \
+	\UIQ3\EPOC32\include\libc\sys\stdio_t.h \
+	\UIQ3\EPOC32\include\libc\sys\types.h \
+	\UIQ3\EPOC32\include\libc\time.h \
+	\UIQ3\EPOC32\include\symcpp.h \
+	\UIQ3\epoc32\include\variant\Symbian_OS_v9.1.hrh \
+	\UIQ3\epoc32\include\variant\UIQ_3.0.hrh
+
+$(EPOCBLDUREL)\SDL_RLEaccel.o : \SDL-1.2.13\src\video\Sdl_rleaccel.c
+	@echo Sdl_rleaccel.c
+	$(CCUREL)   $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(INCLUDE_OPTION) ..\..\src\video $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\video\Sdl_rleaccel.c
+
+LISTINGURELSDL_RLEaccel : $(EPOCBLDUREL)\SDL_RLEaccel.lis
+	perl -S ecopyfile.pl $? \SDL-1.2.13\src\video\SDL_RLEaccel.ARMV5.lst
+
+$(EPOCBLDUREL)\SDL_RLEaccel.lis : \SDL-1.2.13\src\video\Sdl_rleaccel.c
+	$(CCUREL)  $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(ASSEMBLER_LISTING_OPTION) $(INCLUDE_OPTION) ..\..\src\video $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\video\Sdl_rleaccel.c 
+
+$(EPOCBLDUDEB)\SDL_RLEaccel.o : \SDL-1.2.13\src\video\Sdl_rleaccel.c
+	@echo Sdl_rleaccel.c
+	$(CCUDEB)   $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(INCLUDE_OPTION) ..\..\src\video $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\video\Sdl_rleaccel.c
+
+LISTINGUDEBSDL_RLEaccel : $(EPOCBLDUDEB)\SDL_RLEaccel.lis
+	perl -S ecopyfile.pl $? \SDL-1.2.13\src\video\SDL_RLEaccel.ARMV5.lst
+
+$(EPOCBLDUDEB)\SDL_RLEaccel.lis : \SDL-1.2.13\src\video\Sdl_rleaccel.c
+	$(CCUDEB)  $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(ASSEMBLER_LISTING_OPTION) $(INCLUDE_OPTION) ..\..\src\video $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\video\Sdl_rleaccel.c 
+
+
+
+# Source SDL_stretch.c
+
+$(EPOCBLDUREL)\SDL_stretch.lis $(EPOCBLDUREL)\SDL_stretch.o \
+$(EPOCBLDUDEB)\SDL_stretch.lis $(EPOCBLDUDEB)\SDL_stretch.o \
+: \
+	\SDL-1.2.13\include\SDL_config.h \
+	\SDL-1.2.13\include\SDL_config_symbian.h \
+	\SDL-1.2.13\include\SDL_endian.h \
+	\SDL-1.2.13\include\SDL_error.h \
+	\SDL-1.2.13\include\SDL_platform.h \
+	\SDL-1.2.13\include\SDL_rwops.h \
+	\SDL-1.2.13\include\SDL_stdinc.h \
+	\SDL-1.2.13\include\SDL_video.h \
+	\SDL-1.2.13\include\begin_code.h \
+	\SDL-1.2.13\include\close_code.h \
+	\SDL-1.2.13\src\video\SDL_blit.h \
+	$(PREFIXFILE) \
+	\UIQ3\EPOC32\include\libc\_ansi.h \
+	\UIQ3\EPOC32\include\libc\ctype.h \
+	\UIQ3\EPOC32\include\libc\machine\types.h \
+	\UIQ3\EPOC32\include\libc\stdarg.h \
+	\UIQ3\EPOC32\include\libc\stdarg_e.h \
+	\UIQ3\EPOC32\include\libc\stddef.h \
+	\UIQ3\EPOC32\include\libc\stdio.h \
+	\UIQ3\EPOC32\include\libc\stdlib.h \
+	\UIQ3\EPOC32\include\libc\string.h \
+	\UIQ3\EPOC32\include\libc\sys\reent.h \
+	\UIQ3\EPOC32\include\libc\sys\stdio_t.h \
+	\UIQ3\EPOC32\include\libc\sys\types.h \
+	\UIQ3\EPOC32\include\libc\time.h \
+	\UIQ3\EPOC32\include\symcpp.h \
+	\UIQ3\epoc32\include\variant\Symbian_OS_v9.1.hrh \
+	\UIQ3\epoc32\include\variant\UIQ_3.0.hrh
+
+$(EPOCBLDUREL)\SDL_stretch.o : \SDL-1.2.13\src\video\Sdl_stretch.c
+	@echo Sdl_stretch.c
+	$(CCUREL)   $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(INCLUDE_OPTION) ..\..\src\video $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\video\Sdl_stretch.c
+
+LISTINGURELSDL_stretch : $(EPOCBLDUREL)\SDL_stretch.lis
+	perl -S ecopyfile.pl $? \SDL-1.2.13\src\video\SDL_stretch.ARMV5.lst
+
+$(EPOCBLDUREL)\SDL_stretch.lis : \SDL-1.2.13\src\video\Sdl_stretch.c
+	$(CCUREL)  $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(ASSEMBLER_LISTING_OPTION) $(INCLUDE_OPTION) ..\..\src\video $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\video\Sdl_stretch.c 
+
+$(EPOCBLDUDEB)\SDL_stretch.o : \SDL-1.2.13\src\video\Sdl_stretch.c
+	@echo Sdl_stretch.c
+	$(CCUDEB)   $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(INCLUDE_OPTION) ..\..\src\video $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\video\Sdl_stretch.c
+
+LISTINGUDEBSDL_stretch : $(EPOCBLDUDEB)\SDL_stretch.lis
+	perl -S ecopyfile.pl $? \SDL-1.2.13\src\video\SDL_stretch.ARMV5.lst
+
+$(EPOCBLDUDEB)\SDL_stretch.lis : \SDL-1.2.13\src\video\Sdl_stretch.c
+	$(CCUDEB)  $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(ASSEMBLER_LISTING_OPTION) $(INCLUDE_OPTION) ..\..\src\video $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\video\Sdl_stretch.c 
+
+
+
+# Source SDL_surface.c
+
+$(EPOCBLDUREL)\SDL_surface.lis $(EPOCBLDUREL)\SDL_surface.o \
+$(EPOCBLDUDEB)\SDL_surface.lis $(EPOCBLDUDEB)\SDL_surface.o \
+: \
+	\SDL-1.2.13\include\SDL_config.h \
+	\SDL-1.2.13\include\SDL_config_symbian.h \
+	\SDL-1.2.13\include\SDL_endian.h \
+	\SDL-1.2.13\include\SDL_error.h \
+	\SDL-1.2.13\include\SDL_mouse.h \
+	\SDL-1.2.13\include\SDL_mutex.h \
+	\SDL-1.2.13\include\SDL_platform.h \
+	\SDL-1.2.13\include\SDL_rwops.h \
+	\SDL-1.2.13\include\SDL_stdinc.h \
+	\SDL-1.2.13\include\SDL_syswm.h \
+	\SDL-1.2.13\include\SDL_version.h \
+	\SDL-1.2.13\include\SDL_video.h \
+	\SDL-1.2.13\include\begin_code.h \
+	\SDL-1.2.13\include\close_code.h \
+	\SDL-1.2.13\src\video\SDL_RLEaccel_c.h \
+	\SDL-1.2.13\src\video\SDL_blit.h \
+	\SDL-1.2.13\src\video\SDL_cursor_c.h \
+	\SDL-1.2.13\src\video\SDL_leaks.h \
+	\SDL-1.2.13\src\video\SDL_pixels_c.h \
+	\SDL-1.2.13\src\video\SDL_sysvideo.h \
+	$(PREFIXFILE) \
+	\UIQ3\EPOC32\include\libc\_ansi.h \
+	\UIQ3\EPOC32\include\libc\ctype.h \
+	\UIQ3\EPOC32\include\libc\machine\types.h \
+	\UIQ3\EPOC32\include\libc\stdarg.h \
+	\UIQ3\EPOC32\include\libc\stdarg_e.h \
+	\UIQ3\EPOC32\include\libc\stddef.h \
+	\UIQ3\EPOC32\include\libc\stdio.h \
+	\UIQ3\EPOC32\include\libc\stdlib.h \
+	\UIQ3\EPOC32\include\libc\string.h \
+	\UIQ3\EPOC32\include\libc\sys\reent.h \
+	\UIQ3\EPOC32\include\libc\sys\stdio_t.h \
+	\UIQ3\EPOC32\include\libc\sys\types.h \
+	\UIQ3\EPOC32\include\libc\time.h \
+	\UIQ3\EPOC32\include\symcpp.h \
+	\UIQ3\epoc32\include\variant\Symbian_OS_v9.1.hrh \
+	\UIQ3\epoc32\include\variant\UIQ_3.0.hrh
+
+$(EPOCBLDUREL)\SDL_surface.o : \SDL-1.2.13\src\video\Sdl_surface.c
+	@echo Sdl_surface.c
+	$(CCUREL)   $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(INCLUDE_OPTION) ..\..\src\video $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\video\Sdl_surface.c
+
+LISTINGURELSDL_surface : $(EPOCBLDUREL)\SDL_surface.lis
+	perl -S ecopyfile.pl $? \SDL-1.2.13\src\video\SDL_surface.ARMV5.lst
+
+$(EPOCBLDUREL)\SDL_surface.lis : \SDL-1.2.13\src\video\Sdl_surface.c
+	$(CCUREL)  $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(ASSEMBLER_LISTING_OPTION) $(INCLUDE_OPTION) ..\..\src\video $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\video\Sdl_surface.c 
+
+$(EPOCBLDUDEB)\SDL_surface.o : \SDL-1.2.13\src\video\Sdl_surface.c
+	@echo Sdl_surface.c
+	$(CCUDEB)   $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(INCLUDE_OPTION) ..\..\src\video $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\video\Sdl_surface.c
+
+LISTINGUDEBSDL_surface : $(EPOCBLDUDEB)\SDL_surface.lis
+	perl -S ecopyfile.pl $? \SDL-1.2.13\src\video\SDL_surface.ARMV5.lst
+
+$(EPOCBLDUDEB)\SDL_surface.lis : \SDL-1.2.13\src\video\Sdl_surface.c
+	$(CCUDEB)  $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(ASSEMBLER_LISTING_OPTION) $(INCLUDE_OPTION) ..\..\src\video $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\video\Sdl_surface.c 
+
+
+
+# Source SDL_video.c
+
+$(EPOCBLDUREL)\SDL_video.lis $(EPOCBLDUREL)\SDL_video.o \
+$(EPOCBLDUDEB)\SDL_video.lis $(EPOCBLDUDEB)\SDL_video.o \
+: \
+	\SDL-1.2.13\include\SDL.h \
+	\SDL-1.2.13\include\SDL_active.h \
+	\SDL-1.2.13\include\SDL_audio.h \
+	\SDL-1.2.13\include\SDL_cdrom.h \
+	\SDL-1.2.13\include\SDL_config.h \
+	\SDL-1.2.13\include\SDL_config_symbian.h \
+	\SDL-1.2.13\include\SDL_cpuinfo.h \
+	\SDL-1.2.13\include\SDL_endian.h \
+	\SDL-1.2.13\include\SDL_error.h \
+	\SDL-1.2.13\include\SDL_events.h \
+	\SDL-1.2.13\include\SDL_joystick.h \
+	\SDL-1.2.13\include\SDL_keyboard.h \
+	\SDL-1.2.13\include\SDL_keysym.h \
+	\SDL-1.2.13\include\SDL_loadso.h \
+	\SDL-1.2.13\include\SDL_main.h \
+	\SDL-1.2.13\include\SDL_mouse.h \
+	\SDL-1.2.13\include\SDL_mutex.h \
+	\SDL-1.2.13\include\SDL_platform.h \
+	\SDL-1.2.13\include\SDL_quit.h \
+	\SDL-1.2.13\include\SDL_rwops.h \
+	\SDL-1.2.13\include\SDL_stdinc.h \
+	\SDL-1.2.13\include\SDL_syswm.h \
+	\SDL-1.2.13\include\SDL_thread.h \
+	\SDL-1.2.13\include\SDL_timer.h \
+	\SDL-1.2.13\include\SDL_version.h \
+	\SDL-1.2.13\include\SDL_video.h \
+	\SDL-1.2.13\include\begin_code.h \
+	\SDL-1.2.13\include\close_code.h \
+	\SDL-1.2.13\src\events\SDL_events_c.h \
+	\SDL-1.2.13\src\events\SDL_sysevents.h \
+	\SDL-1.2.13\src\video\SDL_blit.h \
+	\SDL-1.2.13\src\video\SDL_cursor_c.h \
+	\SDL-1.2.13\src\video\SDL_pixels_c.h \
+	\SDL-1.2.13\src\video\SDL_sysvideo.h \
+	\SDL-1.2.13\src\video\SDL_sysvideo.h \
+	$(PREFIXFILE) \
+	\UIQ3\EPOC32\include\libc\_ansi.h \
+	\UIQ3\EPOC32\include\libc\ctype.h \
+	\UIQ3\EPOC32\include\libc\machine\types.h \
+	\UIQ3\EPOC32\include\libc\stdarg.h \
+	\UIQ3\EPOC32\include\libc\stdarg_e.h \
+	\UIQ3\EPOC32\include\libc\stddef.h \
+	\UIQ3\EPOC32\include\libc\stdio.h \
+	\UIQ3\EPOC32\include\libc\stdlib.h \
+	\UIQ3\EPOC32\include\libc\string.h \
+	\UIQ3\EPOC32\include\libc\sys\reent.h \
+	\UIQ3\EPOC32\include\libc\sys\stdio_t.h \
+	\UIQ3\EPOC32\include\libc\sys\types.h \
+	\UIQ3\EPOC32\include\libc\time.h \
+	\UIQ3\EPOC32\include\symcpp.h \
+	\UIQ3\epoc32\include\variant\Symbian_OS_v9.1.hrh \
+	\UIQ3\epoc32\include\variant\UIQ_3.0.hrh
+
+$(EPOCBLDUREL)\SDL_video.o : \SDL-1.2.13\src\video\Sdl_video.c
+	@echo Sdl_video.c
+	$(CCUREL)   $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(INCLUDE_OPTION) ..\..\src\video $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\video\Sdl_video.c
+
+LISTINGURELSDL_video : $(EPOCBLDUREL)\SDL_video.lis
+	perl -S ecopyfile.pl $? \SDL-1.2.13\src\video\SDL_video.ARMV5.lst
+
+$(EPOCBLDUREL)\SDL_video.lis : \SDL-1.2.13\src\video\Sdl_video.c
+	$(CCUREL)  $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(ASSEMBLER_LISTING_OPTION) $(INCLUDE_OPTION) ..\..\src\video $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\video\Sdl_video.c 
+
+$(EPOCBLDUDEB)\SDL_video.o : \SDL-1.2.13\src\video\Sdl_video.c
+	@echo Sdl_video.c
+	$(CCUDEB)   $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(INCLUDE_OPTION) ..\..\src\video $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\video\Sdl_video.c
+
+LISTINGUDEBSDL_video : $(EPOCBLDUDEB)\SDL_video.lis
+	perl -S ecopyfile.pl $? \SDL-1.2.13\src\video\SDL_video.ARMV5.lst
+
+$(EPOCBLDUDEB)\SDL_video.lis : \SDL-1.2.13\src\video\Sdl_video.c
+	$(CCUDEB)  $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(ASSEMBLER_LISTING_OPTION) $(INCLUDE_OPTION) ..\..\src\video $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\video\Sdl_video.c 
+
+
+
+# Source SDL_yuv.c
+
+$(EPOCBLDUREL)\SDL_yuv.lis $(EPOCBLDUREL)\SDL_yuv.o \
+$(EPOCBLDUDEB)\SDL_yuv.lis $(EPOCBLDUDEB)\SDL_yuv.o \
+: \
+	\SDL-1.2.13\include\SDL_config.h \
+	\SDL-1.2.13\include\SDL_config_symbian.h \
+	\SDL-1.2.13\include\SDL_error.h \
+	\SDL-1.2.13\include\SDL_mouse.h \
+	\SDL-1.2.13\include\SDL_platform.h \
+	\SDL-1.2.13\include\SDL_rwops.h \
+	\SDL-1.2.13\include\SDL_stdinc.h \
+	\SDL-1.2.13\include\SDL_syswm.h \
+	\SDL-1.2.13\include\SDL_version.h \
+	\SDL-1.2.13\include\SDL_video.h \
+	\SDL-1.2.13\include\begin_code.h \
+	\SDL-1.2.13\include\close_code.h \
+	\SDL-1.2.13\src\video\SDL_sysvideo.h \
+	\SDL-1.2.13\src\video\SDL_yuv_sw_c.h \
+	\SDL-1.2.13\src\video\SDL_yuvfuncs.h \
+	$(PREFIXFILE) \
+	\UIQ3\EPOC32\include\libc\_ansi.h \
+	\UIQ3\EPOC32\include\libc\ctype.h \
+	\UIQ3\EPOC32\include\libc\machine\types.h \
+	\UIQ3\EPOC32\include\libc\stdarg.h \
+	\UIQ3\EPOC32\include\libc\stdarg_e.h \
+	\UIQ3\EPOC32\include\libc\stddef.h \
+	\UIQ3\EPOC32\include\libc\stdio.h \
+	\UIQ3\EPOC32\include\libc\stdlib.h \
+	\UIQ3\EPOC32\include\libc\string.h \
+	\UIQ3\EPOC32\include\libc\sys\reent.h \
+	\UIQ3\EPOC32\include\libc\sys\stdio_t.h \
+	\UIQ3\EPOC32\include\libc\sys\types.h \
+	\UIQ3\EPOC32\include\libc\time.h \
+	\UIQ3\EPOC32\include\symcpp.h \
+	\UIQ3\epoc32\include\variant\Symbian_OS_v9.1.hrh \
+	\UIQ3\epoc32\include\variant\UIQ_3.0.hrh
+
+$(EPOCBLDUREL)\SDL_yuv.o : \SDL-1.2.13\src\video\Sdl_yuv.c
+	@echo Sdl_yuv.c
+	$(CCUREL)   $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(INCLUDE_OPTION) ..\..\src\video $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\video\Sdl_yuv.c
+
+LISTINGURELSDL_yuv : $(EPOCBLDUREL)\SDL_yuv.lis
+	perl -S ecopyfile.pl $? \SDL-1.2.13\src\video\SDL_yuv.ARMV5.lst
+
+$(EPOCBLDUREL)\SDL_yuv.lis : \SDL-1.2.13\src\video\Sdl_yuv.c
+	$(CCUREL)  $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(ASSEMBLER_LISTING_OPTION) $(INCLUDE_OPTION) ..\..\src\video $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\video\Sdl_yuv.c 
+
+$(EPOCBLDUDEB)\SDL_yuv.o : \SDL-1.2.13\src\video\Sdl_yuv.c
+	@echo Sdl_yuv.c
+	$(CCUDEB)   $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(INCLUDE_OPTION) ..\..\src\video $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\video\Sdl_yuv.c
+
+LISTINGUDEBSDL_yuv : $(EPOCBLDUDEB)\SDL_yuv.lis
+	perl -S ecopyfile.pl $? \SDL-1.2.13\src\video\SDL_yuv.ARMV5.lst
+
+$(EPOCBLDUDEB)\SDL_yuv.lis : \SDL-1.2.13\src\video\Sdl_yuv.c
+	$(CCUDEB)  $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(ASSEMBLER_LISTING_OPTION) $(INCLUDE_OPTION) ..\..\src\video $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\video\Sdl_yuv.c 
+
+
+
+# Source SDL_yuv_sw.c
+
+$(EPOCBLDUREL)\SDL_yuv_sw.lis $(EPOCBLDUREL)\SDL_yuv_sw.o \
+$(EPOCBLDUDEB)\SDL_yuv_sw.lis $(EPOCBLDUDEB)\SDL_yuv_sw.o \
+: \
+	\SDL-1.2.13\include\SDL_config.h \
+	\SDL-1.2.13\include\SDL_config_symbian.h \
+	\SDL-1.2.13\include\SDL_cpuinfo.h \
+	\SDL-1.2.13\include\SDL_error.h \
+	\SDL-1.2.13\include\SDL_mouse.h \
+	\SDL-1.2.13\include\SDL_platform.h \
+	\SDL-1.2.13\include\SDL_rwops.h \
+	\SDL-1.2.13\include\SDL_stdinc.h \
+	\SDL-1.2.13\include\SDL_syswm.h \
+	\SDL-1.2.13\include\SDL_version.h \
+	\SDL-1.2.13\include\SDL_video.h \
+	\SDL-1.2.13\include\begin_code.h \
+	\SDL-1.2.13\include\close_code.h \
+	\SDL-1.2.13\src\video\SDL_stretch_c.h \
+	\SDL-1.2.13\src\video\SDL_sysvideo.h \
+	\SDL-1.2.13\src\video\SDL_yuv_sw_c.h \
+	\SDL-1.2.13\src\video\SDL_yuvfuncs.h \
+	$(PREFIXFILE) \
+	\UIQ3\EPOC32\include\libc\_ansi.h \
+	\UIQ3\EPOC32\include\libc\ctype.h \
+	\UIQ3\EPOC32\include\libc\machine\types.h \
+	\UIQ3\EPOC32\include\libc\stdarg.h \
+	\UIQ3\EPOC32\include\libc\stdarg_e.h \
+	\UIQ3\EPOC32\include\libc\stddef.h \
+	\UIQ3\EPOC32\include\libc\stdio.h \
+	\UIQ3\EPOC32\include\libc\stdlib.h \
+	\UIQ3\EPOC32\include\libc\string.h \
+	\UIQ3\EPOC32\include\libc\sys\reent.h \
+	\UIQ3\EPOC32\include\libc\sys\stdio_t.h \
+	\UIQ3\EPOC32\include\libc\sys\types.h \
+	\UIQ3\EPOC32\include\libc\time.h \
+	\UIQ3\EPOC32\include\symcpp.h \
+	\UIQ3\epoc32\include\variant\Symbian_OS_v9.1.hrh \
+	\UIQ3\epoc32\include\variant\UIQ_3.0.hrh
+
+$(EPOCBLDUREL)\SDL_yuv_sw.o : \SDL-1.2.13\src\video\Sdl_yuv_sw.c
+	@echo Sdl_yuv_sw.c
+	$(CCUREL)   $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(INCLUDE_OPTION) ..\..\src\video $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\video\Sdl_yuv_sw.c
+
+LISTINGURELSDL_yuv_sw : $(EPOCBLDUREL)\SDL_yuv_sw.lis
+	perl -S ecopyfile.pl $? \SDL-1.2.13\src\video\SDL_yuv_sw.ARMV5.lst
+
+$(EPOCBLDUREL)\SDL_yuv_sw.lis : \SDL-1.2.13\src\video\Sdl_yuv_sw.c
+	$(CCUREL)  $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(ASSEMBLER_LISTING_OPTION) $(INCLUDE_OPTION) ..\..\src\video $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\video\Sdl_yuv_sw.c 
+
+$(EPOCBLDUDEB)\SDL_yuv_sw.o : \SDL-1.2.13\src\video\Sdl_yuv_sw.c
+	@echo Sdl_yuv_sw.c
+	$(CCUDEB)   $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(INCLUDE_OPTION) ..\..\src\video $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\video\Sdl_yuv_sw.c
+
+LISTINGUDEBSDL_yuv_sw : $(EPOCBLDUDEB)\SDL_yuv_sw.lis
+	perl -S ecopyfile.pl $? \SDL-1.2.13\src\video\SDL_yuv_sw.ARMV5.lst
+
+$(EPOCBLDUDEB)\SDL_yuv_sw.lis : \SDL-1.2.13\src\video\Sdl_yuv_sw.c
+	$(CCUDEB)  $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(ASSEMBLER_LISTING_OPTION) $(INCLUDE_OPTION) ..\..\src\video $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\video\Sdl_yuv_sw.c 
+
+
+
+# Source SDL_epocvideo.cpp
+
+$(EPOCBLDUREL)\SDL_epocvideo.lis $(EPOCBLDUREL)\SDL_epocvideo.o \
+$(EPOCBLDUDEB)\SDL_epocvideo.lis $(EPOCBLDUDEB)\SDL_epocvideo.o \
+: \
+	\SDL-1.2.13\Symbian\EBasicApp.h \
+	\SDL-1.2.13\Symbian\IniFile.h \
+	\SDL-1.2.13\Symbian\ebasicapp.h \
+	\SDL-1.2.13\include\SDL_active.h \
+	\SDL-1.2.13\include\SDL_config.h \
+	\SDL-1.2.13\include\SDL_config_symbian.h \
+	\SDL-1.2.13\include\SDL_endian.h \
+	\SDL-1.2.13\include\SDL_error.h \
+	\SDL-1.2.13\include\SDL_events.h \
+	\SDL-1.2.13\include\SDL_joystick.h \
+	\SDL-1.2.13\include\SDL_keyboard.h \
+	\SDL-1.2.13\include\SDL_keysym.h \
+	\SDL-1.2.13\include\SDL_mouse.h \
+	\SDL-1.2.13\include\SDL_platform.h \
+	\SDL-1.2.13\include\SDL_quit.h \
+	\SDL-1.2.13\include\SDL_rwops.h \
+	\SDL-1.2.13\include\SDL_stdinc.h \
+	\SDL-1.2.13\include\SDL_syswm.h \
+	\SDL-1.2.13\include\SDL_timer.h \
+	\SDL-1.2.13\include\SDL_version.h \
+	\SDL-1.2.13\include\SDL_video.h \
+	\SDL-1.2.13\include\begin_code.h \
+	\SDL-1.2.13\include\close_code.h \
+	\SDL-1.2.13\src\events\SDL_events_c.h \
+	\SDL-1.2.13\src\joystick\SDL_joystick_c.h \
+	\SDL-1.2.13\src\joystick\SDL_sysjoystick.h \
+	\SDL-1.2.13\src\video\SDL_blit.h \
+	\SDL-1.2.13\src\video\SDL_pixels_c.h \
+	\SDL-1.2.13\src\video\SDL_sysvideo.h \
+	\SDL-1.2.13\src\video\SDL_sysvideo.h \
+	\SDL-1.2.13\src\video\symbian\SDL_EpocVideo_UIQ3.inl \
+	\SDL-1.2.13\src\video\symbian\SDL_EpocVideo_vga.inl \
+	\SDL-1.2.13\src\video\symbian\SDL_epocevents_c.h \
+	\SDL-1.2.13\src\video\symbian\SDL_epocvideo.h \
+	$(PREFIXFILE) \
+	\UIQ3\EPOC32\include\Babitflags.h \
+	\UIQ3\EPOC32\include\CoeLayoutMan.h \
+	\UIQ3\EPOC32\include\Ecom\EComErrorCodes.h \
+	\UIQ3\EPOC32\include\Ecom\EComResolverParams.h \
+	\UIQ3\EPOC32\include\Ecom\EComResolverParams.inl \
+	\UIQ3\EPOC32\include\Ecom\Ecom.h \
+	\UIQ3\EPOC32\include\Ecom\ImplementationInformation.h \
+	\UIQ3\EPOC32\include\Ecom\ImplementationInformation.inl \
+	\UIQ3\EPOC32\include\FbsMessage.h \
+	\UIQ3\EPOC32\include\LineBreak.h \
+	\UIQ3\EPOC32\include\QUiConfigClient.h \
+	\UIQ3\EPOC32\include\QikCategory.hrh \
+	\UIQ3\EPOC32\include\QikCategoryModel.h \
+	\UIQ3\EPOC32\include\QikCommand.hrh \
+	\UIQ3\EPOC32\include\QikCommandManager.h \
+	\UIQ3\EPOC32\include\QikContainer.h \
+	\UIQ3\EPOC32\include\QikControlProvider.h \
+	\UIQ3\EPOC32\include\QikFactories.h \
+	\UIQ3\EPOC32\include\QikFlowLayoutManager.h \
+	\UIQ3\EPOC32\include\QikLayoutManager.h \
+	\UIQ3\EPOC32\include\QikLayoutValues.h \
+	\UIQ3\EPOC32\include\QikUiConfigDataTypes.h \
+	\UIQ3\EPOC32\include\QikViewFurniture.h \
+	\UIQ3\EPOC32\include\Qikon.hrh \
+	\UIQ3\EPOC32\include\apacmdln.h \
+	\UIQ3\EPOC32\include\apadef.h \
+	\UIQ3\EPOC32\include\apaflrec.h \
+	\UIQ3\EPOC32\include\apaid.h \
+	\UIQ3\EPOC32\include\apgwgnam.h \
+	\UIQ3\EPOC32\include\apmstd.h \
+	\UIQ3\EPOC32\include\apparc.h \
+	\UIQ3\EPOC32\include\babitflags.h \
+	\UIQ3\EPOC32\include\badesca.h \
+	\UIQ3\EPOC32\include\baerrhan.h \
+	\UIQ3\EPOC32\include\bamdesca.h \
+	\UIQ3\EPOC32\include\barsc.h \
+	\UIQ3\EPOC32\include\basched.h \
+	\UIQ3\EPOC32\include\bidi.h \
+	\UIQ3\EPOC32\include\biditext.h \
+	\UIQ3\EPOC32\include\bitbase.h \
+	\UIQ3\EPOC32\include\bitdev.h \
+	\UIQ3\EPOC32\include\bitdev.inl \
+	\UIQ3\EPOC32\include\bitmap.h \
+	\UIQ3\EPOC32\include\bitstd.h \
+	\UIQ3\EPOC32\include\coeaui.h \
+	\UIQ3\EPOC32\include\coecntrl.h \
+	\UIQ3\EPOC32\include\coecobs.h \
+	\UIQ3\EPOC32\include\coecontrolarray.h \
+	\UIQ3\EPOC32\include\coedef.h \
+	\UIQ3\EPOC32\include\coefont.h \
+	\UIQ3\EPOC32\include\coehelp.h \
+	\UIQ3\EPOC32\include\coeinput.h \
+	\UIQ3\EPOC32\include\coemain.h \
+	\UIQ3\EPOC32\include\coemop.h \
+	\UIQ3\EPOC32\include\coetextdrawer.h \
+	\UIQ3\EPOC32\include\coeview.h \
+	\UIQ3\EPOC32\include\d32locd.h \
+	\UIQ3\EPOC32\include\d32locd.inl \
+	\UIQ3\EPOC32\include\devicekeys.h \
+	\UIQ3\EPOC32\include\e32base.h \
+	\UIQ3\EPOC32\include\e32base.inl \
+	\UIQ3\EPOC32\include\e32capability.h \
+	\UIQ3\EPOC32\include\e32cmn.h \
+	\UIQ3\EPOC32\include\e32cmn.inl \
+	\UIQ3\EPOC32\include\e32const.h \
+	\UIQ3\EPOC32\include\e32debug.h \
+	\UIQ3\EPOC32\include\e32def.h \
+	\UIQ3\EPOC32\include\e32des16.h \
+	\UIQ3\EPOC32\include\e32des8.h \
+	\UIQ3\EPOC32\include\e32err.h \
+	\UIQ3\EPOC32\include\e32event.h \
+	\UIQ3\EPOC32\include\e32hal.h \
+	\UIQ3\EPOC32\include\e32keys.h \
+	\UIQ3\EPOC32\include\e32ktran.h \
+	\UIQ3\EPOC32\include\e32ldr.h \
+	\UIQ3\EPOC32\include\e32lmsg.h \
+	\UIQ3\EPOC32\include\e32notif.h \
+	\UIQ3\EPOC32\include\e32std.h \
+	\UIQ3\EPOC32\include\e32std.inl \
+	\UIQ3\EPOC32\include\e32svr.h \
+	\UIQ3\EPOC32\include\eikamnt.h \
+	\UIQ3\EPOC32\include\eikapp.h \
+	\UIQ3\EPOC32\include\eikappui.h \
+	\UIQ3\EPOC32\include\eikaufty.h \
+	\UIQ3\EPOC32\include\eikbctrl.h \
+	\UIQ3\EPOC32\include\eikbtgrp.h \
+	\UIQ3\EPOC32\include\eikcmobs.h \
+	\UIQ3\EPOC32\include\eikcolor.hrh \
+	\UIQ3\EPOC32\include\eikdef.h \
+	\UIQ3\EPOC32\include\eikdgfty.h \
+	\UIQ3\EPOC32\include\eikdoc.h \
+	\UIQ3\EPOC32\include\eikenv.h \
+	\UIQ3\EPOC32\include\eikfctry.h \
+	\UIQ3\EPOC32\include\eiklibry.h \
+	\UIQ3\EPOC32\include\eikmobs.h \
+	\UIQ3\EPOC32\include\eikon.hrh \
+	\UIQ3\EPOC32\include\eikprogi.h \
+	\UIQ3\EPOC32\include\eikvcurs.h \
+	\UIQ3\EPOC32\include\f32file.h \
+	\UIQ3\EPOC32\include\f32file.inl \
+	\UIQ3\EPOC32\include\fbs.h \
+	\UIQ3\EPOC32\include\fldbase.h \
+	\UIQ3\EPOC32\include\fldbltin.h \
+	\UIQ3\EPOC32\include\fldinfo.h \
+	\UIQ3\EPOC32\include\fldset.h \
+	\UIQ3\EPOC32\include\fntstore.h \
+	\UIQ3\EPOC32\include\frmlaydt.h \
+	\UIQ3\EPOC32\include\frmparam.h \
+	\UIQ3\EPOC32\include\frmtlay.h \
+	\UIQ3\EPOC32\include\frmvis.h \
+	\UIQ3\EPOC32\include\gdi.h \
+	\UIQ3\EPOC32\include\gdi.inl \
+	\UIQ3\EPOC32\include\graphicsaccelerator.h \
+	\UIQ3\EPOC32\include\gulalign.h \
+	\UIQ3\EPOC32\include\gulbordr.h \
+	\UIQ3\EPOC32\include\gulcolor.h \
+	\UIQ3\EPOC32\include\guldef.h \
+	\UIQ3\EPOC32\include\gulftflg.hrh \
+	\UIQ3\EPOC32\include\gulutil.h \
+	\UIQ3\EPOC32\include\lafmain.h \
+	\UIQ3\EPOC32\include\libc\_ansi.h \
+	\UIQ3\EPOC32\include\libc\ctype.h \
+	\UIQ3\EPOC32\include\libc\machine\types.h \
+	\UIQ3\EPOC32\include\libc\stdarg.h \
+	\UIQ3\EPOC32\include\libc\stdarg_e.h \
+	\UIQ3\EPOC32\include\libc\stddef.h \
+	\UIQ3\EPOC32\include\libc\stdio.h \
+	\UIQ3\EPOC32\include\libc\stdlib.h \
+	\UIQ3\EPOC32\include\libc\string.h \
+	\UIQ3\EPOC32\include\libc\sys\reent.h \
+	\UIQ3\EPOC32\include\libc\sys\stdio_t.h \
+	\UIQ3\EPOC32\include\libc\sys\types.h \
+	\UIQ3\EPOC32\include\libc\time.h \
+	\UIQ3\EPOC32\include\openfont.h \
+	\UIQ3\EPOC32\include\partitions.h \
+	\UIQ3\EPOC32\include\qikappui.h \
+	\UIQ3\EPOC32\include\qikdocument.h \
+	\UIQ3\EPOC32\include\qikon.hrh \
+	\UIQ3\EPOC32\include\qikstockcontrols.hrh \
+	\UIQ3\EPOC32\include\qiktoolbar.h \
+	\UIQ3\EPOC32\include\qikviewbase.h \
+	\UIQ3\EPOC32\include\quartz.mbg \
+	\UIQ3\EPOC32\include\s32buf.h \
+	\UIQ3\EPOC32\include\s32buf.inl \
+	\UIQ3\EPOC32\include\s32file.h \
+	\UIQ3\EPOC32\include\s32file.inl \
+	\UIQ3\EPOC32\include\s32page.h \
+	\UIQ3\EPOC32\include\s32page.inl \
+	\UIQ3\EPOC32\include\s32share.h \
+	\UIQ3\EPOC32\include\s32share.inl \
+	\UIQ3\EPOC32\include\s32std.h \
+	\UIQ3\EPOC32\include\s32std.inl \
+	\UIQ3\EPOC32\include\s32stor.h \
+	\UIQ3\EPOC32\include\s32stor.inl \
+	\UIQ3\EPOC32\include\s32strm.h \
+	\UIQ3\EPOC32\include\s32strm.inl \
+	\UIQ3\EPOC32\include\savenotf.h \
+	\UIQ3\EPOC32\include\symcpp.h \
+	\UIQ3\EPOC32\include\tagma.h \
+	\UIQ3\EPOC32\include\txtetext.h \
+	\UIQ3\EPOC32\include\txtetext.inl \
+	\UIQ3\EPOC32\include\txtfmlyr.h \
+	\UIQ3\EPOC32\include\txtfmlyr.inl \
+	\UIQ3\EPOC32\include\txtfmstm.h \
+	\UIQ3\EPOC32\include\txtfrmat.h \
+	\UIQ3\EPOC32\include\txtfrmat.inl \
+	\UIQ3\EPOC32\include\txtstyle.h \
+	\UIQ3\EPOC32\include\txtstyle.inl \
+	\UIQ3\EPOC32\include\uikon.hrh \
+	\UIQ3\EPOC32\include\vwsdef.h \
+	\UIQ3\EPOC32\include\w32std.h \
+	\UIQ3\epoc32\include\variant\Symbian_OS_v9.1.hrh \
+	\UIQ3\epoc32\include\variant\UIQ_3.0.hrh
+
+$(EPOCBLDUREL)\SDL_epocvideo.o : \SDL-1.2.13\src\video\symbian\Sdl_epocvideo.cpp
+	@echo Sdl_epocvideo.cpp
+	$(CCUREL)   $(CPP_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(INCLUDE_OPTION) ..\..\src\video\symbian $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\video\symbian\Sdl_epocvideo.cpp
+
+LISTINGURELSDL_epocvideo : $(EPOCBLDUREL)\SDL_epocvideo.lis
+	perl -S ecopyfile.pl $? \SDL-1.2.13\src\video\symbian\SDL_epocvideo.ARMV5.lst
+
+$(EPOCBLDUREL)\SDL_epocvideo.lis : \SDL-1.2.13\src\video\symbian\Sdl_epocvideo.cpp
+	$(CCUREL)  $(CPP_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(ASSEMBLER_LISTING_OPTION) $(INCLUDE_OPTION) ..\..\src\video\symbian $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\video\symbian\Sdl_epocvideo.cpp 
+
+$(EPOCBLDUDEB)\SDL_epocvideo.o : \SDL-1.2.13\src\video\symbian\Sdl_epocvideo.cpp
+	@echo Sdl_epocvideo.cpp
+	$(CCUDEB)   $(CPP_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(INCLUDE_OPTION) ..\..\src\video\symbian $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\video\symbian\Sdl_epocvideo.cpp
+
+LISTINGUDEBSDL_epocvideo : $(EPOCBLDUDEB)\SDL_epocvideo.lis
+	perl -S ecopyfile.pl $? \SDL-1.2.13\src\video\symbian\SDL_epocvideo.ARMV5.lst
+
+$(EPOCBLDUDEB)\SDL_epocvideo.lis : \SDL-1.2.13\src\video\symbian\Sdl_epocvideo.cpp
+	$(CCUDEB)  $(CPP_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(ASSEMBLER_LISTING_OPTION) $(INCLUDE_OPTION) ..\..\src\video\symbian $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\video\symbian\Sdl_epocvideo.cpp 
+
+
+
+# Source SDL_epocevents.cpp
+
+$(EPOCBLDUREL)\SDL_epocevents.lis $(EPOCBLDUREL)\SDL_epocevents.o \
+$(EPOCBLDUDEB)\SDL_epocevents.lis $(EPOCBLDUDEB)\SDL_epocevents.o \
+: \
+	\SDL-1.2.13\Symbian\IniFile.h \
+	\SDL-1.2.13\Symbian\SDLApp.h \
+	\SDL-1.2.13\Symbian\ebasicapp.h \
+	\SDL-1.2.13\include\SDL_active.h \
+	\SDL-1.2.13\include\SDL_config.h \
+	\SDL-1.2.13\include\SDL_config_symbian.h \
+	\SDL-1.2.13\include\SDL_error.h \
+	\SDL-1.2.13\include\SDL_events.h \
+	\SDL-1.2.13\include\SDL_joystick.h \
+	\SDL-1.2.13\include\SDL_keyboard.h \
+	\SDL-1.2.13\include\SDL_keysym.h \
+	\SDL-1.2.13\include\SDL_mouse.h \
+	\SDL-1.2.13\include\SDL_platform.h \
+	\SDL-1.2.13\include\SDL_quit.h \
+	\SDL-1.2.13\include\SDL_rwops.h \
+	\SDL-1.2.13\include\SDL_stdinc.h \
+	\SDL-1.2.13\include\SDL_syswm.h \
+	\SDL-1.2.13\include\SDL_timer.h \
+	\SDL-1.2.13\include\SDL_version.h \
+	\SDL-1.2.13\include\SDL_video.h \
+	\SDL-1.2.13\include\begin_code.h \
+	\SDL-1.2.13\include\close_code.h \
+	\SDL-1.2.13\src\events\SDL_events_c.h \
+	\SDL-1.2.13\src\video\SDL_sysvideo.h \
+	\SDL-1.2.13\src\video\SDL_sysvideo.h \
+	\SDL-1.2.13\src\video\symbian\SDL_epocevents_c.h \
+	\SDL-1.2.13\src\video\symbian\SDL_epocvideo.h \
+	$(PREFIXFILE) \
+	\UIQ3\EPOC32\include\Babitflags.h \
+	\UIQ3\EPOC32\include\CoeLayoutMan.h \
+	\UIQ3\EPOC32\include\Ecom\EComErrorCodes.h \
+	\UIQ3\EPOC32\include\Ecom\EComResolverParams.h \
+	\UIQ3\EPOC32\include\Ecom\EComResolverParams.inl \
+	\UIQ3\EPOC32\include\Ecom\Ecom.h \
+	\UIQ3\EPOC32\include\Ecom\ImplementationInformation.h \
+	\UIQ3\EPOC32\include\Ecom\ImplementationInformation.inl \
+	\UIQ3\EPOC32\include\FbsMessage.h \
+	\UIQ3\EPOC32\include\LineBreak.h \
+	\UIQ3\EPOC32\include\QUiConfigClient.h \
+	\UIQ3\EPOC32\include\QikCategory.hrh \
+	\UIQ3\EPOC32\include\QikCategoryModel.h \
+	\UIQ3\EPOC32\include\QikCommand.hrh \
+	\UIQ3\EPOC32\include\QikCommandManager.h \
+	\UIQ3\EPOC32\include\QikContainer.h \
+	\UIQ3\EPOC32\include\QikControlProvider.h \
+	\UIQ3\EPOC32\include\QikFactories.h \
+	\UIQ3\EPOC32\include\QikFlowLayoutManager.h \
+	\UIQ3\EPOC32\include\QikLayoutManager.h \
+	\UIQ3\EPOC32\include\QikLayoutValues.h \
+	\UIQ3\EPOC32\include\QikUiConfigDataTypes.h \
+	\UIQ3\EPOC32\include\QikViewFurniture.h \
+	\UIQ3\EPOC32\include\Qikon.hrh \
+	\UIQ3\EPOC32\include\apacmdln.h \
+	\UIQ3\EPOC32\include\apadef.h \
+	\UIQ3\EPOC32\include\apaflrec.h \
+	\UIQ3\EPOC32\include\apaid.h \
+	\UIQ3\EPOC32\include\apmstd.h \
+	\UIQ3\EPOC32\include\apparc.h \
+	\UIQ3\EPOC32\include\babitflags.h \
+	\UIQ3\EPOC32\include\badesca.h \
+	\UIQ3\EPOC32\include\baerrhan.h \
+	\UIQ3\EPOC32\include\bamdesca.h \
+	\UIQ3\EPOC32\include\barsc.h \
+	\UIQ3\EPOC32\include\barsread.h \
+	\UIQ3\EPOC32\include\basched.h \
+	\UIQ3\EPOC32\include\bautils.h \
+	\UIQ3\EPOC32\include\bidi.h \
+	\UIQ3\EPOC32\include\biditext.h \
+	\UIQ3\EPOC32\include\bitbase.h \
+	\UIQ3\EPOC32\include\bitdev.h \
+	\UIQ3\EPOC32\include\bitdev.inl \
+	\UIQ3\EPOC32\include\bitmap.h \
+	\UIQ3\EPOC32\include\bitstd.h \
+	\UIQ3\EPOC32\include\coeaui.h \
+	\UIQ3\EPOC32\include\coecntrl.h \
+	\UIQ3\EPOC32\include\coecobs.h \
+	\UIQ3\EPOC32\include\coecontrolarray.h \
+	\UIQ3\EPOC32\include\coedef.h \
+	\UIQ3\EPOC32\include\coefont.h \
+	\UIQ3\EPOC32\include\coehelp.h \
+	\UIQ3\EPOC32\include\coeinput.h \
+	\UIQ3\EPOC32\include\coemain.h \
+	\UIQ3\EPOC32\include\coemop.h \
+	\UIQ3\EPOC32\include\coetextdrawer.h \
+	\UIQ3\EPOC32\include\coeview.h \
+	\UIQ3\EPOC32\include\d32locd.h \
+	\UIQ3\EPOC32\include\d32locd.inl \
+	\UIQ3\EPOC32\include\devicekeys.h \
+	\UIQ3\EPOC32\include\e32base.h \
+	\UIQ3\EPOC32\include\e32base.inl \
+	\UIQ3\EPOC32\include\e32capability.h \
+	\UIQ3\EPOC32\include\e32cmn.h \
+	\UIQ3\EPOC32\include\e32cmn.inl \
+	\UIQ3\EPOC32\include\e32const.h \
+	\UIQ3\EPOC32\include\e32debug.h \
+	\UIQ3\EPOC32\include\e32def.h \
+	\UIQ3\EPOC32\include\e32des16.h \
+	\UIQ3\EPOC32\include\e32des8.h \
+	\UIQ3\EPOC32\include\e32err.h \
+	\UIQ3\EPOC32\include\e32event.h \
+	\UIQ3\EPOC32\include\e32hal.h \
+	\UIQ3\EPOC32\include\e32keys.h \
+	\UIQ3\EPOC32\include\e32ktran.h \
+	\UIQ3\EPOC32\include\e32ldr.h \
+	\UIQ3\EPOC32\include\e32lmsg.h \
+	\UIQ3\EPOC32\include\e32notif.h \
+	\UIQ3\EPOC32\include\e32std.h \
+	\UIQ3\EPOC32\include\e32std.inl \
+	\UIQ3\EPOC32\include\e32svr.h \
+	\UIQ3\EPOC32\include\eikamnt.h \
+	\UIQ3\EPOC32\include\eikapp.h \
+	\UIQ3\EPOC32\include\eikappui.h \
+	\UIQ3\EPOC32\include\eikaufty.h \
+	\UIQ3\EPOC32\include\eikbctrl.h \
+	\UIQ3\EPOC32\include\eikbtgrp.h \
+	\UIQ3\EPOC32\include\eikcmobs.h \
+	\UIQ3\EPOC32\include\eikcolor.hrh \
+	\UIQ3\EPOC32\include\eikdef.h \
+	\UIQ3\EPOC32\include\eikdgfty.h \
+	\UIQ3\EPOC32\include\eikdoc.h \
+	\UIQ3\EPOC32\include\eikenv.h \
+	\UIQ3\EPOC32\include\eikfctry.h \
+	\UIQ3\EPOC32\include\eiklibry.h \
+	\UIQ3\EPOC32\include\eikmobs.h \
+	\UIQ3\EPOC32\include\eikon.hrh \
+	\UIQ3\EPOC32\include\eikprogi.h \
+	\UIQ3\EPOC32\include\eikvcurs.h \
+	\UIQ3\EPOC32\include\f32file.h \
+	\UIQ3\EPOC32\include\f32file.inl \
+	\UIQ3\EPOC32\include\fbs.h \
+	\UIQ3\EPOC32\include\fldbase.h \
+	\UIQ3\EPOC32\include\fldbltin.h \
+	\UIQ3\EPOC32\include\fldinfo.h \
+	\UIQ3\EPOC32\include\fldset.h \
+	\UIQ3\EPOC32\include\fntstore.h \
+	\UIQ3\EPOC32\include\frmlaydt.h \
+	\UIQ3\EPOC32\include\frmparam.h \
+	\UIQ3\EPOC32\include\frmtlay.h \
+	\UIQ3\EPOC32\include\frmvis.h \
+	\UIQ3\EPOC32\include\gdi.h \
+	\UIQ3\EPOC32\include\gdi.inl \
+	\UIQ3\EPOC32\include\graphicsaccelerator.h \
+	\UIQ3\EPOC32\include\gulalign.h \
+	\UIQ3\EPOC32\include\gulbordr.h \
+	\UIQ3\EPOC32\include\gulcolor.h \
+	\UIQ3\EPOC32\include\guldef.h \
+	\UIQ3\EPOC32\include\gulftflg.hrh \
+	\UIQ3\EPOC32\include\gulutil.h \
+	\UIQ3\EPOC32\include\lafmain.h \
+	\UIQ3\EPOC32\include\libc\_ansi.h \
+	\UIQ3\EPOC32\include\libc\ctype.h \
+	\UIQ3\EPOC32\include\libc\machine\types.h \
+	\UIQ3\EPOC32\include\libc\stdarg.h \
+	\UIQ3\EPOC32\include\libc\stdarg_e.h \
+	\UIQ3\EPOC32\include\libc\stddef.h \
+	\UIQ3\EPOC32\include\libc\stdio.h \
+	\UIQ3\EPOC32\include\libc\stdlib.h \
+	\UIQ3\EPOC32\include\libc\string.h \
+	\UIQ3\EPOC32\include\libc\sys\reent.h \
+	\UIQ3\EPOC32\include\libc\sys\stdio_t.h \
+	\UIQ3\EPOC32\include\libc\sys\types.h \
+	\UIQ3\EPOC32\include\libc\time.h \
+	\UIQ3\EPOC32\include\openfont.h \
+	\UIQ3\EPOC32\include\partitions.h \
+	\UIQ3\EPOC32\include\qikapplication.h \
+	\UIQ3\EPOC32\include\qikappui.h \
+	\UIQ3\EPOC32\include\qikdocument.h \
+	\UIQ3\EPOC32\include\qikon.hrh \
+	\UIQ3\EPOC32\include\qikstockcontrols.hrh \
+	\UIQ3\EPOC32\include\qiktoolbar.h \
+	\UIQ3\EPOC32\include\qikviewbase.h \
+	\UIQ3\EPOC32\include\quartz.mbg \
+	\UIQ3\EPOC32\include\s32buf.h \
+	\UIQ3\EPOC32\include\s32buf.inl \
+	\UIQ3\EPOC32\include\s32file.h \
+	\UIQ3\EPOC32\include\s32file.inl \
+	\UIQ3\EPOC32\include\s32page.h \
+	\UIQ3\EPOC32\include\s32page.inl \
+	\UIQ3\EPOC32\include\s32share.h \
+	\UIQ3\EPOC32\include\s32share.inl \
+	\UIQ3\EPOC32\include\s32std.h \
+	\UIQ3\EPOC32\include\s32std.inl \
+	\UIQ3\EPOC32\include\s32stor.h \
+	\UIQ3\EPOC32\include\s32stor.inl \
+	\UIQ3\EPOC32\include\s32strm.h \
+	\UIQ3\EPOC32\include\s32strm.inl \
+	\UIQ3\EPOC32\include\savenotf.h \
+	\UIQ3\EPOC32\include\symcpp.h \
+	\UIQ3\EPOC32\include\tagma.h \
+	\UIQ3\EPOC32\include\txtetext.h \
+	\UIQ3\EPOC32\include\txtetext.inl \
+	\UIQ3\EPOC32\include\txtfmlyr.h \
+	\UIQ3\EPOC32\include\txtfmlyr.inl \
+	\UIQ3\EPOC32\include\txtfmstm.h \
+	\UIQ3\EPOC32\include\txtfrmat.h \
+	\UIQ3\EPOC32\include\txtfrmat.inl \
+	\UIQ3\EPOC32\include\txtstyle.h \
+	\UIQ3\EPOC32\include\txtstyle.inl \
+	\UIQ3\EPOC32\include\uikon.hrh \
+	\UIQ3\EPOC32\include\vwsdef.h \
+	\UIQ3\EPOC32\include\w32std.h \
+	\UIQ3\epoc32\include\variant\Symbian_OS_v9.1.hrh \
+	\UIQ3\epoc32\include\variant\UIQ_3.0.hrh
+
+$(EPOCBLDUREL)\SDL_epocevents.o : \SDL-1.2.13\src\video\symbian\Sdl_epocevents.cpp
+	@echo Sdl_epocevents.cpp
+	$(CCUREL)   $(CPP_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(INCLUDE_OPTION) ..\..\src\video\symbian $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\video\symbian\Sdl_epocevents.cpp
+
+LISTINGURELSDL_epocevents : $(EPOCBLDUREL)\SDL_epocevents.lis
+	perl -S ecopyfile.pl $? \SDL-1.2.13\src\video\symbian\SDL_epocevents.ARMV5.lst
+
+$(EPOCBLDUREL)\SDL_epocevents.lis : \SDL-1.2.13\src\video\symbian\Sdl_epocevents.cpp
+	$(CCUREL)  $(CPP_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(ASSEMBLER_LISTING_OPTION) $(INCLUDE_OPTION) ..\..\src\video\symbian $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\video\symbian\Sdl_epocevents.cpp 
+
+$(EPOCBLDUDEB)\SDL_epocevents.o : \SDL-1.2.13\src\video\symbian\Sdl_epocevents.cpp
+	@echo Sdl_epocevents.cpp
+	$(CCUDEB)   $(CPP_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(INCLUDE_OPTION) ..\..\src\video\symbian $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\video\symbian\Sdl_epocevents.cpp
+
+LISTINGUDEBSDL_epocevents : $(EPOCBLDUDEB)\SDL_epocevents.lis
+	perl -S ecopyfile.pl $? \SDL-1.2.13\src\video\symbian\SDL_epocevents.ARMV5.lst
+
+$(EPOCBLDUDEB)\SDL_epocevents.lis : \SDL-1.2.13\src\video\symbian\Sdl_epocevents.cpp
+	$(CCUDEB)  $(CPP_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(ASSEMBLER_LISTING_OPTION) $(INCLUDE_OPTION) ..\..\src\video\symbian $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\video\symbian\Sdl_epocevents.cpp 
+
+
+
+# Source SDL_thread.c
+
+$(EPOCBLDUREL)\SDL_thread.lis $(EPOCBLDUREL)\SDL_thread.o \
+$(EPOCBLDUDEB)\SDL_thread.lis $(EPOCBLDUDEB)\SDL_thread.o \
+: \
+	\SDL-1.2.13\include\SDL_config.h \
+	\SDL-1.2.13\include\SDL_config_symbian.h \
+	\SDL-1.2.13\include\SDL_error.h \
+	\SDL-1.2.13\include\SDL_mutex.h \
+	\SDL-1.2.13\include\SDL_platform.h \
+	\SDL-1.2.13\include\SDL_stdinc.h \
+	\SDL-1.2.13\include\SDL_thread.h \
+	\SDL-1.2.13\include\begin_code.h \
+	\SDL-1.2.13\include\close_code.h \
+	\SDL-1.2.13\src\SDL_error_c.h \
+	\SDL-1.2.13\src\thread\SDL_systhread.h \
+	\SDL-1.2.13\src\thread\SDL_thread_c.h \
+	\SDL-1.2.13\src\thread\symbian\SDL_systhread_c.h \
+	$(PREFIXFILE) \
+	\UIQ3\EPOC32\include\libc\_ansi.h \
+	\UIQ3\EPOC32\include\libc\ctype.h \
+	\UIQ3\EPOC32\include\libc\machine\types.h \
+	\UIQ3\EPOC32\include\libc\stdarg.h \
+	\UIQ3\EPOC32\include\libc\stdarg_e.h \
+	\UIQ3\EPOC32\include\libc\stddef.h \
+	\UIQ3\EPOC32\include\libc\stdio.h \
+	\UIQ3\EPOC32\include\libc\stdlib.h \
+	\UIQ3\EPOC32\include\libc\string.h \
+	\UIQ3\EPOC32\include\libc\sys\reent.h \
+	\UIQ3\EPOC32\include\libc\sys\stdio_t.h \
+	\UIQ3\EPOC32\include\libc\sys\types.h \
+	\UIQ3\EPOC32\include\libc\time.h \
+	\UIQ3\EPOC32\include\symcpp.h \
+	\UIQ3\epoc32\include\variant\Symbian_OS_v9.1.hrh \
+	\UIQ3\epoc32\include\variant\UIQ_3.0.hrh
+
+$(EPOCBLDUREL)\SDL_thread.o : \SDL-1.2.13\src\thread\Sdl_thread.c
+	@echo Sdl_thread.c
+	$(CCUREL)   $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(INCLUDE_OPTION) ..\..\src\thread $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\thread\Sdl_thread.c
+
+LISTINGURELSDL_thread : $(EPOCBLDUREL)\SDL_thread.lis
+	perl -S ecopyfile.pl $? \SDL-1.2.13\src\thread\SDL_thread.ARMV5.lst
+
+$(EPOCBLDUREL)\SDL_thread.lis : \SDL-1.2.13\src\thread\Sdl_thread.c
+	$(CCUREL)  $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(ASSEMBLER_LISTING_OPTION) $(INCLUDE_OPTION) ..\..\src\thread $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\thread\Sdl_thread.c 
+
+$(EPOCBLDUDEB)\SDL_thread.o : \SDL-1.2.13\src\thread\Sdl_thread.c
+	@echo Sdl_thread.c
+	$(CCUDEB)   $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(INCLUDE_OPTION) ..\..\src\thread $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\thread\Sdl_thread.c
+
+LISTINGUDEBSDL_thread : $(EPOCBLDUDEB)\SDL_thread.lis
+	perl -S ecopyfile.pl $? \SDL-1.2.13\src\thread\SDL_thread.ARMV5.lst
+
+$(EPOCBLDUDEB)\SDL_thread.lis : \SDL-1.2.13\src\thread\Sdl_thread.c
+	$(CCUDEB)  $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(ASSEMBLER_LISTING_OPTION) $(INCLUDE_OPTION) ..\..\src\thread $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\thread\Sdl_thread.c 
+
+
+
+# Source SDL_syscond.c
+
+$(EPOCBLDUREL)\SDL_syscond.lis $(EPOCBLDUREL)\SDL_syscond.o \
+$(EPOCBLDUDEB)\SDL_syscond.lis $(EPOCBLDUDEB)\SDL_syscond.o \
+: \
+	\SDL-1.2.13\include\SDL_config.h \
+	\SDL-1.2.13\include\SDL_config_symbian.h \
+	\SDL-1.2.13\include\SDL_error.h \
+	\SDL-1.2.13\include\SDL_mutex.h \
+	\SDL-1.2.13\include\SDL_platform.h \
+	\SDL-1.2.13\include\SDL_stdinc.h \
+	\SDL-1.2.13\include\SDL_thread.h \
+	\SDL-1.2.13\include\begin_code.h \
+	\SDL-1.2.13\include\close_code.h \
+	$(PREFIXFILE) \
+	\UIQ3\EPOC32\include\libc\_ansi.h \
+	\UIQ3\EPOC32\include\libc\ctype.h \
+	\UIQ3\EPOC32\include\libc\machine\types.h \
+	\UIQ3\EPOC32\include\libc\stdarg.h \
+	\UIQ3\EPOC32\include\libc\stdarg_e.h \
+	\UIQ3\EPOC32\include\libc\stddef.h \
+	\UIQ3\EPOC32\include\libc\stdio.h \
+	\UIQ3\EPOC32\include\libc\stdlib.h \
+	\UIQ3\EPOC32\include\libc\string.h \
+	\UIQ3\EPOC32\include\libc\sys\reent.h \
+	\UIQ3\EPOC32\include\libc\sys\stdio_t.h \
+	\UIQ3\EPOC32\include\libc\sys\types.h \
+	\UIQ3\EPOC32\include\libc\time.h \
+	\UIQ3\EPOC32\include\symcpp.h \
+	\UIQ3\epoc32\include\variant\Symbian_OS_v9.1.hrh \
+	\UIQ3\epoc32\include\variant\UIQ_3.0.hrh
+
+$(EPOCBLDUREL)\SDL_syscond.o : \SDL-1.2.13\src\thread\generic\Sdl_syscond.c
+	@echo Sdl_syscond.c
+	$(CCUREL)   $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(INCLUDE_OPTION) ..\..\src\thread\generic $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\thread\generic\Sdl_syscond.c
+
+LISTINGURELSDL_syscond : $(EPOCBLDUREL)\SDL_syscond.lis
+	perl -S ecopyfile.pl $? \SDL-1.2.13\src\thread\generic\SDL_syscond.ARMV5.lst
+
+$(EPOCBLDUREL)\SDL_syscond.lis : \SDL-1.2.13\src\thread\generic\Sdl_syscond.c
+	$(CCUREL)  $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(ASSEMBLER_LISTING_OPTION) $(INCLUDE_OPTION) ..\..\src\thread\generic $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\thread\generic\Sdl_syscond.c 
+
+$(EPOCBLDUDEB)\SDL_syscond.o : \SDL-1.2.13\src\thread\generic\Sdl_syscond.c
+	@echo Sdl_syscond.c
+	$(CCUDEB)   $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(INCLUDE_OPTION) ..\..\src\thread\generic $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\thread\generic\Sdl_syscond.c
+
+LISTINGUDEBSDL_syscond : $(EPOCBLDUDEB)\SDL_syscond.lis
+	perl -S ecopyfile.pl $? \SDL-1.2.13\src\thread\generic\SDL_syscond.ARMV5.lst
+
+$(EPOCBLDUDEB)\SDL_syscond.lis : \SDL-1.2.13\src\thread\generic\Sdl_syscond.c
+	$(CCUDEB)  $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(ASSEMBLER_LISTING_OPTION) $(INCLUDE_OPTION) ..\..\src\thread\generic $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\thread\generic\Sdl_syscond.c 
+
+
+
+# Source SDL_sysmutex.cpp
+
+$(EPOCBLDUREL)\SDL_sysmutex.lis $(EPOCBLDUREL)\SDL_sysmutex.o \
+$(EPOCBLDUDEB)\SDL_sysmutex.lis $(EPOCBLDUDEB)\SDL_sysmutex.o \
+: \
+	\SDL-1.2.13\include\SDL_config.h \
+	\SDL-1.2.13\include\SDL_config_symbian.h \
+	\SDL-1.2.13\include\SDL_error.h \
+	\SDL-1.2.13\include\SDL_mutex.h \
+	\SDL-1.2.13\include\SDL_platform.h \
+	\SDL-1.2.13\include\SDL_stdinc.h \
+	\SDL-1.2.13\include\begin_code.h \
+	\SDL-1.2.13\include\close_code.h \
+	$(PREFIXFILE) \
+	\UIQ3\EPOC32\include\e32capability.h \
+	\UIQ3\EPOC32\include\e32cmn.h \
+	\UIQ3\EPOC32\include\e32cmn.inl \
+	\UIQ3\EPOC32\include\e32const.h \
+	\UIQ3\EPOC32\include\e32def.h \
+	\UIQ3\EPOC32\include\e32des16.h \
+	\UIQ3\EPOC32\include\e32des8.h \
+	\UIQ3\EPOC32\include\e32err.h \
+	\UIQ3\EPOC32\include\e32std.h \
+	\UIQ3\EPOC32\include\e32std.inl \
+	\UIQ3\EPOC32\include\libc\_ansi.h \
+	\UIQ3\EPOC32\include\libc\ctype.h \
+	\UIQ3\EPOC32\include\libc\machine\types.h \
+	\UIQ3\EPOC32\include\libc\stdarg.h \
+	\UIQ3\EPOC32\include\libc\stdarg_e.h \
+	\UIQ3\EPOC32\include\libc\stddef.h \
+	\UIQ3\EPOC32\include\libc\stdio.h \
+	\UIQ3\EPOC32\include\libc\stdlib.h \
+	\UIQ3\EPOC32\include\libc\string.h \
+	\UIQ3\EPOC32\include\libc\sys\reent.h \
+	\UIQ3\EPOC32\include\libc\sys\stdio_t.h \
+	\UIQ3\EPOC32\include\libc\sys\types.h \
+	\UIQ3\EPOC32\include\libc\time.h \
+	\UIQ3\EPOC32\include\symcpp.h \
+	\UIQ3\epoc32\include\variant\Symbian_OS_v9.1.hrh \
+	\UIQ3\epoc32\include\variant\UIQ_3.0.hrh
+
+$(EPOCBLDUREL)\SDL_sysmutex.o : \SDL-1.2.13\src\thread\symbian\Sdl_sysmutex.cpp
+	@echo Sdl_sysmutex.cpp
+	$(CCUREL)   $(CPP_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(INCLUDE_OPTION) ..\..\src\thread\symbian $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\thread\symbian\Sdl_sysmutex.cpp
+
+LISTINGURELSDL_sysmutex : $(EPOCBLDUREL)\SDL_sysmutex.lis
+	perl -S ecopyfile.pl $? \SDL-1.2.13\src\thread\symbian\SDL_sysmutex.ARMV5.lst
+
+$(EPOCBLDUREL)\SDL_sysmutex.lis : \SDL-1.2.13\src\thread\symbian\Sdl_sysmutex.cpp
+	$(CCUREL)  $(CPP_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(ASSEMBLER_LISTING_OPTION) $(INCLUDE_OPTION) ..\..\src\thread\symbian $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\thread\symbian\Sdl_sysmutex.cpp 
+
+$(EPOCBLDUDEB)\SDL_sysmutex.o : \SDL-1.2.13\src\thread\symbian\Sdl_sysmutex.cpp
+	@echo Sdl_sysmutex.cpp
+	$(CCUDEB)   $(CPP_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(INCLUDE_OPTION) ..\..\src\thread\symbian $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\thread\symbian\Sdl_sysmutex.cpp
+
+LISTINGUDEBSDL_sysmutex : $(EPOCBLDUDEB)\SDL_sysmutex.lis
+	perl -S ecopyfile.pl $? \SDL-1.2.13\src\thread\symbian\SDL_sysmutex.ARMV5.lst
+
+$(EPOCBLDUDEB)\SDL_sysmutex.lis : \SDL-1.2.13\src\thread\symbian\Sdl_sysmutex.cpp
+	$(CCUDEB)  $(CPP_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(ASSEMBLER_LISTING_OPTION) $(INCLUDE_OPTION) ..\..\src\thread\symbian $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\thread\symbian\Sdl_sysmutex.cpp 
+
+
+
+# Source SDL_syssem.cpp
+
+$(EPOCBLDUREL)\SDL_syssem.lis $(EPOCBLDUREL)\SDL_syssem.o \
+$(EPOCBLDUDEB)\SDL_syssem.lis $(EPOCBLDUDEB)\SDL_syssem.o \
+: \
+	\SDL-1.2.13\include\SDL_config.h \
+	\SDL-1.2.13\include\SDL_config_symbian.h \
+	\SDL-1.2.13\include\SDL_error.h \
+	\SDL-1.2.13\include\SDL_mutex.h \
+	\SDL-1.2.13\include\SDL_platform.h \
+	\SDL-1.2.13\include\SDL_stdinc.h \
+	\SDL-1.2.13\include\SDL_thread.h \
+	\SDL-1.2.13\include\begin_code.h \
+	\SDL-1.2.13\include\close_code.h \
+	$(PREFIXFILE) \
+	\UIQ3\EPOC32\include\e32capability.h \
+	\UIQ3\EPOC32\include\e32cmn.h \
+	\UIQ3\EPOC32\include\e32cmn.inl \
+	\UIQ3\EPOC32\include\e32const.h \
+	\UIQ3\EPOC32\include\e32def.h \
+	\UIQ3\EPOC32\include\e32des16.h \
+	\UIQ3\EPOC32\include\e32des8.h \
+	\UIQ3\EPOC32\include\e32err.h \
+	\UIQ3\EPOC32\include\e32std.h \
+	\UIQ3\EPOC32\include\e32std.inl \
+	\UIQ3\EPOC32\include\libc\_ansi.h \
+	\UIQ3\EPOC32\include\libc\ctype.h \
+	\UIQ3\EPOC32\include\libc\machine\types.h \
+	\UIQ3\EPOC32\include\libc\stdarg.h \
+	\UIQ3\EPOC32\include\libc\stdarg_e.h \
+	\UIQ3\EPOC32\include\libc\stddef.h \
+	\UIQ3\EPOC32\include\libc\stdio.h \
+	\UIQ3\EPOC32\include\libc\stdlib.h \
+	\UIQ3\EPOC32\include\libc\string.h \
+	\UIQ3\EPOC32\include\libc\sys\reent.h \
+	\UIQ3\EPOC32\include\libc\sys\stdio_t.h \
+	\UIQ3\EPOC32\include\libc\sys\types.h \
+	\UIQ3\EPOC32\include\libc\time.h \
+	\UIQ3\EPOC32\include\symcpp.h \
+	\UIQ3\epoc32\include\variant\Symbian_OS_v9.1.hrh \
+	\UIQ3\epoc32\include\variant\UIQ_3.0.hrh
+
+$(EPOCBLDUREL)\SDL_syssem.o : \SDL-1.2.13\src\thread\symbian\Sdl_syssem.cpp
+	@echo Sdl_syssem.cpp
+	$(CCUREL)   $(CPP_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(INCLUDE_OPTION) ..\..\src\thread\symbian $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\thread\symbian\Sdl_syssem.cpp
+
+LISTINGURELSDL_syssem : $(EPOCBLDUREL)\SDL_syssem.lis
+	perl -S ecopyfile.pl $? \SDL-1.2.13\src\thread\symbian\SDL_syssem.ARMV5.lst
+
+$(EPOCBLDUREL)\SDL_syssem.lis : \SDL-1.2.13\src\thread\symbian\Sdl_syssem.cpp
+	$(CCUREL)  $(CPP_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(ASSEMBLER_LISTING_OPTION) $(INCLUDE_OPTION) ..\..\src\thread\symbian $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\thread\symbian\Sdl_syssem.cpp 
+
+$(EPOCBLDUDEB)\SDL_syssem.o : \SDL-1.2.13\src\thread\symbian\Sdl_syssem.cpp
+	@echo Sdl_syssem.cpp
+	$(CCUDEB)   $(CPP_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(INCLUDE_OPTION) ..\..\src\thread\symbian $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\thread\symbian\Sdl_syssem.cpp
+
+LISTINGUDEBSDL_syssem : $(EPOCBLDUDEB)\SDL_syssem.lis
+	perl -S ecopyfile.pl $? \SDL-1.2.13\src\thread\symbian\SDL_syssem.ARMV5.lst
+
+$(EPOCBLDUDEB)\SDL_syssem.lis : \SDL-1.2.13\src\thread\symbian\Sdl_syssem.cpp
+	$(CCUDEB)  $(CPP_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(ASSEMBLER_LISTING_OPTION) $(INCLUDE_OPTION) ..\..\src\thread\symbian $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\thread\symbian\Sdl_syssem.cpp 
+
+
+
+# Source SDL_systhread.cpp
+
+$(EPOCBLDUREL)\SDL_systhread.lis $(EPOCBLDUREL)\SDL_systhread.o \
+$(EPOCBLDUDEB)\SDL_systhread.lis $(EPOCBLDUDEB)\SDL_systhread.o \
+: \
+	\SDL-1.2.13\include\SDL_config.h \
+	\SDL-1.2.13\include\SDL_config_symbian.h \
+	\SDL-1.2.13\include\SDL_error.h \
+	\SDL-1.2.13\include\SDL_mutex.h \
+	\SDL-1.2.13\include\SDL_platform.h \
+	\SDL-1.2.13\include\SDL_stdinc.h \
+	\SDL-1.2.13\include\SDL_thread.h \
+	\SDL-1.2.13\include\begin_code.h \
+	\SDL-1.2.13\include\close_code.h \
+	\SDL-1.2.13\src\SDL_error_c.h \
+	\SDL-1.2.13\src\thread\SDL_systhread.h \
+	\SDL-1.2.13\src\thread\SDL_thread_c.h \
+	\SDL-1.2.13\src\thread\symbian\SDL_systhread_c.h \
+	$(PREFIXFILE) \
+	\UIQ3\EPOC32\include\e32capability.h \
+	\UIQ3\EPOC32\include\e32cmn.h \
+	\UIQ3\EPOC32\include\e32cmn.inl \
+	\UIQ3\EPOC32\include\e32const.h \
+	\UIQ3\EPOC32\include\e32def.h \
+	\UIQ3\EPOC32\include\e32des16.h \
+	\UIQ3\EPOC32\include\e32des8.h \
+	\UIQ3\EPOC32\include\e32err.h \
+	\UIQ3\EPOC32\include\e32std.h \
+	\UIQ3\EPOC32\include\e32std.inl \
+	\UIQ3\EPOC32\include\libc\_ansi.h \
+	\UIQ3\EPOC32\include\libc\ctype.h \
+	\UIQ3\EPOC32\include\libc\machine\types.h \
+	\UIQ3\EPOC32\include\libc\stdarg.h \
+	\UIQ3\EPOC32\include\libc\stdarg_e.h \
+	\UIQ3\EPOC32\include\libc\stddef.h \
+	\UIQ3\EPOC32\include\libc\stdio.h \
+	\UIQ3\EPOC32\include\libc\stdlib.h \
+	\UIQ3\EPOC32\include\libc\string.h \
+	\UIQ3\EPOC32\include\libc\sys\reent.h \
+	\UIQ3\EPOC32\include\libc\sys\stdio_t.h \
+	\UIQ3\EPOC32\include\libc\sys\types.h \
+	\UIQ3\EPOC32\include\libc\time.h \
+	\UIQ3\EPOC32\include\symcpp.h \
+	\UIQ3\epoc32\include\variant\Symbian_OS_v9.1.hrh \
+	\UIQ3\epoc32\include\variant\UIQ_3.0.hrh
+
+$(EPOCBLDUREL)\SDL_systhread.o : \SDL-1.2.13\src\thread\symbian\Sdl_systhread.cpp
+	@echo Sdl_systhread.cpp
+	$(CCUREL)   $(CPP_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(INCLUDE_OPTION) ..\..\src\thread\symbian $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\thread\symbian\Sdl_systhread.cpp
+
+LISTINGURELSDL_systhread : $(EPOCBLDUREL)\SDL_systhread.lis
+	perl -S ecopyfile.pl $? \SDL-1.2.13\src\thread\symbian\SDL_systhread.ARMV5.lst
+
+$(EPOCBLDUREL)\SDL_systhread.lis : \SDL-1.2.13\src\thread\symbian\Sdl_systhread.cpp
+	$(CCUREL)  $(CPP_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(ASSEMBLER_LISTING_OPTION) $(INCLUDE_OPTION) ..\..\src\thread\symbian $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\thread\symbian\Sdl_systhread.cpp 
+
+$(EPOCBLDUDEB)\SDL_systhread.o : \SDL-1.2.13\src\thread\symbian\Sdl_systhread.cpp
+	@echo Sdl_systhread.cpp
+	$(CCUDEB)   $(CPP_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(INCLUDE_OPTION) ..\..\src\thread\symbian $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\thread\symbian\Sdl_systhread.cpp
+
+LISTINGUDEBSDL_systhread : $(EPOCBLDUDEB)\SDL_systhread.lis
+	perl -S ecopyfile.pl $? \SDL-1.2.13\src\thread\symbian\SDL_systhread.ARMV5.lst
+
+$(EPOCBLDUDEB)\SDL_systhread.lis : \SDL-1.2.13\src\thread\symbian\Sdl_systhread.cpp
+	$(CCUDEB)  $(CPP_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(ASSEMBLER_LISTING_OPTION) $(INCLUDE_OPTION) ..\..\src\thread\symbian $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\thread\symbian\Sdl_systhread.cpp 
+
+
+
+# Source SDL_active.c
+
+$(EPOCBLDUREL)\SDL_active.lis $(EPOCBLDUREL)\SDL_active.o \
+$(EPOCBLDUDEB)\SDL_active.lis $(EPOCBLDUDEB)\SDL_active.o \
+: \
+	\SDL-1.2.13\include\SDL_active.h \
+	\SDL-1.2.13\include\SDL_config.h \
+	\SDL-1.2.13\include\SDL_config_symbian.h \
+	\SDL-1.2.13\include\SDL_error.h \
+	\SDL-1.2.13\include\SDL_events.h \
+	\SDL-1.2.13\include\SDL_joystick.h \
+	\SDL-1.2.13\include\SDL_keyboard.h \
+	\SDL-1.2.13\include\SDL_keysym.h \
+	\SDL-1.2.13\include\SDL_mouse.h \
+	\SDL-1.2.13\include\SDL_platform.h \
+	\SDL-1.2.13\include\SDL_quit.h \
+	\SDL-1.2.13\include\SDL_rwops.h \
+	\SDL-1.2.13\include\SDL_stdinc.h \
+	\SDL-1.2.13\include\SDL_video.h \
+	\SDL-1.2.13\include\begin_code.h \
+	\SDL-1.2.13\include\close_code.h \
+	\SDL-1.2.13\src\events\SDL_events_c.h \
+	$(PREFIXFILE) \
+	\UIQ3\EPOC32\include\libc\_ansi.h \
+	\UIQ3\EPOC32\include\libc\ctype.h \
+	\UIQ3\EPOC32\include\libc\machine\types.h \
+	\UIQ3\EPOC32\include\libc\stdarg.h \
+	\UIQ3\EPOC32\include\libc\stdarg_e.h \
+	\UIQ3\EPOC32\include\libc\stddef.h \
+	\UIQ3\EPOC32\include\libc\stdio.h \
+	\UIQ3\EPOC32\include\libc\stdlib.h \
+	\UIQ3\EPOC32\include\libc\string.h \
+	\UIQ3\EPOC32\include\libc\sys\reent.h \
+	\UIQ3\EPOC32\include\libc\sys\stdio_t.h \
+	\UIQ3\EPOC32\include\libc\sys\types.h \
+	\UIQ3\EPOC32\include\libc\time.h \
+	\UIQ3\EPOC32\include\symcpp.h \
+	\UIQ3\epoc32\include\variant\Symbian_OS_v9.1.hrh \
+	\UIQ3\epoc32\include\variant\UIQ_3.0.hrh
+
+$(EPOCBLDUREL)\SDL_active.o : \SDL-1.2.13\src\events\Sdl_active.c
+	@echo Sdl_active.c
+	$(CCUREL)   $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(INCLUDE_OPTION) ..\..\src\events $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\events\Sdl_active.c
+
+LISTINGURELSDL_active : $(EPOCBLDUREL)\SDL_active.lis
+	perl -S ecopyfile.pl $? \SDL-1.2.13\src\events\SDL_active.ARMV5.lst
+
+$(EPOCBLDUREL)\SDL_active.lis : \SDL-1.2.13\src\events\Sdl_active.c
+	$(CCUREL)  $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(ASSEMBLER_LISTING_OPTION) $(INCLUDE_OPTION) ..\..\src\events $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\events\Sdl_active.c 
+
+$(EPOCBLDUDEB)\SDL_active.o : \SDL-1.2.13\src\events\Sdl_active.c
+	@echo Sdl_active.c
+	$(CCUDEB)   $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(INCLUDE_OPTION) ..\..\src\events $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\events\Sdl_active.c
+
+LISTINGUDEBSDL_active : $(EPOCBLDUDEB)\SDL_active.lis
+	perl -S ecopyfile.pl $? \SDL-1.2.13\src\events\SDL_active.ARMV5.lst
+
+$(EPOCBLDUDEB)\SDL_active.lis : \SDL-1.2.13\src\events\Sdl_active.c
+	$(CCUDEB)  $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(ASSEMBLER_LISTING_OPTION) $(INCLUDE_OPTION) ..\..\src\events $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\events\Sdl_active.c 
+
+
+
+# Source SDL_events.c
+
+$(EPOCBLDUREL)\SDL_events.lis $(EPOCBLDUREL)\SDL_events.o \
+$(EPOCBLDUDEB)\SDL_events.lis $(EPOCBLDUDEB)\SDL_events.o \
+: \
+	\SDL-1.2.13\include\SDL.h \
+	\SDL-1.2.13\include\SDL_active.h \
+	\SDL-1.2.13\include\SDL_audio.h \
+	\SDL-1.2.13\include\SDL_cdrom.h \
+	\SDL-1.2.13\include\SDL_config.h \
+	\SDL-1.2.13\include\SDL_config_symbian.h \
+	\SDL-1.2.13\include\SDL_cpuinfo.h \
+	\SDL-1.2.13\include\SDL_endian.h \
+	\SDL-1.2.13\include\SDL_error.h \
+	\SDL-1.2.13\include\SDL_events.h \
+	\SDL-1.2.13\include\SDL_joystick.h \
+	\SDL-1.2.13\include\SDL_keyboard.h \
+	\SDL-1.2.13\include\SDL_keysym.h \
+	\SDL-1.2.13\include\SDL_loadso.h \
+	\SDL-1.2.13\include\SDL_main.h \
+	\SDL-1.2.13\include\SDL_mouse.h \
+	\SDL-1.2.13\include\SDL_mutex.h \
+	\SDL-1.2.13\include\SDL_platform.h \
+	\SDL-1.2.13\include\SDL_quit.h \
+	\SDL-1.2.13\include\SDL_rwops.h \
+	\SDL-1.2.13\include\SDL_stdinc.h \
+	\SDL-1.2.13\include\SDL_syswm.h \
+	\SDL-1.2.13\include\SDL_thread.h \
+	\SDL-1.2.13\include\SDL_timer.h \
+	\SDL-1.2.13\include\SDL_version.h \
+	\SDL-1.2.13\include\SDL_video.h \
+	\SDL-1.2.13\include\begin_code.h \
+	\SDL-1.2.13\include\close_code.h \
+	\SDL-1.2.13\src\events\SDL_events_c.h \
+	\SDL-1.2.13\src\events\SDL_sysevents.h \
+	\SDL-1.2.13\src\joystick\SDL_joystick_c.h \
+	\SDL-1.2.13\src\timer\SDL_timer_c.h \
+	\SDL-1.2.13\src\video\SDL_sysvideo.h \
+	$(PREFIXFILE) \
+	\UIQ3\EPOC32\include\libc\_ansi.h \
+	\UIQ3\EPOC32\include\libc\ctype.h \
+	\UIQ3\EPOC32\include\libc\machine\types.h \
+	\UIQ3\EPOC32\include\libc\stdarg.h \
+	\UIQ3\EPOC32\include\libc\stdarg_e.h \
+	\UIQ3\EPOC32\include\libc\stddef.h \
+	\UIQ3\EPOC32\include\libc\stdio.h \
+	\UIQ3\EPOC32\include\libc\stdlib.h \
+	\UIQ3\EPOC32\include\libc\string.h \
+	\UIQ3\EPOC32\include\libc\sys\reent.h \
+	\UIQ3\EPOC32\include\libc\sys\stdio_t.h \
+	\UIQ3\EPOC32\include\libc\sys\types.h \
+	\UIQ3\EPOC32\include\libc\time.h \
+	\UIQ3\EPOC32\include\symcpp.h \
+	\UIQ3\epoc32\include\variant\Symbian_OS_v9.1.hrh \
+	\UIQ3\epoc32\include\variant\UIQ_3.0.hrh
+
+$(EPOCBLDUREL)\SDL_events.o : \SDL-1.2.13\src\events\Sdl_events.c
+	@echo Sdl_events.c
+	$(CCUREL)   $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(INCLUDE_OPTION) ..\..\src\events $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\events\Sdl_events.c
+
+LISTINGURELSDL_events : $(EPOCBLDUREL)\SDL_events.lis
+	perl -S ecopyfile.pl $? \SDL-1.2.13\src\events\SDL_events.ARMV5.lst
+
+$(EPOCBLDUREL)\SDL_events.lis : \SDL-1.2.13\src\events\Sdl_events.c
+	$(CCUREL)  $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(ASSEMBLER_LISTING_OPTION) $(INCLUDE_OPTION) ..\..\src\events $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\events\Sdl_events.c 
+
+$(EPOCBLDUDEB)\SDL_events.o : \SDL-1.2.13\src\events\Sdl_events.c
+	@echo Sdl_events.c
+	$(CCUDEB)   $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(INCLUDE_OPTION) ..\..\src\events $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\events\Sdl_events.c
+
+LISTINGUDEBSDL_events : $(EPOCBLDUDEB)\SDL_events.lis
+	perl -S ecopyfile.pl $? \SDL-1.2.13\src\events\SDL_events.ARMV5.lst
+
+$(EPOCBLDUDEB)\SDL_events.lis : \SDL-1.2.13\src\events\Sdl_events.c
+	$(CCUDEB)  $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(ASSEMBLER_LISTING_OPTION) $(INCLUDE_OPTION) ..\..\src\events $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\events\Sdl_events.c 
+
+
+
+# Source SDL_keyboard.c
+
+$(EPOCBLDUREL)\SDL_keyboard.lis $(EPOCBLDUREL)\SDL_keyboard.o \
+$(EPOCBLDUDEB)\SDL_keyboard.lis $(EPOCBLDUDEB)\SDL_keyboard.o \
+: \
+	\SDL-1.2.13\include\SDL_active.h \
+	\SDL-1.2.13\include\SDL_config.h \
+	\SDL-1.2.13\include\SDL_config_symbian.h \
+	\SDL-1.2.13\include\SDL_error.h \
+	\SDL-1.2.13\include\SDL_events.h \
+	\SDL-1.2.13\include\SDL_joystick.h \
+	\SDL-1.2.13\include\SDL_keyboard.h \
+	\SDL-1.2.13\include\SDL_keysym.h \
+	\SDL-1.2.13\include\SDL_mouse.h \
+	\SDL-1.2.13\include\SDL_platform.h \
+	\SDL-1.2.13\include\SDL_quit.h \
+	\SDL-1.2.13\include\SDL_rwops.h \
+	\SDL-1.2.13\include\SDL_stdinc.h \
+	\SDL-1.2.13\include\SDL_syswm.h \
+	\SDL-1.2.13\include\SDL_timer.h \
+	\SDL-1.2.13\include\SDL_version.h \
+	\SDL-1.2.13\include\SDL_video.h \
+	\SDL-1.2.13\include\begin_code.h \
+	\SDL-1.2.13\include\close_code.h \
+	\SDL-1.2.13\src\events\SDL_events_c.h \
+	\SDL-1.2.13\src\events\SDL_sysevents.h \
+	\SDL-1.2.13\src\video\SDL_sysvideo.h \
+	$(PREFIXFILE) \
+	\UIQ3\EPOC32\include\libc\_ansi.h \
+	\UIQ3\EPOC32\include\libc\ctype.h \
+	\UIQ3\EPOC32\include\libc\machine\types.h \
+	\UIQ3\EPOC32\include\libc\stdarg.h \
+	\UIQ3\EPOC32\include\libc\stdarg_e.h \
+	\UIQ3\EPOC32\include\libc\stddef.h \
+	\UIQ3\EPOC32\include\libc\stdio.h \
+	\UIQ3\EPOC32\include\libc\stdlib.h \
+	\UIQ3\EPOC32\include\libc\string.h \
+	\UIQ3\EPOC32\include\libc\sys\reent.h \
+	\UIQ3\EPOC32\include\libc\sys\stdio_t.h \
+	\UIQ3\EPOC32\include\libc\sys\types.h \
+	\UIQ3\EPOC32\include\libc\time.h \
+	\UIQ3\EPOC32\include\symcpp.h \
+	\UIQ3\epoc32\include\variant\Symbian_OS_v9.1.hrh \
+	\UIQ3\epoc32\include\variant\UIQ_3.0.hrh
+
+$(EPOCBLDUREL)\SDL_keyboard.o : \SDL-1.2.13\src\events\Sdl_keyboard.c
+	@echo Sdl_keyboard.c
+	$(CCUREL)   $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(INCLUDE_OPTION) ..\..\src\events $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\events\Sdl_keyboard.c
+
+LISTINGURELSDL_keyboard : $(EPOCBLDUREL)\SDL_keyboard.lis
+	perl -S ecopyfile.pl $? \SDL-1.2.13\src\events\SDL_keyboard.ARMV5.lst
+
+$(EPOCBLDUREL)\SDL_keyboard.lis : \SDL-1.2.13\src\events\Sdl_keyboard.c
+	$(CCUREL)  $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(ASSEMBLER_LISTING_OPTION) $(INCLUDE_OPTION) ..\..\src\events $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\events\Sdl_keyboard.c 
+
+$(EPOCBLDUDEB)\SDL_keyboard.o : \SDL-1.2.13\src\events\Sdl_keyboard.c
+	@echo Sdl_keyboard.c
+	$(CCUDEB)   $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(INCLUDE_OPTION) ..\..\src\events $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\events\Sdl_keyboard.c
+
+LISTINGUDEBSDL_keyboard : $(EPOCBLDUDEB)\SDL_keyboard.lis
+	perl -S ecopyfile.pl $? \SDL-1.2.13\src\events\SDL_keyboard.ARMV5.lst
+
+$(EPOCBLDUDEB)\SDL_keyboard.lis : \SDL-1.2.13\src\events\Sdl_keyboard.c
+	$(CCUDEB)  $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(ASSEMBLER_LISTING_OPTION) $(INCLUDE_OPTION) ..\..\src\events $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\events\Sdl_keyboard.c 
+
+
+
+# Source SDL_mouse.c
+
+$(EPOCBLDUREL)\SDL_mouse.lis $(EPOCBLDUREL)\SDL_mouse.o \
+$(EPOCBLDUDEB)\SDL_mouse.lis $(EPOCBLDUDEB)\SDL_mouse.o \
+: \
+	\SDL-1.2.13\include\SDL_active.h \
+	\SDL-1.2.13\include\SDL_config.h \
+	\SDL-1.2.13\include\SDL_config_symbian.h \
+	\SDL-1.2.13\include\SDL_error.h \
+	\SDL-1.2.13\include\SDL_events.h \
+	\SDL-1.2.13\include\SDL_joystick.h \
+	\SDL-1.2.13\include\SDL_keyboard.h \
+	\SDL-1.2.13\include\SDL_keysym.h \
+	\SDL-1.2.13\include\SDL_mouse.h \
+	\SDL-1.2.13\include\SDL_mutex.h \
+	\SDL-1.2.13\include\SDL_platform.h \
+	\SDL-1.2.13\include\SDL_quit.h \
+	\SDL-1.2.13\include\SDL_rwops.h \
+	\SDL-1.2.13\include\SDL_stdinc.h \
+	\SDL-1.2.13\include\SDL_syswm.h \
+	\SDL-1.2.13\include\SDL_version.h \
+	\SDL-1.2.13\include\SDL_video.h \
+	\SDL-1.2.13\include\begin_code.h \
+	\SDL-1.2.13\include\close_code.h \
+	\SDL-1.2.13\src\events\SDL_events_c.h \
+	\SDL-1.2.13\src\video\SDL_cursor_c.h \
+	\SDL-1.2.13\src\video\SDL_sysvideo.h \
+	$(PREFIXFILE) \
+	\UIQ3\EPOC32\include\libc\_ansi.h \
+	\UIQ3\EPOC32\include\libc\ctype.h \
+	\UIQ3\EPOC32\include\libc\machine\types.h \
+	\UIQ3\EPOC32\include\libc\stdarg.h \
+	\UIQ3\EPOC32\include\libc\stdarg_e.h \
+	\UIQ3\EPOC32\include\libc\stddef.h \
+	\UIQ3\EPOC32\include\libc\stdio.h \
+	\UIQ3\EPOC32\include\libc\stdlib.h \
+	\UIQ3\EPOC32\include\libc\string.h \
+	\UIQ3\EPOC32\include\libc\sys\reent.h \
+	\UIQ3\EPOC32\include\libc\sys\stdio_t.h \
+	\UIQ3\EPOC32\include\libc\sys\types.h \
+	\UIQ3\EPOC32\include\libc\time.h \
+	\UIQ3\EPOC32\include\symcpp.h \
+	\UIQ3\epoc32\include\variant\Symbian_OS_v9.1.hrh \
+	\UIQ3\epoc32\include\variant\UIQ_3.0.hrh
+
+$(EPOCBLDUREL)\SDL_mouse.o : \SDL-1.2.13\src\events\Sdl_mouse.c
+	@echo Sdl_mouse.c
+	$(CCUREL)   $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(INCLUDE_OPTION) ..\..\src\events $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\events\Sdl_mouse.c
+
+LISTINGURELSDL_mouse : $(EPOCBLDUREL)\SDL_mouse.lis
+	perl -S ecopyfile.pl $? \SDL-1.2.13\src\events\SDL_mouse.ARMV5.lst
+
+$(EPOCBLDUREL)\SDL_mouse.lis : \SDL-1.2.13\src\events\Sdl_mouse.c
+	$(CCUREL)  $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(ASSEMBLER_LISTING_OPTION) $(INCLUDE_OPTION) ..\..\src\events $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\events\Sdl_mouse.c 
+
+$(EPOCBLDUDEB)\SDL_mouse.o : \SDL-1.2.13\src\events\Sdl_mouse.c
+	@echo Sdl_mouse.c
+	$(CCUDEB)   $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(INCLUDE_OPTION) ..\..\src\events $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\events\Sdl_mouse.c
+
+LISTINGUDEBSDL_mouse : $(EPOCBLDUDEB)\SDL_mouse.lis
+	perl -S ecopyfile.pl $? \SDL-1.2.13\src\events\SDL_mouse.ARMV5.lst
+
+$(EPOCBLDUDEB)\SDL_mouse.lis : \SDL-1.2.13\src\events\Sdl_mouse.c
+	$(CCUDEB)  $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(ASSEMBLER_LISTING_OPTION) $(INCLUDE_OPTION) ..\..\src\events $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\events\Sdl_mouse.c 
+
+
+
+# Source SDL_quit.c
+
+$(EPOCBLDUREL)\SDL_quit.lis $(EPOCBLDUREL)\SDL_quit.o \
+$(EPOCBLDUDEB)\SDL_quit.lis $(EPOCBLDUDEB)\SDL_quit.o \
+: \
+	\SDL-1.2.13\include\SDL_active.h \
+	\SDL-1.2.13\include\SDL_config.h \
+	\SDL-1.2.13\include\SDL_config_symbian.h \
+	\SDL-1.2.13\include\SDL_error.h \
+	\SDL-1.2.13\include\SDL_events.h \
+	\SDL-1.2.13\include\SDL_joystick.h \
+	\SDL-1.2.13\include\SDL_keyboard.h \
+	\SDL-1.2.13\include\SDL_keysym.h \
+	\SDL-1.2.13\include\SDL_mouse.h \
+	\SDL-1.2.13\include\SDL_platform.h \
+	\SDL-1.2.13\include\SDL_quit.h \
+	\SDL-1.2.13\include\SDL_rwops.h \
+	\SDL-1.2.13\include\SDL_stdinc.h \
+	\SDL-1.2.13\include\SDL_video.h \
+	\SDL-1.2.13\include\begin_code.h \
+	\SDL-1.2.13\include\close_code.h \
+	\SDL-1.2.13\src\events\SDL_events_c.h \
+	$(PREFIXFILE) \
+	\UIQ3\EPOC32\include\libc\_ansi.h \
+	\UIQ3\EPOC32\include\libc\ctype.h \
+	\UIQ3\EPOC32\include\libc\machine\types.h \
+	\UIQ3\EPOC32\include\libc\stdarg.h \
+	\UIQ3\EPOC32\include\libc\stdarg_e.h \
+	\UIQ3\EPOC32\include\libc\stddef.h \
+	\UIQ3\EPOC32\include\libc\stdio.h \
+	\UIQ3\EPOC32\include\libc\stdlib.h \
+	\UIQ3\EPOC32\include\libc\string.h \
+	\UIQ3\EPOC32\include\libc\sys\reent.h \
+	\UIQ3\EPOC32\include\libc\sys\stdio_t.h \
+	\UIQ3\EPOC32\include\libc\sys\types.h \
+	\UIQ3\EPOC32\include\libc\time.h \
+	\UIQ3\EPOC32\include\symcpp.h \
+	\UIQ3\epoc32\include\variant\Symbian_OS_v9.1.hrh \
+	\UIQ3\epoc32\include\variant\UIQ_3.0.hrh
+
+$(EPOCBLDUREL)\SDL_quit.o : \SDL-1.2.13\src\events\Sdl_quit.c
+	@echo Sdl_quit.c
+	$(CCUREL)   $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(INCLUDE_OPTION) ..\..\src\events $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\events\Sdl_quit.c
+
+LISTINGURELSDL_quit : $(EPOCBLDUREL)\SDL_quit.lis
+	perl -S ecopyfile.pl $? \SDL-1.2.13\src\events\SDL_quit.ARMV5.lst
+
+$(EPOCBLDUREL)\SDL_quit.lis : \SDL-1.2.13\src\events\Sdl_quit.c
+	$(CCUREL)  $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(ASSEMBLER_LISTING_OPTION) $(INCLUDE_OPTION) ..\..\src\events $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\events\Sdl_quit.c 
+
+$(EPOCBLDUDEB)\SDL_quit.o : \SDL-1.2.13\src\events\Sdl_quit.c
+	@echo Sdl_quit.c
+	$(CCUDEB)   $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(INCLUDE_OPTION) ..\..\src\events $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\events\Sdl_quit.c
+
+LISTINGUDEBSDL_quit : $(EPOCBLDUDEB)\SDL_quit.lis
+	perl -S ecopyfile.pl $? \SDL-1.2.13\src\events\SDL_quit.ARMV5.lst
+
+$(EPOCBLDUDEB)\SDL_quit.lis : \SDL-1.2.13\src\events\Sdl_quit.c
+	$(CCUDEB)  $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(ASSEMBLER_LISTING_OPTION) $(INCLUDE_OPTION) ..\..\src\events $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\events\Sdl_quit.c 
+
+
+
+# Source SDL_resize.c
+
+$(EPOCBLDUREL)\SDL_resize.lis $(EPOCBLDUREL)\SDL_resize.o \
+$(EPOCBLDUDEB)\SDL_resize.lis $(EPOCBLDUDEB)\SDL_resize.o \
+: \
+	\SDL-1.2.13\include\SDL_active.h \
+	\SDL-1.2.13\include\SDL_config.h \
+	\SDL-1.2.13\include\SDL_config_symbian.h \
+	\SDL-1.2.13\include\SDL_error.h \
+	\SDL-1.2.13\include\SDL_events.h \
+	\SDL-1.2.13\include\SDL_joystick.h \
+	\SDL-1.2.13\include\SDL_keyboard.h \
+	\SDL-1.2.13\include\SDL_keysym.h \
+	\SDL-1.2.13\include\SDL_mouse.h \
+	\SDL-1.2.13\include\SDL_platform.h \
+	\SDL-1.2.13\include\SDL_quit.h \
+	\SDL-1.2.13\include\SDL_rwops.h \
+	\SDL-1.2.13\include\SDL_stdinc.h \
+	\SDL-1.2.13\include\SDL_syswm.h \
+	\SDL-1.2.13\include\SDL_version.h \
+	\SDL-1.2.13\include\SDL_video.h \
+	\SDL-1.2.13\include\begin_code.h \
+	\SDL-1.2.13\include\close_code.h \
+	\SDL-1.2.13\src\events\SDL_events_c.h \
+	\SDL-1.2.13\src\video\SDL_sysvideo.h \
+	$(PREFIXFILE) \
+	\UIQ3\EPOC32\include\libc\_ansi.h \
+	\UIQ3\EPOC32\include\libc\ctype.h \
+	\UIQ3\EPOC32\include\libc\machine\types.h \
+	\UIQ3\EPOC32\include\libc\stdarg.h \
+	\UIQ3\EPOC32\include\libc\stdarg_e.h \
+	\UIQ3\EPOC32\include\libc\stddef.h \
+	\UIQ3\EPOC32\include\libc\stdio.h \
+	\UIQ3\EPOC32\include\libc\stdlib.h \
+	\UIQ3\EPOC32\include\libc\string.h \
+	\UIQ3\EPOC32\include\libc\sys\reent.h \
+	\UIQ3\EPOC32\include\libc\sys\stdio_t.h \
+	\UIQ3\EPOC32\include\libc\sys\types.h \
+	\UIQ3\EPOC32\include\libc\time.h \
+	\UIQ3\EPOC32\include\symcpp.h \
+	\UIQ3\epoc32\include\variant\Symbian_OS_v9.1.hrh \
+	\UIQ3\epoc32\include\variant\UIQ_3.0.hrh
+
+$(EPOCBLDUREL)\SDL_resize.o : \SDL-1.2.13\src\events\Sdl_resize.c
+	@echo Sdl_resize.c
+	$(CCUREL)   $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(INCLUDE_OPTION) ..\..\src\events $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\events\Sdl_resize.c
+
+LISTINGURELSDL_resize : $(EPOCBLDUREL)\SDL_resize.lis
+	perl -S ecopyfile.pl $? \SDL-1.2.13\src\events\SDL_resize.ARMV5.lst
+
+$(EPOCBLDUREL)\SDL_resize.lis : \SDL-1.2.13\src\events\Sdl_resize.c
+	$(CCUREL)  $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(ASSEMBLER_LISTING_OPTION) $(INCLUDE_OPTION) ..\..\src\events $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\events\Sdl_resize.c 
+
+$(EPOCBLDUDEB)\SDL_resize.o : \SDL-1.2.13\src\events\Sdl_resize.c
+	@echo Sdl_resize.c
+	$(CCUDEB)   $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(INCLUDE_OPTION) ..\..\src\events $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\events\Sdl_resize.c
+
+LISTINGUDEBSDL_resize : $(EPOCBLDUDEB)\SDL_resize.lis
+	perl -S ecopyfile.pl $? \SDL-1.2.13\src\events\SDL_resize.ARMV5.lst
+
+$(EPOCBLDUDEB)\SDL_resize.lis : \SDL-1.2.13\src\events\Sdl_resize.c
+	$(CCUDEB)  $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(ASSEMBLER_LISTING_OPTION) $(INCLUDE_OPTION) ..\..\src\events $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\events\Sdl_resize.c 
+
+
+
+# Source SDL_timer.c
+
+$(EPOCBLDUREL)\SDL_timer.lis $(EPOCBLDUREL)\SDL_timer.o \
+$(EPOCBLDUDEB)\SDL_timer.lis $(EPOCBLDUDEB)\SDL_timer.o \
+: \
+	\SDL-1.2.13\include\SDL_config.h \
+	\SDL-1.2.13\include\SDL_config_symbian.h \
+	\SDL-1.2.13\include\SDL_error.h \
+	\SDL-1.2.13\include\SDL_mutex.h \
+	\SDL-1.2.13\include\SDL_platform.h \
+	\SDL-1.2.13\include\SDL_stdinc.h \
+	\SDL-1.2.13\include\SDL_timer.h \
+	\SDL-1.2.13\include\begin_code.h \
+	\SDL-1.2.13\include\close_code.h \
+	\SDL-1.2.13\src\timer\SDL_systimer.h \
+	\SDL-1.2.13\src\timer\SDL_timer_c.h \
+	$(PREFIXFILE) \
+	\UIQ3\EPOC32\include\libc\_ansi.h \
+	\UIQ3\EPOC32\include\libc\ctype.h \
+	\UIQ3\EPOC32\include\libc\machine\types.h \
+	\UIQ3\EPOC32\include\libc\stdarg.h \
+	\UIQ3\EPOC32\include\libc\stdarg_e.h \
+	\UIQ3\EPOC32\include\libc\stddef.h \
+	\UIQ3\EPOC32\include\libc\stdio.h \
+	\UIQ3\EPOC32\include\libc\stdlib.h \
+	\UIQ3\EPOC32\include\libc\string.h \
+	\UIQ3\EPOC32\include\libc\sys\reent.h \
+	\UIQ3\EPOC32\include\libc\sys\stdio_t.h \
+	\UIQ3\EPOC32\include\libc\sys\types.h \
+	\UIQ3\EPOC32\include\libc\time.h \
+	\UIQ3\EPOC32\include\symcpp.h \
+	\UIQ3\epoc32\include\variant\Symbian_OS_v9.1.hrh \
+	\UIQ3\epoc32\include\variant\UIQ_3.0.hrh
+
+$(EPOCBLDUREL)\SDL_timer.o : \SDL-1.2.13\src\timer\Sdl_timer.c
+	@echo Sdl_timer.c
+	$(CCUREL)   $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(INCLUDE_OPTION) ..\..\src\timer $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\timer\Sdl_timer.c
+
+LISTINGURELSDL_timer : $(EPOCBLDUREL)\SDL_timer.lis
+	perl -S ecopyfile.pl $? \SDL-1.2.13\src\timer\SDL_timer.ARMV5.lst
+
+$(EPOCBLDUREL)\SDL_timer.lis : \SDL-1.2.13\src\timer\Sdl_timer.c
+	$(CCUREL)  $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(ASSEMBLER_LISTING_OPTION) $(INCLUDE_OPTION) ..\..\src\timer $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\timer\Sdl_timer.c 
+
+$(EPOCBLDUDEB)\SDL_timer.o : \SDL-1.2.13\src\timer\Sdl_timer.c
+	@echo Sdl_timer.c
+	$(CCUDEB)   $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(INCLUDE_OPTION) ..\..\src\timer $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\timer\Sdl_timer.c
+
+LISTINGUDEBSDL_timer : $(EPOCBLDUDEB)\SDL_timer.lis
+	perl -S ecopyfile.pl $? \SDL-1.2.13\src\timer\SDL_timer.ARMV5.lst
+
+$(EPOCBLDUDEB)\SDL_timer.lis : \SDL-1.2.13\src\timer\Sdl_timer.c
+	$(CCUDEB)  $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(ASSEMBLER_LISTING_OPTION) $(INCLUDE_OPTION) ..\..\src\timer $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\timer\Sdl_timer.c 
+
+
+
+# Source SDL_systimer.cpp
+
+$(EPOCBLDUREL)\SDL_systimer.lis $(EPOCBLDUREL)\SDL_systimer.o \
+$(EPOCBLDUDEB)\SDL_systimer.lis $(EPOCBLDUDEB)\SDL_systimer.o \
+: \
+	\SDL-1.2.13\include\SDL_config.h \
+	\SDL-1.2.13\include\SDL_config_symbian.h \
+	\SDL-1.2.13\include\SDL_error.h \
+	\SDL-1.2.13\include\SDL_mutex.h \
+	\SDL-1.2.13\include\SDL_platform.h \
+	\SDL-1.2.13\include\SDL_stdinc.h \
+	\SDL-1.2.13\include\SDL_thread.h \
+	\SDL-1.2.13\include\SDL_timer.h \
+	\SDL-1.2.13\include\begin_code.h \
+	\SDL-1.2.13\include\close_code.h \
+	\SDL-1.2.13\src\timer\SDL_timer_c.h \
+	$(PREFIXFILE) \
+	\UIQ3\EPOC32\include\e32capability.h \
+	\UIQ3\EPOC32\include\e32cmn.h \
+	\UIQ3\EPOC32\include\e32cmn.inl \
+	\UIQ3\EPOC32\include\e32const.h \
+	\UIQ3\EPOC32\include\e32def.h \
+	\UIQ3\EPOC32\include\e32des16.h \
+	\UIQ3\EPOC32\include\e32des8.h \
+	\UIQ3\EPOC32\include\e32err.h \
+	\UIQ3\EPOC32\include\e32hal.h \
+	\UIQ3\EPOC32\include\e32std.h \
+	\UIQ3\EPOC32\include\e32std.inl \
+	\UIQ3\EPOC32\include\libc\_ansi.h \
+	\UIQ3\EPOC32\include\libc\ctype.h \
+	\UIQ3\EPOC32\include\libc\machine\types.h \
+	\UIQ3\EPOC32\include\libc\stdarg.h \
+	\UIQ3\EPOC32\include\libc\stdarg_e.h \
+	\UIQ3\EPOC32\include\libc\stddef.h \
+	\UIQ3\EPOC32\include\libc\stdio.h \
+	\UIQ3\EPOC32\include\libc\stdlib.h \
+	\UIQ3\EPOC32\include\libc\string.h \
+	\UIQ3\EPOC32\include\libc\sys\reent.h \
+	\UIQ3\EPOC32\include\libc\sys\stdio_t.h \
+	\UIQ3\EPOC32\include\libc\sys\types.h \
+	\UIQ3\EPOC32\include\libc\time.h \
+	\UIQ3\EPOC32\include\symcpp.h \
+	\UIQ3\epoc32\include\variant\Symbian_OS_v9.1.hrh \
+	\UIQ3\epoc32\include\variant\UIQ_3.0.hrh
+
+$(EPOCBLDUREL)\SDL_systimer.o : \SDL-1.2.13\src\timer\symbian\Sdl_systimer.cpp
+	@echo Sdl_systimer.cpp
+	$(CCUREL)   $(CPP_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(INCLUDE_OPTION) ..\..\src\timer\symbian $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\timer\symbian\Sdl_systimer.cpp
+
+LISTINGURELSDL_systimer : $(EPOCBLDUREL)\SDL_systimer.lis
+	perl -S ecopyfile.pl $? \SDL-1.2.13\src\timer\symbian\SDL_systimer.ARMV5.lst
+
+$(EPOCBLDUREL)\SDL_systimer.lis : \SDL-1.2.13\src\timer\symbian\Sdl_systimer.cpp
+	$(CCUREL)  $(CPP_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(ASSEMBLER_LISTING_OPTION) $(INCLUDE_OPTION) ..\..\src\timer\symbian $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\timer\symbian\Sdl_systimer.cpp 
+
+$(EPOCBLDUDEB)\SDL_systimer.o : \SDL-1.2.13\src\timer\symbian\Sdl_systimer.cpp
+	@echo Sdl_systimer.cpp
+	$(CCUDEB)   $(CPP_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(INCLUDE_OPTION) ..\..\src\timer\symbian $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\timer\symbian\Sdl_systimer.cpp
+
+LISTINGUDEBSDL_systimer : $(EPOCBLDUDEB)\SDL_systimer.lis
+	perl -S ecopyfile.pl $? \SDL-1.2.13\src\timer\symbian\SDL_systimer.ARMV5.lst
+
+$(EPOCBLDUDEB)\SDL_systimer.lis : \SDL-1.2.13\src\timer\symbian\Sdl_systimer.cpp
+	$(CCUDEB)  $(CPP_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(ASSEMBLER_LISTING_OPTION) $(INCLUDE_OPTION) ..\..\src\timer\symbian $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\timer\symbian\Sdl_systimer.cpp 
+
+
+
+# Source SDL_rwops.c
+
+$(EPOCBLDUREL)\SDL_rwops.lis $(EPOCBLDUREL)\SDL_rwops.o \
+$(EPOCBLDUDEB)\SDL_rwops.lis $(EPOCBLDUDEB)\SDL_rwops.o \
+: \
+	\SDL-1.2.13\include\SDL_config.h \
+	\SDL-1.2.13\include\SDL_config_symbian.h \
+	\SDL-1.2.13\include\SDL_endian.h \
+	\SDL-1.2.13\include\SDL_error.h \
+	\SDL-1.2.13\include\SDL_platform.h \
+	\SDL-1.2.13\include\SDL_rwops.h \
+	\SDL-1.2.13\include\SDL_stdinc.h \
+	\SDL-1.2.13\include\begin_code.h \
+	\SDL-1.2.13\include\close_code.h \
+	$(PREFIXFILE) \
+	\UIQ3\EPOC32\include\libc\_ansi.h \
+	\UIQ3\EPOC32\include\libc\ctype.h \
+	\UIQ3\EPOC32\include\libc\machine\types.h \
+	\UIQ3\EPOC32\include\libc\stdarg.h \
+	\UIQ3\EPOC32\include\libc\stdarg_e.h \
+	\UIQ3\EPOC32\include\libc\stddef.h \
+	\UIQ3\EPOC32\include\libc\stdio.h \
+	\UIQ3\EPOC32\include\libc\stdlib.h \
+	\UIQ3\EPOC32\include\libc\string.h \
+	\UIQ3\EPOC32\include\libc\sys\reent.h \
+	\UIQ3\EPOC32\include\libc\sys\stdio_t.h \
+	\UIQ3\EPOC32\include\libc\sys\types.h \
+	\UIQ3\EPOC32\include\libc\time.h \
+	\UIQ3\EPOC32\include\symcpp.h \
+	\UIQ3\epoc32\include\variant\Symbian_OS_v9.1.hrh \
+	\UIQ3\epoc32\include\variant\UIQ_3.0.hrh
+
+$(EPOCBLDUREL)\SDL_rwops.o : \SDL-1.2.13\src\file\Sdl_rwops.c
+	@echo Sdl_rwops.c
+	$(CCUREL)   $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(INCLUDE_OPTION) ..\..\src\file $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\file\Sdl_rwops.c
+
+LISTINGURELSDL_rwops : $(EPOCBLDUREL)\SDL_rwops.lis
+	perl -S ecopyfile.pl $? \SDL-1.2.13\src\file\SDL_rwops.ARMV5.lst
+
+$(EPOCBLDUREL)\SDL_rwops.lis : \SDL-1.2.13\src\file\Sdl_rwops.c
+	$(CCUREL)  $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(ASSEMBLER_LISTING_OPTION) $(INCLUDE_OPTION) ..\..\src\file $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\file\Sdl_rwops.c 
+
+$(EPOCBLDUDEB)\SDL_rwops.o : \SDL-1.2.13\src\file\Sdl_rwops.c
+	@echo Sdl_rwops.c
+	$(CCUDEB)   $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(INCLUDE_OPTION) ..\..\src\file $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\file\Sdl_rwops.c
+
+LISTINGUDEBSDL_rwops : $(EPOCBLDUDEB)\SDL_rwops.lis
+	perl -S ecopyfile.pl $? \SDL-1.2.13\src\file\SDL_rwops.ARMV5.lst
+
+$(EPOCBLDUDEB)\SDL_rwops.lis : \SDL-1.2.13\src\file\Sdl_rwops.c
+	$(CCUDEB)  $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(ASSEMBLER_LISTING_OPTION) $(INCLUDE_OPTION) ..\..\src\file $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\file\Sdl_rwops.c 
+
+
+
+# Source SDL_joystick.c
+
+$(EPOCBLDUREL)\SDL_joystick.lis $(EPOCBLDUREL)\SDL_joystick.o \
+$(EPOCBLDUDEB)\SDL_joystick.lis $(EPOCBLDUDEB)\SDL_joystick.o \
+: \
+	\SDL-1.2.13\include\SDL_active.h \
+	\SDL-1.2.13\include\SDL_config.h \
+	\SDL-1.2.13\include\SDL_config_symbian.h \
+	\SDL-1.2.13\include\SDL_error.h \
+	\SDL-1.2.13\include\SDL_events.h \
+	\SDL-1.2.13\include\SDL_joystick.h \
+	\SDL-1.2.13\include\SDL_keyboard.h \
+	\SDL-1.2.13\include\SDL_keysym.h \
+	\SDL-1.2.13\include\SDL_mouse.h \
+	\SDL-1.2.13\include\SDL_platform.h \
+	\SDL-1.2.13\include\SDL_quit.h \
+	\SDL-1.2.13\include\SDL_rwops.h \
+	\SDL-1.2.13\include\SDL_stdinc.h \
+	\SDL-1.2.13\include\SDL_video.h \
+	\SDL-1.2.13\include\begin_code.h \
+	\SDL-1.2.13\include\close_code.h \
+	\SDL-1.2.13\src\events\SDL_events_c.h \
+	\SDL-1.2.13\src\joystick\SDL_joystick_c.h \
+	\SDL-1.2.13\src\joystick\SDL_sysjoystick.h \
+	$(PREFIXFILE) \
+	\UIQ3\EPOC32\include\libc\_ansi.h \
+	\UIQ3\EPOC32\include\libc\ctype.h \
+	\UIQ3\EPOC32\include\libc\machine\types.h \
+	\UIQ3\EPOC32\include\libc\stdarg.h \
+	\UIQ3\EPOC32\include\libc\stdarg_e.h \
+	\UIQ3\EPOC32\include\libc\stddef.h \
+	\UIQ3\EPOC32\include\libc\stdio.h \
+	\UIQ3\EPOC32\include\libc\stdlib.h \
+	\UIQ3\EPOC32\include\libc\string.h \
+	\UIQ3\EPOC32\include\libc\sys\reent.h \
+	\UIQ3\EPOC32\include\libc\sys\stdio_t.h \
+	\UIQ3\EPOC32\include\libc\sys\types.h \
+	\UIQ3\EPOC32\include\libc\time.h \
+	\UIQ3\EPOC32\include\symcpp.h \
+	\UIQ3\epoc32\include\variant\Symbian_OS_v9.1.hrh \
+	\UIQ3\epoc32\include\variant\UIQ_3.0.hrh
+
+$(EPOCBLDUREL)\SDL_joystick.o : \SDL-1.2.13\src\joystick\Sdl_joystick.c
+	@echo Sdl_joystick.c
+	$(CCUREL)   $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(INCLUDE_OPTION) ..\..\src\joystick $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\joystick\Sdl_joystick.c
+
+LISTINGURELSDL_joystick : $(EPOCBLDUREL)\SDL_joystick.lis
+	perl -S ecopyfile.pl $? \SDL-1.2.13\src\joystick\SDL_joystick.ARMV5.lst
+
+$(EPOCBLDUREL)\SDL_joystick.lis : \SDL-1.2.13\src\joystick\Sdl_joystick.c
+	$(CCUREL)  $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(ASSEMBLER_LISTING_OPTION) $(INCLUDE_OPTION) ..\..\src\joystick $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\joystick\Sdl_joystick.c 
+
+$(EPOCBLDUDEB)\SDL_joystick.o : \SDL-1.2.13\src\joystick\Sdl_joystick.c
+	@echo Sdl_joystick.c
+	$(CCUDEB)   $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(INCLUDE_OPTION) ..\..\src\joystick $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\joystick\Sdl_joystick.c
+
+LISTINGUDEBSDL_joystick : $(EPOCBLDUDEB)\SDL_joystick.lis
+	perl -S ecopyfile.pl $? \SDL-1.2.13\src\joystick\SDL_joystick.ARMV5.lst
+
+$(EPOCBLDUDEB)\SDL_joystick.lis : \SDL-1.2.13\src\joystick\Sdl_joystick.c
+	$(CCUDEB)  $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(ASSEMBLER_LISTING_OPTION) $(INCLUDE_OPTION) ..\..\src\joystick $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\joystick\Sdl_joystick.c 
+
+
+
+# Source SDL_SysJoystick.cpp
+
+$(EPOCBLDUREL)\SDL_SysJoystick.lis $(EPOCBLDUREL)\SDL_SysJoystick.o \
+$(EPOCBLDUDEB)\SDL_SysJoystick.lis $(EPOCBLDUDEB)\SDL_SysJoystick.o \
+: \
+	\SDL-1.2.13\Symbian\IniFile.h \
+	\SDL-1.2.13\Symbian\ebasicapp.h \
+	\SDL-1.2.13\include\SDL_config.h \
+	\SDL-1.2.13\include\SDL_config_symbian.h \
+	\SDL-1.2.13\include\SDL_error.h \
+	\SDL-1.2.13\include\SDL_joystick.h \
+	\SDL-1.2.13\include\SDL_mouse.h \
+	\SDL-1.2.13\include\SDL_platform.h \
+	\SDL-1.2.13\include\SDL_rwops.h \
+	\SDL-1.2.13\include\SDL_stdinc.h \
+	\SDL-1.2.13\include\SDL_syswm.h \
+	\SDL-1.2.13\include\SDL_version.h \
+	\SDL-1.2.13\include\SDL_video.h \
+	\SDL-1.2.13\include\begin_code.h \
+	\SDL-1.2.13\include\close_code.h \
+	\SDL-1.2.13\src\joystick\SDL_joystick_c.h \
+	\SDL-1.2.13\src\joystick\SDL_sysjoystick.h \
+	\SDL-1.2.13\src\video\SDL_sysvideo.h \
+	\SDL-1.2.13\src\video\SDL_sysvideo.h \
+	\SDL-1.2.13\src\video\symbian\SDL_epocvideo.h \
+	$(PREFIXFILE) \
+	\UIQ3\EPOC32\include\Babitflags.h \
+	\UIQ3\EPOC32\include\CoeLayoutMan.h \
+	\UIQ3\EPOC32\include\Ecom\EComErrorCodes.h \
+	\UIQ3\EPOC32\include\Ecom\EComResolverParams.h \
+	\UIQ3\EPOC32\include\Ecom\EComResolverParams.inl \
+	\UIQ3\EPOC32\include\Ecom\Ecom.h \
+	\UIQ3\EPOC32\include\Ecom\ImplementationInformation.h \
+	\UIQ3\EPOC32\include\Ecom\ImplementationInformation.inl \
+	\UIQ3\EPOC32\include\FbsMessage.h \
+	\UIQ3\EPOC32\include\LineBreak.h \
+	\UIQ3\EPOC32\include\QUiConfigClient.h \
+	\UIQ3\EPOC32\include\QikCategory.hrh \
+	\UIQ3\EPOC32\include\QikCategoryModel.h \
+	\UIQ3\EPOC32\include\QikCommand.hrh \
+	\UIQ3\EPOC32\include\QikCommandManager.h \
+	\UIQ3\EPOC32\include\QikContainer.h \
+	\UIQ3\EPOC32\include\QikControlProvider.h \
+	\UIQ3\EPOC32\include\QikFactories.h \
+	\UIQ3\EPOC32\include\QikFlowLayoutManager.h \
+	\UIQ3\EPOC32\include\QikLayoutManager.h \
+	\UIQ3\EPOC32\include\QikLayoutValues.h \
+	\UIQ3\EPOC32\include\QikUiConfigDataTypes.h \
+	\UIQ3\EPOC32\include\QikViewFurniture.h \
+	\UIQ3\EPOC32\include\Qikon.hrh \
+	\UIQ3\EPOC32\include\apacmdln.h \
+	\UIQ3\EPOC32\include\apadef.h \
+	\UIQ3\EPOC32\include\apaflrec.h \
+	\UIQ3\EPOC32\include\apaid.h \
+	\UIQ3\EPOC32\include\apmstd.h \
+	\UIQ3\EPOC32\include\apparc.h \
+	\UIQ3\EPOC32\include\babitflags.h \
+	\UIQ3\EPOC32\include\badesca.h \
+	\UIQ3\EPOC32\include\baerrhan.h \
+	\UIQ3\EPOC32\include\bamdesca.h \
+	\UIQ3\EPOC32\include\barsc.h \
+	\UIQ3\EPOC32\include\basched.h \
+	\UIQ3\EPOC32\include\bidi.h \
+	\UIQ3\EPOC32\include\biditext.h \
+	\UIQ3\EPOC32\include\bitbase.h \
+	\UIQ3\EPOC32\include\bitdev.h \
+	\UIQ3\EPOC32\include\bitdev.inl \
+	\UIQ3\EPOC32\include\bitmap.h \
+	\UIQ3\EPOC32\include\bitstd.h \
+	\UIQ3\EPOC32\include\coeaui.h \
+	\UIQ3\EPOC32\include\coecntrl.h \
+	\UIQ3\EPOC32\include\coecobs.h \
+	\UIQ3\EPOC32\include\coecontrolarray.h \
+	\UIQ3\EPOC32\include\coedef.h \
+	\UIQ3\EPOC32\include\coefont.h \
+	\UIQ3\EPOC32\include\coehelp.h \
+	\UIQ3\EPOC32\include\coeinput.h \
+	\UIQ3\EPOC32\include\coemain.h \
+	\UIQ3\EPOC32\include\coemop.h \
+	\UIQ3\EPOC32\include\coetextdrawer.h \
+	\UIQ3\EPOC32\include\coeview.h \
+	\UIQ3\EPOC32\include\d32locd.h \
+	\UIQ3\EPOC32\include\d32locd.inl \
+	\UIQ3\EPOC32\include\e32base.h \
+	\UIQ3\EPOC32\include\e32base.inl \
+	\UIQ3\EPOC32\include\e32capability.h \
+	\UIQ3\EPOC32\include\e32cmn.h \
+	\UIQ3\EPOC32\include\e32cmn.inl \
+	\UIQ3\EPOC32\include\e32const.h \
+	\UIQ3\EPOC32\include\e32debug.h \
+	\UIQ3\EPOC32\include\e32def.h \
+	\UIQ3\EPOC32\include\e32des16.h \
+	\UIQ3\EPOC32\include\e32des8.h \
+	\UIQ3\EPOC32\include\e32err.h \
+	\UIQ3\EPOC32\include\e32event.h \
+	\UIQ3\EPOC32\include\e32hal.h \
+	\UIQ3\EPOC32\include\e32keys.h \
+	\UIQ3\EPOC32\include\e32ktran.h \
+	\UIQ3\EPOC32\include\e32ldr.h \
+	\UIQ3\EPOC32\include\e32lmsg.h \
+	\UIQ3\EPOC32\include\e32notif.h \
+	\UIQ3\EPOC32\include\e32std.h \
+	\UIQ3\EPOC32\include\e32std.inl \
+	\UIQ3\EPOC32\include\e32svr.h \
+	\UIQ3\EPOC32\include\eikamnt.h \
+	\UIQ3\EPOC32\include\eikapp.h \
+	\UIQ3\EPOC32\include\eikappui.h \
+	\UIQ3\EPOC32\include\eikaufty.h \
+	\UIQ3\EPOC32\include\eikbctrl.h \
+	\UIQ3\EPOC32\include\eikbtgrp.h \
+	\UIQ3\EPOC32\include\eikcmobs.h \
+	\UIQ3\EPOC32\include\eikcolor.hrh \
+	\UIQ3\EPOC32\include\eikdef.h \
+	\UIQ3\EPOC32\include\eikdgfty.h \
+	\UIQ3\EPOC32\include\eikdoc.h \
+	\UIQ3\EPOC32\include\eikenv.h \
+	\UIQ3\EPOC32\include\eikfctry.h \
+	\UIQ3\EPOC32\include\eiklibry.h \
+	\UIQ3\EPOC32\include\eikmobs.h \
+	\UIQ3\EPOC32\include\eikon.hrh \
+	\UIQ3\EPOC32\include\eikprogi.h \
+	\UIQ3\EPOC32\include\eikvcurs.h \
+	\UIQ3\EPOC32\include\f32file.h \
+	\UIQ3\EPOC32\include\f32file.inl \
+	\UIQ3\EPOC32\include\fbs.h \
+	\UIQ3\EPOC32\include\fldbase.h \
+	\UIQ3\EPOC32\include\fldbltin.h \
+	\UIQ3\EPOC32\include\fldinfo.h \
+	\UIQ3\EPOC32\include\fldset.h \
+	\UIQ3\EPOC32\include\fntstore.h \
+	\UIQ3\EPOC32\include\frmlaydt.h \
+	\UIQ3\EPOC32\include\frmparam.h \
+	\UIQ3\EPOC32\include\frmtlay.h \
+	\UIQ3\EPOC32\include\frmvis.h \
+	\UIQ3\EPOC32\include\gdi.h \
+	\UIQ3\EPOC32\include\gdi.inl \
+	\UIQ3\EPOC32\include\graphicsaccelerator.h \
+	\UIQ3\EPOC32\include\gulalign.h \
+	\UIQ3\EPOC32\include\gulbordr.h \
+	\UIQ3\EPOC32\include\gulcolor.h \
+	\UIQ3\EPOC32\include\guldef.h \
+	\UIQ3\EPOC32\include\gulftflg.hrh \
+	\UIQ3\EPOC32\include\gulutil.h \
+	\UIQ3\EPOC32\include\lafmain.h \
+	\UIQ3\EPOC32\include\libc\_ansi.h \
+	\UIQ3\EPOC32\include\libc\ctype.h \
+	\UIQ3\EPOC32\include\libc\machine\types.h \
+	\UIQ3\EPOC32\include\libc\stdarg.h \
+	\UIQ3\EPOC32\include\libc\stdarg_e.h \
+	\UIQ3\EPOC32\include\libc\stddef.h \
+	\UIQ3\EPOC32\include\libc\stdio.h \
+	\UIQ3\EPOC32\include\libc\stdlib.h \
+	\UIQ3\EPOC32\include\libc\string.h \
+	\UIQ3\EPOC32\include\libc\sys\reent.h \
+	\UIQ3\EPOC32\include\libc\sys\stdio_t.h \
+	\UIQ3\EPOC32\include\libc\sys\types.h \
+	\UIQ3\EPOC32\include\libc\time.h \
+	\UIQ3\EPOC32\include\openfont.h \
+	\UIQ3\EPOC32\include\partitions.h \
+	\UIQ3\EPOC32\include\qikappui.h \
+	\UIQ3\EPOC32\include\qikdocument.h \
+	\UIQ3\EPOC32\include\qikon.hrh \
+	\UIQ3\EPOC32\include\qikstockcontrols.hrh \
+	\UIQ3\EPOC32\include\qiktoolbar.h \
+	\UIQ3\EPOC32\include\qikviewbase.h \
+	\UIQ3\EPOC32\include\quartz.mbg \
+	\UIQ3\EPOC32\include\s32buf.h \
+	\UIQ3\EPOC32\include\s32buf.inl \
+	\UIQ3\EPOC32\include\s32file.h \
+	\UIQ3\EPOC32\include\s32file.inl \
+	\UIQ3\EPOC32\include\s32page.h \
+	\UIQ3\EPOC32\include\s32page.inl \
+	\UIQ3\EPOC32\include\s32share.h \
+	\UIQ3\EPOC32\include\s32share.inl \
+	\UIQ3\EPOC32\include\s32std.h \
+	\UIQ3\EPOC32\include\s32std.inl \
+	\UIQ3\EPOC32\include\s32stor.h \
+	\UIQ3\EPOC32\include\s32stor.inl \
+	\UIQ3\EPOC32\include\s32strm.h \
+	\UIQ3\EPOC32\include\s32strm.inl \
+	\UIQ3\EPOC32\include\savenotf.h \
+	\UIQ3\EPOC32\include\symcpp.h \
+	\UIQ3\EPOC32\include\tagma.h \
+	\UIQ3\EPOC32\include\txtetext.h \
+	\UIQ3\EPOC32\include\txtetext.inl \
+	\UIQ3\EPOC32\include\txtfmlyr.h \
+	\UIQ3\EPOC32\include\txtfmlyr.inl \
+	\UIQ3\EPOC32\include\txtfmstm.h \
+	\UIQ3\EPOC32\include\txtfrmat.h \
+	\UIQ3\EPOC32\include\txtfrmat.inl \
+	\UIQ3\EPOC32\include\txtstyle.h \
+	\UIQ3\EPOC32\include\txtstyle.inl \
+	\UIQ3\EPOC32\include\uikon.hrh \
+	\UIQ3\EPOC32\include\vwsdef.h \
+	\UIQ3\EPOC32\include\w32std.h \
+	\UIQ3\epoc32\include\variant\Symbian_OS_v9.1.hrh \
+	\UIQ3\epoc32\include\variant\UIQ_3.0.hrh
+
+$(EPOCBLDUREL)\SDL_SysJoystick.o : \SDL-1.2.13\src\joystick\symbian\Sdl_sysjoystick.cpp
+	@echo Sdl_sysjoystick.cpp
+	$(CCUREL)   $(CPP_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(INCLUDE_OPTION) ..\..\src\joystick\symbian $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\joystick\symbian\Sdl_sysjoystick.cpp
+
+LISTINGURELSDL_SysJoystick : $(EPOCBLDUREL)\SDL_SysJoystick.lis
+	perl -S ecopyfile.pl $? \SDL-1.2.13\src\joystick\symbian\SDL_SysJoystick.ARMV5.lst
+
+$(EPOCBLDUREL)\SDL_SysJoystick.lis : \SDL-1.2.13\src\joystick\symbian\Sdl_sysjoystick.cpp
+	$(CCUREL)  $(CPP_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(ASSEMBLER_LISTING_OPTION) $(INCLUDE_OPTION) ..\..\src\joystick\symbian $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\joystick\symbian\Sdl_sysjoystick.cpp 
+
+$(EPOCBLDUDEB)\SDL_SysJoystick.o : \SDL-1.2.13\src\joystick\symbian\Sdl_sysjoystick.cpp
+	@echo Sdl_sysjoystick.cpp
+	$(CCUDEB)   $(CPP_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(INCLUDE_OPTION) ..\..\src\joystick\symbian $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\joystick\symbian\Sdl_sysjoystick.cpp
+
+LISTINGUDEBSDL_SysJoystick : $(EPOCBLDUDEB)\SDL_SysJoystick.lis
+	perl -S ecopyfile.pl $? \SDL-1.2.13\src\joystick\symbian\SDL_SysJoystick.ARMV5.lst
+
+$(EPOCBLDUDEB)\SDL_SysJoystick.lis : \SDL-1.2.13\src\joystick\symbian\Sdl_sysjoystick.cpp
+	$(CCUDEB)  $(CPP_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(ASSEMBLER_LISTING_OPTION) $(INCLUDE_OPTION) ..\..\src\joystick\symbian $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\joystick\symbian\Sdl_sysjoystick.cpp 
+
+
+
+# Source SDL_getenv.c
+
+$(EPOCBLDUREL)\SDL_getenv.lis $(EPOCBLDUREL)\SDL_getenv.o \
+$(EPOCBLDUDEB)\SDL_getenv.lis $(EPOCBLDUDEB)\SDL_getenv.o \
+: \
+	\SDL-1.2.13\include\SDL_config.h \
+	\SDL-1.2.13\include\SDL_config_symbian.h \
+	\SDL-1.2.13\include\SDL_platform.h \
+	\SDL-1.2.13\include\SDL_stdinc.h \
+	\SDL-1.2.13\include\begin_code.h \
+	\SDL-1.2.13\include\close_code.h \
+	$(PREFIXFILE) \
+	\UIQ3\EPOC32\include\libc\_ansi.h \
+	\UIQ3\EPOC32\include\libc\ctype.h \
+	\UIQ3\EPOC32\include\libc\machine\types.h \
+	\UIQ3\EPOC32\include\libc\stdarg.h \
+	\UIQ3\EPOC32\include\libc\stdarg_e.h \
+	\UIQ3\EPOC32\include\libc\stddef.h \
+	\UIQ3\EPOC32\include\libc\stdio.h \
+	\UIQ3\EPOC32\include\libc\stdlib.h \
+	\UIQ3\EPOC32\include\libc\string.h \
+	\UIQ3\EPOC32\include\libc\sys\reent.h \
+	\UIQ3\EPOC32\include\libc\sys\stdio_t.h \
+	\UIQ3\EPOC32\include\libc\sys\types.h \
+	\UIQ3\EPOC32\include\libc\time.h \
+	\UIQ3\EPOC32\include\symcpp.h \
+	\UIQ3\epoc32\include\variant\Symbian_OS_v9.1.hrh \
+	\UIQ3\epoc32\include\variant\UIQ_3.0.hrh
+
+$(EPOCBLDUREL)\SDL_getenv.o : \SDL-1.2.13\src\stdlib\Sdl_getenv.c
+	@echo Sdl_getenv.c
+	$(CCUREL)   $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(INCLUDE_OPTION) ..\..\src\stdlib $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\stdlib\Sdl_getenv.c
+
+LISTINGURELSDL_getenv : $(EPOCBLDUREL)\SDL_getenv.lis
+	perl -S ecopyfile.pl $? \SDL-1.2.13\src\stdlib\SDL_getenv.ARMV5.lst
+
+$(EPOCBLDUREL)\SDL_getenv.lis : \SDL-1.2.13\src\stdlib\Sdl_getenv.c
+	$(CCUREL)  $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(ASSEMBLER_LISTING_OPTION) $(INCLUDE_OPTION) ..\..\src\stdlib $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\stdlib\Sdl_getenv.c 
+
+$(EPOCBLDUDEB)\SDL_getenv.o : \SDL-1.2.13\src\stdlib\Sdl_getenv.c
+	@echo Sdl_getenv.c
+	$(CCUDEB)   $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(INCLUDE_OPTION) ..\..\src\stdlib $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\stdlib\Sdl_getenv.c
+
+LISTINGUDEBSDL_getenv : $(EPOCBLDUDEB)\SDL_getenv.lis
+	perl -S ecopyfile.pl $? \SDL-1.2.13\src\stdlib\SDL_getenv.ARMV5.lst
+
+$(EPOCBLDUDEB)\SDL_getenv.lis : \SDL-1.2.13\src\stdlib\Sdl_getenv.c
+	$(CCUDEB)  $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(ASSEMBLER_LISTING_OPTION) $(INCLUDE_OPTION) ..\..\src\stdlib $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\stdlib\Sdl_getenv.c 
+
+
+
+# Source SDL_iconv.c
+
+$(EPOCBLDUREL)\SDL_iconv.lis $(EPOCBLDUREL)\SDL_iconv.o \
+$(EPOCBLDUDEB)\SDL_iconv.lis $(EPOCBLDUDEB)\SDL_iconv.o \
+: \
+	\SDL-1.2.13\include\SDL_config.h \
+	\SDL-1.2.13\include\SDL_config_symbian.h \
+	\SDL-1.2.13\include\SDL_endian.h \
+	\SDL-1.2.13\include\SDL_platform.h \
+	\SDL-1.2.13\include\SDL_stdinc.h \
+	\SDL-1.2.13\include\begin_code.h \
+	\SDL-1.2.13\include\close_code.h \
+	$(PREFIXFILE) \
+	\UIQ3\EPOC32\include\libc\_ansi.h \
+	\UIQ3\EPOC32\include\libc\ctype.h \
+	\UIQ3\EPOC32\include\libc\machine\types.h \
+	\UIQ3\EPOC32\include\libc\stdarg.h \
+	\UIQ3\EPOC32\include\libc\stdarg_e.h \
+	\UIQ3\EPOC32\include\libc\stddef.h \
+	\UIQ3\EPOC32\include\libc\stdio.h \
+	\UIQ3\EPOC32\include\libc\stdlib.h \
+	\UIQ3\EPOC32\include\libc\string.h \
+	\UIQ3\EPOC32\include\libc\sys\reent.h \
+	\UIQ3\EPOC32\include\libc\sys\stdio_t.h \
+	\UIQ3\EPOC32\include\libc\sys\types.h \
+	\UIQ3\EPOC32\include\libc\time.h \
+	\UIQ3\EPOC32\include\symcpp.h \
+	\UIQ3\epoc32\include\variant\Symbian_OS_v9.1.hrh \
+	\UIQ3\epoc32\include\variant\UIQ_3.0.hrh
+
+$(EPOCBLDUREL)\SDL_iconv.o : \SDL-1.2.13\src\stdlib\Sdl_iconv.c
+	@echo Sdl_iconv.c
+	$(CCUREL)   $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(INCLUDE_OPTION) ..\..\src\stdlib $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\stdlib\Sdl_iconv.c
+
+LISTINGURELSDL_iconv : $(EPOCBLDUREL)\SDL_iconv.lis
+	perl -S ecopyfile.pl $? \SDL-1.2.13\src\stdlib\SDL_iconv.ARMV5.lst
+
+$(EPOCBLDUREL)\SDL_iconv.lis : \SDL-1.2.13\src\stdlib\Sdl_iconv.c
+	$(CCUREL)  $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(ASSEMBLER_LISTING_OPTION) $(INCLUDE_OPTION) ..\..\src\stdlib $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\stdlib\Sdl_iconv.c 
+
+$(EPOCBLDUDEB)\SDL_iconv.o : \SDL-1.2.13\src\stdlib\Sdl_iconv.c
+	@echo Sdl_iconv.c
+	$(CCUDEB)   $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(INCLUDE_OPTION) ..\..\src\stdlib $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\stdlib\Sdl_iconv.c
+
+LISTINGUDEBSDL_iconv : $(EPOCBLDUDEB)\SDL_iconv.lis
+	perl -S ecopyfile.pl $? \SDL-1.2.13\src\stdlib\SDL_iconv.ARMV5.lst
+
+$(EPOCBLDUDEB)\SDL_iconv.lis : \SDL-1.2.13\src\stdlib\Sdl_iconv.c
+	$(CCUDEB)  $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(ASSEMBLER_LISTING_OPTION) $(INCLUDE_OPTION) ..\..\src\stdlib $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\stdlib\Sdl_iconv.c 
+
+
+
+# Source SDL_malloc.c
+
+$(EPOCBLDUREL)\SDL_malloc.lis $(EPOCBLDUREL)\SDL_malloc.o \
+$(EPOCBLDUDEB)\SDL_malloc.lis $(EPOCBLDUDEB)\SDL_malloc.o \
+: \
+	\SDL-1.2.13\include\SDL_config.h \
+	\SDL-1.2.13\include\SDL_config_symbian.h \
+	\SDL-1.2.13\include\SDL_platform.h \
+	\SDL-1.2.13\include\SDL_stdinc.h \
+	\SDL-1.2.13\include\begin_code.h \
+	\SDL-1.2.13\include\close_code.h \
+	$(PREFIXFILE) \
+	\UIQ3\EPOC32\include\libc\_ansi.h \
+	\UIQ3\EPOC32\include\libc\ctype.h \
+	\UIQ3\EPOC32\include\libc\machine\types.h \
+	\UIQ3\EPOC32\include\libc\stdarg.h \
+	\UIQ3\EPOC32\include\libc\stdarg_e.h \
+	\UIQ3\EPOC32\include\libc\stddef.h \
+	\UIQ3\EPOC32\include\libc\stdio.h \
+	\UIQ3\EPOC32\include\libc\stdlib.h \
+	\UIQ3\EPOC32\include\libc\string.h \
+	\UIQ3\EPOC32\include\libc\sys\reent.h \
+	\UIQ3\EPOC32\include\libc\sys\stdio_t.h \
+	\UIQ3\EPOC32\include\libc\sys\types.h \
+	\UIQ3\EPOC32\include\libc\time.h \
+	\UIQ3\EPOC32\include\symcpp.h \
+	\UIQ3\epoc32\include\variant\Symbian_OS_v9.1.hrh \
+	\UIQ3\epoc32\include\variant\UIQ_3.0.hrh
+
+$(EPOCBLDUREL)\SDL_malloc.o : \SDL-1.2.13\src\stdlib\Sdl_malloc.c
+	@echo Sdl_malloc.c
+	$(CCUREL)   $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(INCLUDE_OPTION) ..\..\src\stdlib $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\stdlib\Sdl_malloc.c
+
+LISTINGURELSDL_malloc : $(EPOCBLDUREL)\SDL_malloc.lis
+	perl -S ecopyfile.pl $? \SDL-1.2.13\src\stdlib\SDL_malloc.ARMV5.lst
+
+$(EPOCBLDUREL)\SDL_malloc.lis : \SDL-1.2.13\src\stdlib\Sdl_malloc.c
+	$(CCUREL)  $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(ASSEMBLER_LISTING_OPTION) $(INCLUDE_OPTION) ..\..\src\stdlib $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\stdlib\Sdl_malloc.c 
+
+$(EPOCBLDUDEB)\SDL_malloc.o : \SDL-1.2.13\src\stdlib\Sdl_malloc.c
+	@echo Sdl_malloc.c
+	$(CCUDEB)   $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(INCLUDE_OPTION) ..\..\src\stdlib $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\stdlib\Sdl_malloc.c
+
+LISTINGUDEBSDL_malloc : $(EPOCBLDUDEB)\SDL_malloc.lis
+	perl -S ecopyfile.pl $? \SDL-1.2.13\src\stdlib\SDL_malloc.ARMV5.lst
+
+$(EPOCBLDUDEB)\SDL_malloc.lis : \SDL-1.2.13\src\stdlib\Sdl_malloc.c
+	$(CCUDEB)  $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(ASSEMBLER_LISTING_OPTION) $(INCLUDE_OPTION) ..\..\src\stdlib $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\stdlib\Sdl_malloc.c 
+
+
+
+# Source SDL_qsort.c
+
+$(EPOCBLDUREL)\SDL_qsort.lis $(EPOCBLDUREL)\SDL_qsort.o \
+$(EPOCBLDUDEB)\SDL_qsort.lis $(EPOCBLDUDEB)\SDL_qsort.o \
+: \
+	\SDL-1.2.13\include\SDL_config.h \
+	\SDL-1.2.13\include\SDL_config_symbian.h \
+	\SDL-1.2.13\include\SDL_platform.h \
+	\SDL-1.2.13\include\SDL_stdinc.h \
+	\SDL-1.2.13\include\begin_code.h \
+	\SDL-1.2.13\include\close_code.h \
+	$(PREFIXFILE) \
+	\UIQ3\EPOC32\include\libc\_ansi.h \
+	\UIQ3\EPOC32\include\libc\ctype.h \
+	\UIQ3\EPOC32\include\libc\machine\types.h \
+	\UIQ3\EPOC32\include\libc\stdarg.h \
+	\UIQ3\EPOC32\include\libc\stdarg_e.h \
+	\UIQ3\EPOC32\include\libc\stddef.h \
+	\UIQ3\EPOC32\include\libc\stdio.h \
+	\UIQ3\EPOC32\include\libc\stdlib.h \
+	\UIQ3\EPOC32\include\libc\string.h \
+	\UIQ3\EPOC32\include\libc\sys\reent.h \
+	\UIQ3\EPOC32\include\libc\sys\stdio_t.h \
+	\UIQ3\EPOC32\include\libc\sys\types.h \
+	\UIQ3\EPOC32\include\libc\time.h \
+	\UIQ3\EPOC32\include\symcpp.h \
+	\UIQ3\epoc32\include\variant\Symbian_OS_v9.1.hrh \
+	\UIQ3\epoc32\include\variant\UIQ_3.0.hrh
+
+$(EPOCBLDUREL)\SDL_qsort.o : \SDL-1.2.13\src\stdlib\Sdl_qsort.c
+	@echo Sdl_qsort.c
+	$(CCUREL)   $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(INCLUDE_OPTION) ..\..\src\stdlib $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\stdlib\Sdl_qsort.c
+
+LISTINGURELSDL_qsort : $(EPOCBLDUREL)\SDL_qsort.lis
+	perl -S ecopyfile.pl $? \SDL-1.2.13\src\stdlib\SDL_qsort.ARMV5.lst
+
+$(EPOCBLDUREL)\SDL_qsort.lis : \SDL-1.2.13\src\stdlib\Sdl_qsort.c
+	$(CCUREL)  $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(ASSEMBLER_LISTING_OPTION) $(INCLUDE_OPTION) ..\..\src\stdlib $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\stdlib\Sdl_qsort.c 
+
+$(EPOCBLDUDEB)\SDL_qsort.o : \SDL-1.2.13\src\stdlib\Sdl_qsort.c
+	@echo Sdl_qsort.c
+	$(CCUDEB)   $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(INCLUDE_OPTION) ..\..\src\stdlib $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\stdlib\Sdl_qsort.c
+
+LISTINGUDEBSDL_qsort : $(EPOCBLDUDEB)\SDL_qsort.lis
+	perl -S ecopyfile.pl $? \SDL-1.2.13\src\stdlib\SDL_qsort.ARMV5.lst
+
+$(EPOCBLDUDEB)\SDL_qsort.lis : \SDL-1.2.13\src\stdlib\Sdl_qsort.c
+	$(CCUDEB)  $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(ASSEMBLER_LISTING_OPTION) $(INCLUDE_OPTION) ..\..\src\stdlib $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\stdlib\Sdl_qsort.c 
+
+
+
+# Source SDL_stdlib.c
+
+$(EPOCBLDUREL)\SDL_stdlib.lis $(EPOCBLDUREL)\SDL_stdlib.o \
+$(EPOCBLDUDEB)\SDL_stdlib.lis $(EPOCBLDUDEB)\SDL_stdlib.o \
+: \
+	\SDL-1.2.13\include\SDL_config.h \
+	\SDL-1.2.13\include\SDL_config_symbian.h \
+	\SDL-1.2.13\include\SDL_platform.h \
+	\SDL-1.2.13\include\SDL_stdinc.h \
+	\SDL-1.2.13\include\begin_code.h \
+	\SDL-1.2.13\include\close_code.h \
+	$(PREFIXFILE) \
+	\UIQ3\EPOC32\include\libc\_ansi.h \
+	\UIQ3\EPOC32\include\libc\ctype.h \
+	\UIQ3\EPOC32\include\libc\machine\types.h \
+	\UIQ3\EPOC32\include\libc\stdarg.h \
+	\UIQ3\EPOC32\include\libc\stdarg_e.h \
+	\UIQ3\EPOC32\include\libc\stddef.h \
+	\UIQ3\EPOC32\include\libc\stdio.h \
+	\UIQ3\EPOC32\include\libc\stdlib.h \
+	\UIQ3\EPOC32\include\libc\string.h \
+	\UIQ3\EPOC32\include\libc\sys\reent.h \
+	\UIQ3\EPOC32\include\libc\sys\stdio_t.h \
+	\UIQ3\EPOC32\include\libc\sys\types.h \
+	\UIQ3\EPOC32\include\libc\time.h \
+	\UIQ3\EPOC32\include\symcpp.h \
+	\UIQ3\epoc32\include\variant\Symbian_OS_v9.1.hrh \
+	\UIQ3\epoc32\include\variant\UIQ_3.0.hrh
+
+$(EPOCBLDUREL)\SDL_stdlib.o : \SDL-1.2.13\src\stdlib\Sdl_stdlib.c
+	@echo Sdl_stdlib.c
+	$(CCUREL)   $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(INCLUDE_OPTION) ..\..\src\stdlib $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\stdlib\Sdl_stdlib.c
+
+LISTINGURELSDL_stdlib : $(EPOCBLDUREL)\SDL_stdlib.lis
+	perl -S ecopyfile.pl $? \SDL-1.2.13\src\stdlib\SDL_stdlib.ARMV5.lst
+
+$(EPOCBLDUREL)\SDL_stdlib.lis : \SDL-1.2.13\src\stdlib\Sdl_stdlib.c
+	$(CCUREL)  $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(ASSEMBLER_LISTING_OPTION) $(INCLUDE_OPTION) ..\..\src\stdlib $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\stdlib\Sdl_stdlib.c 
+
+$(EPOCBLDUDEB)\SDL_stdlib.o : \SDL-1.2.13\src\stdlib\Sdl_stdlib.c
+	@echo Sdl_stdlib.c
+	$(CCUDEB)   $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(INCLUDE_OPTION) ..\..\src\stdlib $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\stdlib\Sdl_stdlib.c
+
+LISTINGUDEBSDL_stdlib : $(EPOCBLDUDEB)\SDL_stdlib.lis
+	perl -S ecopyfile.pl $? \SDL-1.2.13\src\stdlib\SDL_stdlib.ARMV5.lst
+
+$(EPOCBLDUDEB)\SDL_stdlib.lis : \SDL-1.2.13\src\stdlib\Sdl_stdlib.c
+	$(CCUDEB)  $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(ASSEMBLER_LISTING_OPTION) $(INCLUDE_OPTION) ..\..\src\stdlib $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\stdlib\Sdl_stdlib.c 
+
+
+
+# Source SDL_string.c
+
+$(EPOCBLDUREL)\SDL_string.lis $(EPOCBLDUREL)\SDL_string.o \
+$(EPOCBLDUDEB)\SDL_string.lis $(EPOCBLDUDEB)\SDL_string.o \
+: \
+	\SDL-1.2.13\include\SDL_config.h \
+	\SDL-1.2.13\include\SDL_config_symbian.h \
+	\SDL-1.2.13\include\SDL_platform.h \
+	\SDL-1.2.13\include\SDL_stdinc.h \
+	\SDL-1.2.13\include\begin_code.h \
+	\SDL-1.2.13\include\close_code.h \
+	$(PREFIXFILE) \
+	\UIQ3\EPOC32\include\libc\_ansi.h \
+	\UIQ3\EPOC32\include\libc\ctype.h \
+	\UIQ3\EPOC32\include\libc\machine\types.h \
+	\UIQ3\EPOC32\include\libc\stdarg.h \
+	\UIQ3\EPOC32\include\libc\stdarg_e.h \
+	\UIQ3\EPOC32\include\libc\stddef.h \
+	\UIQ3\EPOC32\include\libc\stdio.h \
+	\UIQ3\EPOC32\include\libc\stdlib.h \
+	\UIQ3\EPOC32\include\libc\string.h \
+	\UIQ3\EPOC32\include\libc\sys\reent.h \
+	\UIQ3\EPOC32\include\libc\sys\stdio_t.h \
+	\UIQ3\EPOC32\include\libc\sys\types.h \
+	\UIQ3\EPOC32\include\libc\time.h \
+	\UIQ3\EPOC32\include\symcpp.h \
+	\UIQ3\epoc32\include\variant\Symbian_OS_v9.1.hrh \
+	\UIQ3\epoc32\include\variant\UIQ_3.0.hrh
+
+$(EPOCBLDUREL)\SDL_string.o : \SDL-1.2.13\src\stdlib\Sdl_string.c
+	@echo Sdl_string.c
+	$(CCUREL)   $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(INCLUDE_OPTION) ..\..\src\stdlib $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\stdlib\Sdl_string.c
+
+LISTINGURELSDL_string : $(EPOCBLDUREL)\SDL_string.lis
+	perl -S ecopyfile.pl $? \SDL-1.2.13\src\stdlib\SDL_string.ARMV5.lst
+
+$(EPOCBLDUREL)\SDL_string.lis : \SDL-1.2.13\src\stdlib\Sdl_string.c
+	$(CCUREL)  $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(ASSEMBLER_LISTING_OPTION) $(INCLUDE_OPTION) ..\..\src\stdlib $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\stdlib\Sdl_string.c 
+
+$(EPOCBLDUDEB)\SDL_string.o : \SDL-1.2.13\src\stdlib\Sdl_string.c
+	@echo Sdl_string.c
+	$(CCUDEB)   $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(INCLUDE_OPTION) ..\..\src\stdlib $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\stdlib\Sdl_string.c
+
+LISTINGUDEBSDL_string : $(EPOCBLDUDEB)\SDL_string.lis
+	perl -S ecopyfile.pl $? \SDL-1.2.13\src\stdlib\SDL_string.ARMV5.lst
+
+$(EPOCBLDUDEB)\SDL_string.lis : \SDL-1.2.13\src\stdlib\Sdl_string.c
+	$(CCUDEB)  $(C_LANG_OPTION) -include /UIQ3/EPOC32/INCLUDE/GCCE/GCCE.h  $(ASSEMBLER_LISTING_OPTION) $(INCLUDE_OPTION) ..\..\src\stdlib $(INCDIR) $(OUTPUT_OPTION) $@ ..\..\src\stdlib\Sdl_string.c 
+
+
+
+ROMFILE:
+
+
+WHATGENERIC CLEANGENERIC :
+	@rem none
+
+# Rules to create all necessary directories
+
+GENERIC_MAKEWORK : \
+	\UIQ3\EPOC32\BUILD\SDL-1.2.13\Symbian\UIQ3\esdl_uiq3\GCCE
+MAKEWORKLIBRARY : \
+	\UIQ3\EPOC32\RELEASE\ARMV5\LIB
+MAKEWORKUDEB : \
+	\UIQ3\EPOC32\BUILD\SDL-1.2.13\Symbian\UIQ3\esdl_uiq3\GCCE\UDEB \
+	\UIQ3\EPOC32\RELEASE\ARMV5\UDEB
+MAKEWORKUREL : \
+	\UIQ3\EPOC32\BUILD\SDL-1.2.13\Symbian\UIQ3\esdl_uiq3\GCCE\UREL \
+	\UIQ3\EPOC32\RELEASE\ARMV5\UREL
+
+\UIQ3\EPOC32\BUILD\SDL-1.2.13\Symbian\UIQ3\esdl_uiq3\GCCE \
+\UIQ3\EPOC32\BUILD\SDL-1.2.13\Symbian\UIQ3\esdl_uiq3\GCCE\UDEB \
+\UIQ3\EPOC32\BUILD\SDL-1.2.13\Symbian\UIQ3\esdl_uiq3\GCCE\UREL \
+\UIQ3\EPOC32\RELEASE\ARMV5\LIB \
+\UIQ3\EPOC32\RELEASE\ARMV5\UDEB \
+\UIQ3\EPOC32\RELEASE\ARMV5\UREL \
+:
+	perl -S emkdir.pl $@
+

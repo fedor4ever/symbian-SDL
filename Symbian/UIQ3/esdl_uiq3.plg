@@ -1,0 +1,67 @@
+<html>
+<body>
+<pre>
+<h1>Build Log</h1>
+<h3>
+--------------------Configuration: ESDL - Win32 Debug--------------------
+</h3>
+
+echo EBasicApp.cpp
+EBasicApp.cpp
+perl -S err_formatter.pl "\UIQ3\epoc32\tools\nokia_compiler\Symbian_Tools\Command_Line_Tools\"mwccsym2.exe -msgstyle parseable  -sym codeview -inline off -wchar_t off -align 4 -warnings on -w nohidevirtual,nounusedexpr -enum int -str pool -exc ms  -nostdinc -d _DEBUG -d _UNICODE -d "__SYMBIAN32__" -d "__CW32__" -d "__WINS__" -d "__WINSCW__" -d "UIQ3" -d "NO_SIGNAL_H" -d "__SUPPORT_CPP_EXCEPTIONS__"  -cwd source -i- -i "\SDL-1.2.13\Symbian" -i "\SDL-1.2.13\include" -i "\SDL-1.2.13\src" -i "\SDL-1.2.13\src\video" -i "\SDL-1.2.13\src\video\symbian" -i "\SDL-1.2.13\src\events" -i "\SDL-1.2.13\src\main\symbian" -i "\SDL-1.2.13\src\thread" -i "\SDL-1.2.13\src\thread\generic" -i "\SDL-1.2.13\src\thread\symbian" -i "\SDL-1.2.13\src\timer" -i "\SDL-1.2.13\src\joystick" -i "\SDL-1.2.13\src\cdrom" -i "\SDL-1.2.13\src\audio" -i "\SDL-1.2.13\src\audio\symbian" -i "\UIQ3\EPOC32\include" -i "\UIQ3\EPOC32\include\libc" -i "\UIQ3\epoc32\include\variant" -i "\UIQ3\epoc32\include\variant\ " -include "UIQ_3.0.hrh" -o "\UIQ3\EPOC32\BUILD\SDL-1.2.13\Symbian\UIQ3\esdl_uiq3\WINSCW\UDEB\EBasicApp.o" -c "\SDL-1.2.13\Symbian\EBasicApp.cpp"
+echo SDL_epocvideo.cpp
+SDL_epocvideo.cpp
+perl -S err_formatter.pl "\UIQ3\epoc32\tools\nokia_compiler\Symbian_Tools\Command_Line_Tools\"mwccsym2.exe -msgstyle parseable  -sym codeview -inline off -wchar_t off -align 4 -warnings on -w nohidevirtual,nounusedexpr -enum int -str pool -exc ms  -nostdinc -d _DEBUG -d _UNICODE -d "__SYMBIAN32__" -d "__CW32__" -d "__WINS__" -d "__WINSCW__" -d "UIQ3" -d "NO_SIGNAL_H" -d "__SUPPORT_CPP_EXCEPTIONS__"  -cwd source -i- -i "\SDL-1.2.13\Symbian" -i "\SDL-1.2.13\include" -i "\SDL-1.2.13\src" -i "\SDL-1.2.13\src\video" -i "\SDL-1.2.13\src\video\symbian" -i "\SDL-1.2.13\src\events" -i "\SDL-1.2.13\src\main\symbian" -i "\SDL-1.2.13\src\thread" -i "\SDL-1.2.13\src\thread\generic" -i "\SDL-1.2.13\src\thread\symbian" -i "\SDL-1.2.13\src\timer" -i "\SDL-1.2.13\src\joystick" -i "\SDL-1.2.13\src\cdrom" -i "\SDL-1.2.13\src\audio" -i "\SDL-1.2.13\src\audio\symbian" -i "\UIQ3\EPOC32\include" -i "\UIQ3\EPOC32\include\libc" -i "\UIQ3\epoc32\include\variant" -i "\UIQ3\epoc32\include\variant\ " -include "UIQ_3.0.hrh" -o "\UIQ3\EPOC32\BUILD\SDL-1.2.13\Symbian\UIQ3\esdl_uiq3\WINSCW\UDEB\SDL_epocvideo.o" -c "\SDL-1.2.13\src\video\symbian\SDL_epocvideo.cpp"
+D:\SDL-1.2.13\src\video\symbian\SDL_epocvideo.cpp(275): Warning: possible unwanted ';' :     for (TInt32 i = 2; i < numColors; i <<= 1, bitsPerPixel++); 
+D:\SDL-1.2.13\src\video\symbian\SDL_epocvideo.cpp(692): Warning: variable / argument '_this' is not used in function : static int EPOC_AllocHWSurface(_THIS, SDL_Surface * /*surface*/) 
+D:\SDL-1.2.13\src\video\symbian\SDL_epocvideo.cpp(696): Warning: variable / argument '_this' is not used in function : static void EPOC_FreeHWSurface(_THIS, SDL_Surface * /*surface*/) 
+D:\SDL-1.2.13\src\video\symbian\SDL_epocvideo.cpp(700): Warning: variable / argument '_this' is not used in function : static int EPOC_LockHWSurface(_THIS, SDL_Surface * /*surface*/) 
+D:\SDL-1.2.13\src\video\symbian\SDL_epocvideo.cpp(704): Warning: variable / argument '_this' is not used in function : static void EPOC_UnlockHWSurface(_THIS, SDL_Surface * /*surface*/) 
+D:\SDL-1.2.13\src\video\symbian\SDL_epocvideo.cpp(708): Warning: variable / argument '_this' is not used in function : static int EPOC_FlipHWSurface(_THIS, SDL_Surface * /*surface*/) 
+D:\SDL-1.2.13\src\video\symbian\SDL_epocvideo.cpp(784): Warning: variable / argument '_this' is not used in function : int EPOC_ShowWMCursor(_THIS, WMcursor *cursor) 
+D:\SDL-1.2.13\src\video\symbian\SDL_epocvideo.cpp(784): Warning: variable / argument 'cursor' is not used in function : int EPOC_ShowWMCursor(_THIS, WMcursor *cursor) 
+echo SDL_epocevents.cpp
+SDL_epocevents.cpp
+perl -S err_formatter.pl "\UIQ3\epoc32\tools\nokia_compiler\Symbian_Tools\Command_Line_Tools\"mwccsym2.exe -msgstyle parseable  -sym codeview -inline off -wchar_t off -align 4 -warnings on -w nohidevirtual,nounusedexpr -enum int -str pool -exc ms  -nostdinc -d _DEBUG -d _UNICODE -d "__SYMBIAN32__" -d "__CW32__" -d "__WINS__" -d "__WINSCW__" -d "UIQ3" -d "NO_SIGNAL_H" -d "__SUPPORT_CPP_EXCEPTIONS__"  -cwd source -i- -i "\SDL-1.2.13\Symbian" -i "\SDL-1.2.13\include" -i "\SDL-1.2.13\src" -i "\SDL-1.2.13\src\video" -i "\SDL-1.2.13\src\video\symbian" -i "\SDL-1.2.13\src\events" -i "\SDL-1.2.13\src\main\symbian" -i "\SDL-1.2.13\src\thread" -i "\SDL-1.2.13\src\thread\generic" -i "\SDL-1.2.13\src\thread\symbian" -i "\SDL-1.2.13\src\timer" -i "\SDL-1.2.13\src\joystick" -i "\SDL-1.2.13\src\cdrom" -i "\SDL-1.2.13\src\audio" -i "\SDL-1.2.13\src\audio\symbian" -i "\UIQ3\EPOC32\include" -i "\UIQ3\EPOC32\include\libc" -i "\UIQ3\epoc32\include\variant" -i "\UIQ3\epoc32\include\variant\ " -include "UIQ_3.0.hrh" -o "\UIQ3\EPOC32\BUILD\SDL-1.2.13\Symbian\UIQ3\esdl_uiq3\WINSCW\UDEB\SDL_epocevents.o" -c "\SDL-1.2.13\src\video\symbian\SDL_epocevents.cpp"
+D:\SDL-1.2.13\src\video\symbian\SDL_epocevents.cpp(359): Error: expression syntax error :     if (Private->iSX0Mode & ESX0Stretched && !Private->EPOC_ShrinkedHeight) 
+D:\SDL-1.2.13\src\video\symbian\SDL_epocevents.cpp(360): Error: ')' expected :     { 
+D:\SDL-1.2.13\src\video\symbian\SDL_epocevents.cpp(362): Error: expression syntax error :     } 
+D:\SDL-1.2.13\src\video\symbian\SDL_epocevents.cpp(365): Error: ';' expected :    }  
+D:\SDL-1.2.13\src\video\symbian\SDL_epocevents.cpp(365): Error: expression syntax error :    }  
+D:\SDL-1.2.13\src\video\symbian\SDL_epocevents.cpp(664): Error: ';' expected : CWaitForActivate::CWaitForActivate():CActive(EPriorityStandard) 
+D:\SDL-1.2.13\src\video\symbian\SDL_epocevents.cpp(664): Error: expression syntax error : CWaitForActivate::CWaitForActivate():CActive(EPriorityStandard) 
+D:\SDL-1.2.13\src\video\symbian\SDL_epocevents.cpp(671): Error: expression syntax error : } 
+D:\SDL-1.2.13\src\video\symbian\SDL_epocevents.cpp(673): Error: ';' expected : CWaitForActivate::~CWaitForActivate() 
+D:\SDL-1.2.13\src\video\symbian\SDL_epocevents.cpp(673): Error: expression syntax error : CWaitForActivate::~CWaitForActivate() 
+D:\SDL-1.2.13\src\video\symbian\SDL_epocevents.cpp(676): Error: expression syntax error : } 
+D:\SDL-1.2.13\src\video\symbian\SDL_epocevents.cpp(679): Error: ';' expected : void CWaitForActivate::RunL() 
+D:\SDL-1.2.13\src\video\symbian\SDL_epocevents.cpp(679): Error: expression syntax error : void CWaitForActivate::RunL() 
+D:\SDL-1.2.13\src\video\symbian\SDL_epocevents.cpp(692): Error: expression syntax error : } 
+D:\SDL-1.2.13\src\video\symbian\SDL_epocevents.cpp(694): Error: ';' expected : void CWaitForActivate::DoCancel() 
+D:\SDL-1.2.13\src\video\symbian\SDL_epocevents.cpp(694): Error: expression syntax error : void CWaitForActivate::DoCancel() 
+D:\SDL-1.2.13\src\video\symbian\SDL_epocevents.cpp(697): Error: expression syntax error : } 
+D:\SDL-1.2.13\src\video\symbian\SDL_epocevents.cpp(699): Error: ';' expected : static TInt StopSchedulerTimeOut(TAny* /*any*/) 
+D:\SDL-1.2.13\src\video\symbian\SDL_epocevents.cpp(699): Error: expression syntax error : static TInt StopSchedulerTimeOut(TAny* /*any*/) 
+D:\SDL-1.2.13\src\video\symbian\SDL_epocevents.cpp(715): Error: expression syntax error : } 
+D:\SDL-1.2.13\src\video\symbian\SDL_epocevents.cpp(717): Error: ';' expected : extern "C" { 
+D:\SDL-1.2.13\src\video\symbian\SDL_epocevents.cpp(717): Error: expression syntax error : extern "C" { 
+D:\SDL-1.2.13\src\video\symbian\SDL_epocevents.cpp(719): Error: expression syntax error : void EPOC_PumpEvents(_THIS) 
+D:\SDL-1.2.13\src\video\symbian\SDL_epocevents.cpp(721): Error: expression syntax error : icAppUi*>(Private->iEikEnv->EikAppUi())->ReleaseMultitapKeysL(); 
+D:\SDL-1.2.13\src\video\symbian\SDL_epocevents.cpp(724): Error: undefined identifier 'callback' :  Private->iOnecallback->Set(callback); 
+D:\SDL-1.2.13\src\video\symbian\SDL_epocevents.cpp(1471): Error: declaration syntax error : } /* extern "C" */ 
+
+
+Errors caused tool to abort.
+
+echo SDL_systhread.cpp
+SDL_systhread.cpp
+perl -S err_formatter.pl "\UIQ3\epoc32\tools\nokia_compiler\Symbian_Tools\Command_Line_Tools\"mwccsym2.exe -msgstyle parseable  -sym codeview -inline off -wchar_t off -align 4 -warnings on -w nohidevirtual,nounusedexpr -enum int -str pool -exc ms  -nostdinc -d _DEBUG -d _UNICODE -d "__SYMBIAN32__" -d "__CW32__" -d "__WINS__" -d "__WINSCW__" -d "UIQ3" -d "NO_SIGNAL_H" -d "__SUPPORT_CPP_EXCEPTIONS__"  -cwd source -i- -i "\SDL-1.2.13\Symbian" -i "\SDL-1.2.13\include" -i "\SDL-1.2.13\src" -i "\SDL-1.2.13\src\video" -i "\SDL-1.2.13\src\video\symbian" -i "\SDL-1.2.13\src\events" -i "\SDL-1.2.13\src\main\symbian" -i "\SDL-1.2.13\src\thread" -i "\SDL-1.2.13\src\thread\generic" -i "\SDL-1.2.13\src\thread\symbian" -i "\SDL-1.2.13\src\timer" -i "\SDL-1.2.13\src\joystick" -i "\SDL-1.2.13\src\cdrom" -i "\SDL-1.2.13\src\audio" -i "\SDL-1.2.13\src\audio\symbian" -i "\UIQ3\EPOC32\include" -i "\UIQ3\EPOC32\include\libc" -i "\UIQ3\epoc32\include\variant" -i "\UIQ3\epoc32\include\variant\ " -include "UIQ_3.0.hrh" -o "\UIQ3\EPOC32\BUILD\SDL-1.2.13\Symbian\UIQ3\esdl_uiq3\WINSCW\UDEB\SDL_systhread.o" -c "\SDL-1.2.13\src\thread\symbian\SDL_systhread.cpp"
+"\UIQ3\epoc32\tools\nokia_compiler\Symbian_Tools\Command_Line_Tools\"mwldsym2.exe -msgstyle gcc -library -stdlib -subsystem windows  -o "\UIQ3\EPOC32\RELEASE\WINSCW\UDEB\ESDL.lib" -noimplib -l \UIQ3\EPOC32\BUILD\SDL-1.2.13\Symbian\UIQ3\esdl_uiq3\WINSCW\UDEB -search EBasicApp.o IniFile.o SDL.o SDL_error.o SDL_fatal.o SDL_cpuinfo.o SDL_cdrom.o SDL_syscdrom.o SDL_audio.o SDL_audiocvt.o SDL_audiodev.o SDL_mixer.o SDL_wave.o SDL_SymbianAudio.o SDL_blit.o SDL_blit_0.o SDL_blit_1.o SDL_blit_A.o SDL_blit_N.o SDL_bmp.o SDL_cursor.o SDL_gamma.o SDL_pixels.o SDL_RLEaccel.o SDL_stretch.o SDL_surface.o SDL_video.o SDL_yuv.o SDL_yuv_sw.o SDL_epocvideo.o SDL_epocevents.o SDL_thread.o SDL_syscond.o SDL_sysmutex.o SDL_syssem.o SDL_systhread.o SDL_active.o SDL_events.o SDL_keyboard.o SDL_mouse.o SDL_quit.o SDL_resize.o SDL_timer.o SDL_systimer.o SDL_rwops.o SDL_joystick.o SDL_SysJoystick.o SDL_getenv.o SDL_iconv.o SDL_malloc.o SDL_qsort.o SDL_stdlib.o SDL_string.o
+
+
+
+<h3>Results</h3>
+ESDL.lib - 26 error(s), 8 warning(s)
+</pre>
+</body>
+</html>

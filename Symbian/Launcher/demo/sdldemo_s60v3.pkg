@@ -1,0 +1,24 @@
+
+
+
+; List of localised vendor names - one per language. At least one must be provided (English [EN]).
+; List must correspond to list of languages specified elsewhere in the .pkg
+%{"SDLDemo"}
+; The non-localised, globally unique vendor name (mandatory)
+:"SDLDemo"
+
+; UID is the app's UID
+#{"SDLDemo S60v3"},(0x0F1f9b58),0,1,0
+
+;Supports Series 60 v 3.0
+[0x101F7961], 0, 0, 0, {"Series60ProductID"}
+
+; Application, AIF & Resource file
+"$(EPOCROOT)epoc32\release\$(PLATFORM)\$(TARGET)\SDLDemo.exe"-	"!:\sys\bin\SDLDemo.exe"
+"$(EPOCROOT)epoc32\data\z\resource\apps\SDLDemo.rsc"-	"!:\resource\apps\SDLDemo.rsc"
+"$(EPOCROOT)epoc32\Data\Z\resource\apps\SDLDemo_loc.rsc"-	"!:\resource\apps\SDLDemo_loc.rsc"
+"$(EPOCROOT)epoc32\data\z\private\10003a3f\apps\SDLDemo_reg.rsc"-"!:\private\10003a3f\import\apps\SDLDemo_reg.rsc"
+"tiles.bmp"-	"c:\data\tiles.bmp"
+
+; Config/log files: 'empty' will automagically be removed on uninstall
+""-"c:\data\sdldemo\sdl.ini",FILENULL

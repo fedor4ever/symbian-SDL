@@ -1,0 +1,128 @@
+<html>
+<body>
+<pre>
+<h1>Build Log</h1>
+<h3>
+--------------------Configuration: ESDL - Win32 Uni Release--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating temporary file "C:\DOCUME~1\LARSPE~1\LOKALA~1\Temp\RSP39.tmp" with contents
+[
+/nologo /Zp4 /MD /W4 /O1 /Op /X /I "\SDL-1.2.13\SYMBIAN" /I "\SDL-1.2.13\SYMBIAN\S60V2" /I "\SDL-1.2.13\INCLUDE" /I "\SDL-1.2.13\SRC" /I "\SDL-1.2.13\SRC\VIDEO" /I "\SDL-1.2.13\SRC\VIDEO\SYMBIAN" /I "\SDL-1.2.13\SRC\EVENTS" /I "\SDL-1.2.13\SRC\MAIN\SYMBIAN" /I "\SDL-1.2.13\SRC\THREAD" /I "\SDL-1.2.13\SRC\THREAD\GENERIC" /I "\SDL-1.2.13\SRC\THREAD\SYMBIAN" /I "\SDL-1.2.13\SRC\TIMER" /I "\SDL-1.2.13\SRC\JOYSTICK" /I "\SDL-1.2.13\SRC\CDROM" /I "\SDL-1.2.13\SRC\AUDIO" /I "\SDL-1.2.13\SRC\AUDIO\SYMBIAN" /I "\s60v2\EPOC32\INCLUDE" /I "\s60v2\EPOC32\INCLUDE\LIBC" /D "__SYMBIAN32__" /D "__VC32__" /D "__WINS__" /D "S60" /D "NO_SIGNAL_H" /D "DISABLE_CDROM" /D "NDEBUG" /D "_UNICODE" /Fo"\s60v2\EPOC32\BUILD\SDL-1.2.13\SYMBIAN\S60V2\ESDL_S60\WINS\UREL/" /GF /c 
+"D:\SDL-1.2.13\SRC\Video\symbian\sdl_epocvideo.cpp"
+]
+Creating command line "cl.exe @C:\DOCUME~1\LARSPE~1\LOKALA~1\Temp\RSP39.tmp" 
+Creating temporary file "C:\DOCUME~1\LARSPE~1\LOKALA~1\Temp\RSP3A.tmp" with contents
+[
+"\s60v2\EPOC32\RELEASE\WINS\UDEB\avkon.lib" "\s60v2\EPOC32\RELEASE\WINS\UDEB\euser.lib" "\s60v2\EPOC32\RELEASE\WINS\UDEB\fbscli.lib" "\s60v2\EPOC32\RELEASE\WINS\UDEB\estlib.lib" "\s60v2\EPOC32\RELEASE\WINS\UDEB\ws32.lib" "\s60v2\EPOC32\RELEASE\WINS\UDEB\hal.lib" "\s60v2\EPOC32\RELEASE\WINS\UDEB\gdi.lib" "\s60v2\EPOC32\RELEASE\WINS\UDEB\bitgdi.lib" "\s60v2\EPOC32\RELEASE\WINS\UDEB\mediaclientaudiostream.lib" /nologo /out:"\s60v2\EPOC32\RELEASE\WINS\UREL\ESDL.LIB" /subsystem:windows /machine:IX86 /nodefaultlib 
+"\s60v2\EPOC32\BUILD\SDL-1.2.13\SYMBIAN\S60V2\ESDL_S60\WINS\UREL\sdl_audio.obj"
+"\s60v2\EPOC32\BUILD\SDL-1.2.13\SYMBIAN\S60V2\ESDL_S60\WINS\UREL\sdl_audiocvt.obj"
+"\s60v2\EPOC32\BUILD\SDL-1.2.13\SYMBIAN\S60V2\ESDL_S60\WINS\UREL\sdl_audiodev.obj"
+"\s60v2\EPOC32\BUILD\SDL-1.2.13\SYMBIAN\S60V2\ESDL_S60\WINS\UREL\sdl_mixer.obj"
+"\s60v2\EPOC32\BUILD\SDL-1.2.13\SYMBIAN\S60V2\ESDL_S60\WINS\UREL\sdl_wave.obj"
+"\s60v2\EPOC32\BUILD\SDL-1.2.13\SYMBIAN\S60V2\ESDL_S60\WINS\UREL\sdl_symbianaudio.obj"
+"\s60v2\EPOC32\BUILD\SDL-1.2.13\SYMBIAN\S60V2\ESDL_S60\WINS\UREL\sdl_syscdrom.obj"
+"\s60v2\EPOC32\BUILD\SDL-1.2.13\SYMBIAN\S60V2\ESDL_S60\WINS\UREL\sdl_cdrom.obj"
+"\s60v2\EPOC32\BUILD\SDL-1.2.13\SYMBIAN\S60V2\ESDL_S60\WINS\UREL\sdl_cpuinfo.obj"
+"\s60v2\EPOC32\BUILD\SDL-1.2.13\SYMBIAN\S60V2\ESDL_S60\WINS\UREL\sdl_active.obj"
+"\s60v2\EPOC32\BUILD\SDL-1.2.13\SYMBIAN\S60V2\ESDL_S60\WINS\UREL\sdl_events.obj"
+"\s60v2\EPOC32\BUILD\SDL-1.2.13\SYMBIAN\S60V2\ESDL_S60\WINS\UREL\sdl_keyboard.obj"
+"\s60v2\EPOC32\BUILD\SDL-1.2.13\SYMBIAN\S60V2\ESDL_S60\WINS\UREL\sdl_mouse.obj"
+"\s60v2\EPOC32\BUILD\SDL-1.2.13\SYMBIAN\S60V2\ESDL_S60\WINS\UREL\sdl_quit.obj"
+"\s60v2\EPOC32\BUILD\SDL-1.2.13\SYMBIAN\S60V2\ESDL_S60\WINS\UREL\sdl_resize.obj"
+"\s60v2\EPOC32\BUILD\SDL-1.2.13\SYMBIAN\S60V2\ESDL_S60\WINS\UREL\sdl_rwops.obj"
+"\s60v2\EPOC32\BUILD\SDL-1.2.13\SYMBIAN\S60V2\ESDL_S60\WINS\UREL\sdl_joystick.obj"
+"\s60v2\EPOC32\BUILD\SDL-1.2.13\SYMBIAN\S60V2\ESDL_S60\WINS\UREL\sdl_sysjoystick.obj"
+"\s60v2\EPOC32\BUILD\SDL-1.2.13\SYMBIAN\S60V2\ESDL_S60\WINS\UREL\Sdl.obj"
+"\s60v2\EPOC32\BUILD\SDL-1.2.13\SYMBIAN\S60V2\ESDL_S60\WINS\UREL\Sdl_error.obj"
+"\s60v2\EPOC32\BUILD\SDL-1.2.13\SYMBIAN\S60V2\ESDL_S60\WINS\UREL\Sdl_fatal.obj"
+"\s60v2\EPOC32\BUILD\SDL-1.2.13\SYMBIAN\S60V2\ESDL_S60\WINS\UREL\sdl_getenv.obj"
+"\s60v2\EPOC32\BUILD\SDL-1.2.13\SYMBIAN\S60V2\ESDL_S60\WINS\UREL\sdl_iconv.obj"
+"\s60v2\EPOC32\BUILD\SDL-1.2.13\SYMBIAN\S60V2\ESDL_S60\WINS\UREL\sdl_malloc.obj"
+"\s60v2\EPOC32\BUILD\SDL-1.2.13\SYMBIAN\S60V2\ESDL_S60\WINS\UREL\sdl_qsort.obj"
+"\s60v2\EPOC32\BUILD\SDL-1.2.13\SYMBIAN\S60V2\ESDL_S60\WINS\UREL\sdl_stdlib.obj"
+"\s60v2\EPOC32\BUILD\SDL-1.2.13\SYMBIAN\S60V2\ESDL_S60\WINS\UREL\sdl_string.obj"
+"\s60v2\EPOC32\BUILD\SDL-1.2.13\SYMBIAN\S60V2\ESDL_S60\WINS\UREL\sdl_thread.obj"
+"\s60v2\EPOC32\BUILD\SDL-1.2.13\SYMBIAN\S60V2\ESDL_S60\WINS\UREL\sdl_sysmutex.obj"
+"\s60v2\EPOC32\BUILD\SDL-1.2.13\SYMBIAN\S60V2\ESDL_S60\WINS\UREL\sdl_syssem.obj"
+"\s60v2\EPOC32\BUILD\SDL-1.2.13\SYMBIAN\S60V2\ESDL_S60\WINS\UREL\sdl_systhread.obj"
+"\s60v2\EPOC32\BUILD\SDL-1.2.13\SYMBIAN\S60V2\ESDL_S60\WINS\UREL\sdl_timer.obj"
+"\s60v2\EPOC32\BUILD\SDL-1.2.13\SYMBIAN\S60V2\ESDL_S60\WINS\UREL\sdl_systimer.obj"
+"\s60v2\EPOC32\BUILD\SDL-1.2.13\SYMBIAN\S60V2\ESDL_S60\WINS\UREL\sdl_blit.obj"
+"\s60v2\EPOC32\BUILD\SDL-1.2.13\SYMBIAN\S60V2\ESDL_S60\WINS\UREL\sdl_blit_0.obj"
+"\s60v2\EPOC32\BUILD\SDL-1.2.13\SYMBIAN\S60V2\ESDL_S60\WINS\UREL\sdl_blit_1.obj"
+"\s60v2\EPOC32\BUILD\SDL-1.2.13\SYMBIAN\S60V2\ESDL_S60\WINS\UREL\sdl_blit_a.obj"
+"\s60v2\EPOC32\BUILD\SDL-1.2.13\SYMBIAN\S60V2\ESDL_S60\WINS\UREL\sdl_blit_n.obj"
+"\s60v2\EPOC32\BUILD\SDL-1.2.13\SYMBIAN\S60V2\ESDL_S60\WINS\UREL\sdl_bmp.obj"
+"\s60v2\EPOC32\BUILD\SDL-1.2.13\SYMBIAN\S60V2\ESDL_S60\WINS\UREL\sdl_cursor.obj"
+"\s60v2\EPOC32\BUILD\SDL-1.2.13\SYMBIAN\S60V2\ESDL_S60\WINS\UREL\sdl_gamma.obj"
+"\s60v2\EPOC32\BUILD\SDL-1.2.13\SYMBIAN\S60V2\ESDL_S60\WINS\UREL\sdl_pixels.obj"
+"\s60v2\EPOC32\BUILD\SDL-1.2.13\SYMBIAN\S60V2\ESDL_S60\WINS\UREL\sdl_rleaccel.obj"
+"\s60v2\EPOC32\BUILD\SDL-1.2.13\SYMBIAN\S60V2\ESDL_S60\WINS\UREL\sdl_stretch.obj"
+"\s60v2\EPOC32\BUILD\SDL-1.2.13\SYMBIAN\S60V2\ESDL_S60\WINS\UREL\sdl_surface.obj"
+"\s60v2\EPOC32\BUILD\SDL-1.2.13\SYMBIAN\S60V2\ESDL_S60\WINS\UREL\sdl_video.obj"
+"\s60v2\EPOC32\BUILD\SDL-1.2.13\SYMBIAN\S60V2\ESDL_S60\WINS\UREL\sdl_yuv.obj"
+"\s60v2\EPOC32\BUILD\SDL-1.2.13\SYMBIAN\S60V2\ESDL_S60\WINS\UREL\sdl_yuv_sw.obj"
+"\s60v2\EPOC32\BUILD\SDL-1.2.13\SYMBIAN\S60V2\ESDL_S60\WINS\UREL\sdl_epocevents.obj"
+"\s60v2\EPOC32\BUILD\SDL-1.2.13\SYMBIAN\S60V2\ESDL_S60\WINS\UREL\sdl_epocvideo.obj"
+"\s60v2\EPOC32\BUILD\SDL-1.2.13\SYMBIAN\S60V2\ESDL_S60\WINS\UREL\Ebasicapp.obj"
+"\s60v2\EPOC32\BUILD\SDL-1.2.13\SYMBIAN\S60V2\ESDL_S60\WINS\UREL\Inifile.obj"
+"\s60v2\EPOC32\BUILD\SDL-1.2.13\SYMBIAN\S60V2\ESDL_S60\WINS\UREL\Sdlsxxview.obj"
+]
+Creating command line "link.exe -lib @C:\DOCUME~1\LARSPE~1\LOKALA~1\Temp\RSP3A.tmp"
+<h3>Output Window</h3>
+Compiling...
+sdl_epocvideo.cpp
+\SDL-1.2.13\INCLUDE\SDL_endian.h(87) : warning C4244: 'return' : conversion from 'int' to 'unsigned short', possible loss of data
+D:\SDL-1.2.13\SRC\Video\symbian\sdl_epocvideo.cpp(439) : warning C4244: '=' : conversion from 'int' to 'unsigned char', possible loss of data
+D:\SDL-1.2.13\SRC\Video\symbian\sdl_epocvideo.cpp(440) : warning C4244: '=' : conversion from 'int' to 'unsigned char', possible loss of data
+D:\SDL-1.2.13\SRC\Video\symbian\sdl_epocvideo.cpp(450) : warning C4244: '=' : conversion from 'int' to 'unsigned short', possible loss of data
+D:\SDL-1.2.13\SRC\Video\symbian\sdl_epocvideo.cpp(450) : warning C4244: '=' : conversion from 'int' to 'unsigned short', possible loss of data
+D:\SDL-1.2.13\SRC\Video\symbian\sdl_epocvideo.cpp(451) : warning C4244: '=' : conversion from 'int' to 'unsigned short', possible loss of data
+D:\SDL-1.2.13\SRC\Video\symbian\sdl_epocvideo.cpp(451) : warning C4244: '=' : conversion from 'int' to 'unsigned short', possible loss of data
+D:\SDL-1.2.13\SRC\Video\symbian\sdl_epocvideo.cpp(526) : warning C4244: '=' : conversion from 'int' to 'unsigned short', possible loss of data
+D:\SDL-1.2.13\SRC\Video\symbian\sdl_epocvideo.cpp(527) : warning C4244: '=' : conversion from 'int' to 'unsigned short', possible loss of data
+D:\SDL-1.2.13\SRC\Video\symbian\sdl_epocvideo.cpp(571) : warning C4244: '=' : conversion from 'int' to 'unsigned short', possible loss of data
+D:\SDL-1.2.13\SRC\Video\symbian\sdl_epocvideo.cpp(644) : warning C4244: 'initializing' : conversion from 'int' to 'unsigned short', possible loss of data
+D:\SDL-1.2.13\SRC\Video\symbian\sdl_epocvideo.cpp(655) : warning C4244: '=' : conversion from 'int' to 'unsigned short', possible loss of data
+D:\SDL-1.2.13\SRC\Video\symbian\sdl_epocvideo.cpp(656) : warning C4244: '=' : conversion from 'int' to 'unsigned short', possible loss of data
+D:\SDL-1.2.13\SRC\Video\symbian\sdl_epocvideo.cpp(692) : warning C4100: '_this' : unreferenced formal parameter
+D:\SDL-1.2.13\SRC\Video\symbian\sdl_epocvideo.cpp(696) : warning C4100: '_this' : unreferenced formal parameter
+D:\SDL-1.2.13\SRC\Video\symbian\sdl_epocvideo.cpp(700) : warning C4100: '_this' : unreferenced formal parameter
+D:\SDL-1.2.13\SRC\Video\symbian\sdl_epocvideo.cpp(704) : warning C4100: '_this' : unreferenced formal parameter
+D:\SDL-1.2.13\SRC\Video\symbian\sdl_epocvideo.cpp(708) : warning C4100: '_this' : unreferenced formal parameter
+D:\SDL-1.2.13\SRC\Video\symbian\sdl_epocvideo.cpp(718) : warning C4244: 'return' : conversion from 'int' to 'unsigned short', possible loss of data
+D:\SDL-1.2.13\SRC\Video\symbian\sdl_epocvideo.cpp(726) : warning C4244: 'return' : conversion from 'int' to 'unsigned short', possible loss of data
+D:\SDL-1.2.13\SRC\Video\symbian\sdl_epocvideo.cpp(784) : warning C4100: 'cursor' : unreferenced formal parameter
+D:\SDL-1.2.13\SRC\Video\symbian\sdl_epocvideo.cpp(784) : warning C4100: '_this' : unreferenced formal parameter
+D:\SDL-1.2.13\SRC\Video\symbian\SDL_EpocVideo_S60.inl(13) : warning C4244: '=' : conversion from 'double' to 'int', possible loss of data
+D:\SDL-1.2.13\SRC\Video\symbian\SDL_EpocVideo_S60.inl(17) : warning C4244: '=' : conversion from 'double' to 'int', possible loss of data
+D:\SDL-1.2.13\SRC\Video\symbian\SDL_EpocVideo_S60.inl(34) : warning C4244: '=' : conversion from 'int' to 'unsigned short', possible loss of data
+D:\SDL-1.2.13\SRC\Video\symbian\SDL_EpocVideo_S60.inl(46) : warning C4244: 'initializing' : conversion from 'double' to 'int', possible loss of data
+D:\SDL-1.2.13\SRC\Video\symbian\SDL_EpocVideo_S60.inl(55) : warning C4244: 'initializing' : conversion from 'double' to 'int', possible loss of data
+D:\SDL-1.2.13\SRC\Video\symbian\SDL_EpocVideo_S60.inl(71) : warning C4244: '=' : conversion from 'int' to 'unsigned short', possible loss of data
+D:\SDL-1.2.13\SRC\Video\symbian\SDL_EpocVideo_S60.inl(78) : warning C4244: 'initializing' : conversion from 'double' to 'int', possible loss of data
+D:\SDL-1.2.13\SRC\Video\symbian\SDL_EpocVideo_S60.inl(91) : warning C4244: 'initializing' : conversion from 'double' to 'int', possible loss of data
+D:\SDL-1.2.13\SRC\Video\symbian\SDL_EpocVideo_S60.inl(106) : warning C4244: '=' : conversion from 'int' to 'unsigned short', possible loss of data
+D:\SDL-1.2.13\SRC\Video\symbian\SDL_EpocVideo_S60.inl(123) : warning C4244: 'initializing' : conversion from 'double' to 'int', possible loss of data
+D:\SDL-1.2.13\SRC\Video\symbian\SDL_EpocVideo_S60.inl(346) : warning C4244: '=' : conversion from 'int' to 'unsigned short', possible loss of data
+D:\SDL-1.2.13\SRC\Video\symbian\SDL_EpocVideo_S60.inl(347) : warning C4244: '=' : conversion from 'int' to 'unsigned short', possible loss of data
+Creating library...
+euser.lib(EUSER.DLL) : warning LNK4006: __NULL_IMPORT_DESCRIPTOR already defined in avkon.lib(AVKON.DLL); second definition ignored
+fbscli.lib(FBSCLI.DLL) : warning LNK4006: __NULL_IMPORT_DESCRIPTOR already defined in avkon.lib(AVKON.DLL); second definition ignored
+estlib.lib(ESTLIB.DLL) : warning LNK4006: __NULL_IMPORT_DESCRIPTOR already defined in avkon.lib(AVKON.DLL); second definition ignored
+ws32.lib(WS32.DLL) : warning LNK4006: __NULL_IMPORT_DESCRIPTOR already defined in avkon.lib(AVKON.DLL); second definition ignored
+hal.lib(HAL.DLL) : warning LNK4006: __NULL_IMPORT_DESCRIPTOR already defined in avkon.lib(AVKON.DLL); second definition ignored
+gdi.lib(GDI.DLL) : warning LNK4006: __NULL_IMPORT_DESCRIPTOR already defined in avkon.lib(AVKON.DLL); second definition ignored
+bitgdi.lib(BITGDI.DLL) : warning LNK4006: "void __cdecl DummyReserved1(void)" (?DummyReserved1@@YAXXZ) already defined in fbscli.lib(FBSCLI.DLL); second definition ignored
+bitgdi.lib(BITGDI.DLL) : warning LNK4006: "__declspec(dllimport) void __cdecl DummyReserved1(void)" (__imp_?DummyReserved1@@YAXXZ) already defined in fbscli.lib(FBSCLI.DLL); second definition ignored
+bitgdi.lib(BITGDI.DLL) : warning LNK4006: __NULL_IMPORT_DESCRIPTOR already defined in avkon.lib(AVKON.DLL); second definition ignored
+mediaclientaudiostream.lib(MEDIACLIENTAUDIOSTREAM.DLL) : warning LNK4006: __NULL_IMPORT_DESCRIPTOR already defined in avkon.lib(AVKON.DLL); second definition ignored
+
+
+
+<h3>Results</h3>
+ESDL.LIB - 0 error(s), 44 warning(s)
+</pre>
+</body>
+</html>
