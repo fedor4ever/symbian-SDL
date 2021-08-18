@@ -9,12 +9,11 @@ MACRO			S60V3
 MACRO			NO_SIGNAL_H
 
 // *** General sources
-
-SOURCEPATH	..
-
+SOURCEPATH	..\ESDL_src
 SOURCE		EBasicApp.cpp
 SOURCE		SDLSXXView.cpp
 SOURCE		IniFile.cpp
+SOURCE		remotectrlmonitor.cpp
 
 SOURCEPATH	..\..\src
 
@@ -24,13 +23,12 @@ SOURCE		SDL_fatal.c
 
 // *** CPU info sources
 SOURCE		cpuinfo\SDL_cpuinfo.c
-// *** CD-Rom sources
 
+// *** CD-Rom sources
 SOURCE		cdrom\SDL_cdrom.c
 SOURCE		cdrom\dummy\SDL_syscdrom.c
 
 // *** Audio sources
-
 SOURCE		audio\SDL_audio.c
 SOURCE		audio\SDL_audiocvt.c
 SOURCE		audio\SDL_audiodev.c
@@ -39,7 +37,6 @@ SOURCE		audio\SDL_wave.c
 SOURCE		audio\symbian\SDL_SymbianAudio.cpp
 
 // *** Video sources
-
 SOURCE		video\SDL_blit.c
 SOURCE		video\SDL_blit_0.c
 SOURCE		video\SDL_blit_1.c
@@ -59,6 +56,7 @@ SOURCE		video\symbian\SDL_epocvideo.cpp
 SOURCE		video\symbian\SDL_epocevents.cpp   
 document	video\symbian\sdl_epocvideo_s60v3.inl
 document	video\symbian\sdl_epocvideo_UIQ3.inl
+
 // *** Thread sources
 SOURCE		thread\SDL_thread.c
 SOURCE		thread\generic\SDL_syscond.c
@@ -79,11 +77,9 @@ SOURCE		timer\SDL_timer.c
 SOURCE		timer\symbian\SDL_systimer.cpp
 
 // *** File sources
-
 SOURCE		file\SDL_rwops.c
 
 // *** Joystick sources
-
 SOURCE		joystick\SDL_joystick.c
 SOURCE 		joystick\symbian\SDL_SysJoystick.cpp
 SOURCE	    stdlib\SDL_getenv.c
@@ -92,14 +88,14 @@ SOURCE		stdlib\SDL_malloc.c
 SOURCE		stdlib\SDL_qsort.c
 SOURCE		stdlib\SDL_stdlib.c
 SOURCE		stdlib\SDL_string.c
-// *** Include paths
 
+// *** Include paths
 SYSTEMINCLUDE	\epoc32\include \epoc32\include\libc \epoc32\include\mmf\plugin
 SYSTEMINCLUDE   \epoc32\include\mw
 SYSTEMINCLUDE   \epoc32\include\platform
 SYSTEMINCLUDE   \epoc32\include\platform\mw \epoc32\include\gles
 
-USERINCLUDE		..
+USERINCLUDE		..\ESDL_src
 USERINCLUDE		..\..\include ..\..\src ..\..\src\video ..\..\src\video\symbian ..\..\src\events
 USERINCLUDE		..\..\src\main\symbian
 USERINCLUDE		..\..\src\thread ..\..\src\thread\generic ..\..\src\thread\symbian
@@ -108,11 +104,8 @@ USERINCLUDE		..\..\src\cdrom
 USERINCLUDE		..\..\src\audio ..\..\src\audio\symbian
 
 // *** Libraries
-
 //LIBRARY		tisrvc.lib 
 //LIBRARY     euser.lib fbscli.lib estlib.lib ws32.LIB hal.lib gdi.lib
 //LIBRARY		bitgdi.lib mediaclientaudiostream.lib
 ALWAYS_BUILD_AS_ARM
 
-SOURCEPATH ..
-SOURCE remotectrlmonitor.cpp

@@ -2,7 +2,7 @@ PRJ_PLATFORMS
 WINSCW GCCE ARMV5 ARMV5_ABIV2//ARM4 THUMB
 
 PRJ_EXPORTS
-..\sdlapp.h						esdl\sdlapp.h
+..\ESDL_src\sdlapp.h						esdl\sdlapp.h
 ..\..\include\SDL.h				esdl\sdl.h
 ..\..\include\SDL_active.h		esdl\sdl_active.h
 ..\..\include\SDL_audio.h		esdl\sdl_audio.h
