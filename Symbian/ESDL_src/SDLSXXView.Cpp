@@ -942,8 +942,8 @@ EXPORT_C TInt WinsMain()
 #endif
 #endif
 
-#if defined (S60V3)
-void EPOC_GenerateKeyEvent(_THIS,int aScanCode,int aIsDown, TBool aShiftOn);
+#if defined(__S60_3X__)
+extern "C" void EPOC_GenerateKeyEvent(_THIS,int aScanCode,int aIsDown, TBool aShiftOn);
 enum TKeysBits
 	{
 	EUP = 1,
