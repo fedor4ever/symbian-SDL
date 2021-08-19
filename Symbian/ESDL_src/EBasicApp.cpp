@@ -1,4 +1,5 @@
 #include "EBasicApp.h"
+
 #ifdef UIQ
 #include <quartzkeys.h>
 #endif
@@ -17,9 +18,11 @@
 #include <eikapp.h>
 #include <bautils.h>
 #include <unistd.h>
-#ifdef S60V3
+
+#ifdef __S60_3X__
 #include "remotectrlmonitor.h"
 #endif
+
 #include "sdl.h"
 #include "SDL_epocvideo.h"
 extern "C"
@@ -81,16 +84,15 @@ void	symbian_free	(void * p)
 }
 
 void*	symbian_calloc	(size_t _nmemb, size_t _size) {
-	
+
 	void *p = symbian_malloc(_nmemb * _size);	//gpcalloc doesnt clear?
-	
+
 	return p;
 }
 
 #endif
 
 ////////// CSDLApp //////////////////////////////////////////////////////
-
 MY_EXPORT_C CApaDocument* CSDLApp::CreateDocumentL()
 {
 	CEBasicDoc* doc = NULL;
@@ -98,13 +100,9 @@ MY_EXPORT_C CApaDocument* CSDLApp::CreateDocumentL()
 	return doc;
 }
 
-MY_EXPORT_C CSDLApp::CSDLApp()
-{
-}
+MY_EXPORT_C CSDLApp::CSDLApp() {}
 
-MY_EXPORT_C CSDLApp::~CSDLApp()
-{
-}
+MY_EXPORT_C CSDLApp::~CSDLApp() {}
 
 // this is a static function calleable as CSDLApp::GetExecutablePath() from the SDL host app
 MY_EXPORT_C TFileName CSDLApp::GetExecutablePath()
@@ -138,40 +136,23 @@ MY_EXPORT_C void CSDLApp::LaunchAppL(int , char** params)
 
 /**
  * This has a default empty implementation.
- * Is called to get the name of the SDL data folder for the app 
+ * Is called to get the name of the SDL data folder for the app
  * The name is appended to either c:\data or c:\shared
- * If a zero length string is returned then application name 
+ * If a zero length string is returned then application name
  * will be used for default datapath
  * Max length is 64 chars
  */
-MY_EXPORT_C void CSDLApp::GetDataFolder(TDes& /*aDataFolder*/)
-	{
-	
-	}
+MY_EXPORT_C void CSDLApp::GetDataFolder(TDes& /*aDataFolder*/) {}
 
 ////////// CEBasicDoc ///////////////////////////////////////////////////
 extern "C" void SetTextInputState(TBool aInputOn);
 extern "C" void SetJoystickState(TBool aJoystickOn);
 
-#if defined (UIQ) || defined(UIQ3)
-CEBasicDoc::CEBasicDoc(CEikApplication& aApp):CQikDocument(aApp)
-#elif defined(S60) || defined (S80) || defined (S90) || defined(S60V3)
-#if defined (S60) || defined (S60V3)
-CEBasicDoc::CEBasicDoc(CEikApplication& aApp):CAknDocument(aApp)
-#else
-CEBasicDoc::CEBasicDoc(CEikApplication& aApp):CEikDocument(aApp)
-#endif // S60
-#endif
-{
-}
+CEBasicDoc::CEBasicDoc(CEikApplication& aApp):BaseDocument_t(aApp) {}
 
-CEBasicDoc::~CEBasicDoc()
-{
-}
+CEBasicDoc::~CEBasicDoc() {}
 
-void CEBasicDoc::ConstructL()
-{
-}
+void CEBasicDoc::ConstructL() {}
 
 CEikAppUi* CEBasicDoc::CreateAppUiL()
 {
@@ -186,7 +167,7 @@ void CEBasicDoc::SaveL(MSaveObserver::TSaveType aSaveType)
 		{
 			//	CEikonEnv::Static()->InfoWinL(_L("CEBasicDoc::SaveL"),_L("Release RAM"));
 		}break;
-		
+
 	case MSaveObserver::EReleaseDisk:
 		{
 			//CEikonEnv::Static()->InfoWinL(_L("CEBasicDoc::SaveL"),_L("Release disk"));
@@ -197,11 +178,10 @@ void CEBasicDoc::SaveL(MSaveObserver::TSaveType aSaveType)
 		}break;
 	}
 }
-// 
-////////// CEBasicAppUi /////////////////////////////////////////////////
 
+////////// CEBasicAppUi /////////////////////////////////////////////////
 CEBasicAppUi::CEBasicAppUi():iSDLstart(CActive::EPriorityLow)
-{	
+{
 #ifdef UIQ
 	iCapKey1=-1;
 #else
@@ -221,7 +201,7 @@ CEBasicAppUi::~CEBasicAppUi()
 	CancelCaptureKeys();
 
 #endif
-#ifdef S60V3
+#ifdef __S60_3X__
 	delete iRemoteCtrlMonitor;
 #endif
 	if(iMultitapTimer)
@@ -234,7 +214,7 @@ CEBasicAppUi::~CEBasicAppUi()
 
 	if (iConfig) {
 		delete iConfig;
-	}	
+	}
 }
 
 void CEBasicAppUi::HandleCommandL(TInt aCommand)
@@ -252,10 +232,10 @@ void CEBasicAppUi::HandleCommandL(TInt aCommand)
 #endif
 		break;
 	}
-	
 }
-int EPOC_HandleWsEvent(_THIS,const TWsEvent& aWsEvent);
-void EPOC_GenerateKeyEvent(_THIS,int aScanCode,int aIsDown, TBool aShiftOn);
+
+int EPOC_HandleWsEvent(_THIS, const TWsEvent& aWsEvent);
+extern "C" void EPOC_GenerateKeyEvent(_THIS, int aScanCode, int aIsDown, bool aShiftOn);
 
 extern "C" SDL_VideoDevice * current_video;
 
@@ -306,17 +286,17 @@ TKeyResponse CEBasicAppUi::HandleMultiTapInput(const TKeyEvent& aKeyEvnt,TEventC
 			else
 				current_video->hidden->iCurrentChar.LowerCase();
 #if defined (UIQ3)
-		iView->SetCurrentMultiTapKey(current_video->hidden->iCurrentChar);
+		    iView->SetCurrentMultiTapKey(current_video->hidden->iCurrentChar);
 #endif
 		}
-		return EKeyWasConsumed;	
+		return EKeyWasConsumed;
 	case EStdKeyNkp0:
 	case '0':
 		{
 			iMultitapTimer->Cancel();
 			SetTextInputState(EFalse); // Allow numbers
 			EPOC_GenerateKeyEvent(current_video,' ',on, EFalse);
-			SetTextInputState(ETrue);		
+			SetTextInputState(ETrue);
 			return EKeyWasConsumed;
 		}
 	case EStdKeyNkp1:
@@ -325,9 +305,9 @@ TKeyResponse CEBasicAppUi::HandleMultiTapInput(const TKeyEvent& aKeyEvnt,TEventC
 			iMultitapTimer->Cancel();
 			SetTextInputState(EFalse); // Allow numbers
 			EPOC_GenerateKeyEvent(current_video,current_video->hidden->iCurrentChar.GetUpperCase(),on, current_video->hidden->iShiftOn);
-			SetTextInputState(ETrue);		
-		}		
-		return EKeyWasConsumed;		
+			SetTextInputState(ETrue);
+		}
+		return EKeyWasConsumed;
 	case EStdKeyNkp2:
 	case EStdKeyNkp3:
 	case EStdKeyNkp4:
@@ -335,7 +315,7 @@ TKeyResponse CEBasicAppUi::HandleMultiTapInput(const TKeyEvent& aKeyEvnt,TEventC
 	case EStdKeyNkp6:
 	case EStdKeyNkp7:
 	case EStdKeyNkp8:
-	case EStdKeyNkp9:		
+	case EStdKeyNkp9:
 		keyEvent.iScanCode = (keyEvent.iScanCode-EStdKeyNkp2)+'2';
 	case '2':
 	case '3':
@@ -345,7 +325,7 @@ TKeyResponse CEBasicAppUi::HandleMultiTapInput(const TKeyEvent& aKeyEvnt,TEventC
 	case '7':
 	case '8':
 	case '9':
-		{
+	{
 		// Restart at 0 if new key is pressed
 		if(on)
 		{
@@ -377,8 +357,8 @@ TKeyResponse CEBasicAppUi::HandleMultiTapInput(const TKeyEvent& aKeyEvnt,TEventC
 #if defined (UIQ3)
 		iView->SetCurrentMultiTapKey(current_video->hidden->iCurrentChar);
 #endif
-		return EKeyWasConsumed;		
-		}
+		return EKeyWasConsumed;
+	}
 	default:
 		break;
 	}
@@ -387,11 +367,10 @@ TKeyResponse CEBasicAppUi::HandleMultiTapInput(const TKeyEvent& aKeyEvnt,TEventC
 	return EKeyWasNotConsumed;
 }
 
-#if defined (S60) || defined (S60V3) || defined (UIQ3) // Special multitap handling for non touch devices
+#if defined (S60) || defined (__S60_3X__) || defined (UIQ3) // Special multitap handling for non touch devices
 void CEBasicAppUi::HandleScreenDeviceChangedL()
 {
 #ifdef UIQ3
-
 #else
 	CAknAppUi::HandleScreenDeviceChangedL();
 #endif
@@ -400,10 +379,9 @@ void CEBasicAppUi::HandleScreenDeviceChangedL()
 	{
 		iView->SetRect(TRect(TPoint(0,0),iEikonEnv->ScreenDevice()->SizeInPixels()));
 	}
-
 	if(current_video != NULL)
 	{
-		EPOC_ReconfigureVideo(current_video);  
+		EPOC_ReconfigureVideo(current_video);
 	}
 }
 
@@ -411,15 +389,16 @@ void CEBasicAppUi::UpdateInputState()
 	{
 	SetTextInputState(current_video->hidden->iInputMode==EKeyboard);
 	SetJoystickState((current_video->hidden->iInputMode==EJoystick));
-#if defined (UIQ3) || defined (S60) || defined (S60V3)
+#if defined(UIQ3) || defined(S60) || defined(__S60_3X__)
 	iView->UpdateClipRect();
-#if defined (S60) || defined (S60V3)				
+#if defined(S60) || defined(__S60_3X__)
 	iView->UpdateScreen();
 #else
-	iView->UpdateVKeyBoard();	
+	iView->UpdateVKeyBoard();
 #endif
-#endif // UIQ3 , S60 S60V3
+#endif // UIQ3 , S60 __S60_3X__
 	}
+
 void CEBasicAppUi::UpdateScreenOffset(TInt aKeyCode)
 	{
 	TInt xAdd=0;
@@ -441,24 +420,24 @@ void CEBasicAppUi::UpdateScreenOffset(TInt aKeyCode)
 		case EStdDeviceKeyFourWayUp:
 #endif
 		case EStdKeyUpArrow:
-			yAdd = -(dspSize.iHeight/2); 
+			yAdd = -(dspSize.iHeight/2);
 			break;
 #if defined (UIQ3)
 		case EStdDeviceKeyTwoWayDown:
 		case EStdDeviceKeyFourWayDown:
-#endif			
+#endif
 		case EStdKeyDownArrow:
 			yAdd = (dspSize.iHeight/2);
 			break;
 #if defined (UIQ3)
 		case EStdDeviceKeyFourWayLeft:
-#endif		
+#endif
 		case EStdKeyLeftArrow:
 			xAdd = -(dspSize.iWidth/2);
 			break;
 #if defined (UIQ3)
 		case EStdDeviceKeyFourWayRight:
-#endif			
+#endif
 		case EStdKeyRightArrow:
 			xAdd = (dspSize.iWidth/2);
 			break;
@@ -467,11 +446,11 @@ void CEBasicAppUi::UpdateScreenOffset(TInt aKeyCode)
 		case EStdDeviceKeyDone:
 #endif
 		case EStdKeyDevice3: // Used for center
-			{			
+			{
 				current_video->hidden->iPutOffset = TPoint(current_video->screen->w/2-dspSize.iWidth/2 ,
-														   current_video->screen->h/2-dspSize.iHeight/2);				
+														   current_video->screen->h/2-dspSize.iHeight/2);
 			}
-			break;	
+			break;
 		}
 
 	if(current_video->hidden->iSX0Mode & ESX0Portrait)
@@ -482,7 +461,7 @@ void CEBasicAppUi::UpdateScreenOffset(TInt aKeyCode)
 		{
 		current_video->hidden->iPutOffset+=TSize(yAdd,xAdd);
 		}
-	
+
 	if(current_video->hidden->iPutOffset.iX < 0)
 		current_video->hidden->iPutOffset.iX = 0;
 	if(current_video->hidden->iPutOffset.iY < 0)
@@ -496,9 +475,8 @@ void CEBasicAppUi::UpdateScreenOffset(TInt aKeyCode)
 			dspSize.iHeight> current_video->screen->h)
 		current_video->hidden->iPutOffset.iY = current_video->screen->h-dspSize.iHeight;
 
-	RedrawWindowL(current_video);  
+	RedrawWindowL(current_video);
 	}
-
 
 void CEBasicAppUi::UpdateAndRedrawScreenL()
 	{
@@ -506,11 +484,11 @@ void CEBasicAppUi::UpdateAndRedrawScreenL()
 	UpdateScaleFactors();
 	ClearBackBuffer(current_video);
 	iView->UpdateClipRect();
-	RedrawWindowL(current_video);  
+	RedrawWindowL(current_video);
 	}
 
 void ToggleFNMode()
-	{
+{
 	current_video->hidden->iFNModeOn = !current_video->hidden->iFNModeOn;
 #if defined (UIQ3)
 #else
@@ -539,10 +517,9 @@ void ToggleFNMode()
 				break;
 			}
 		}
-#endif			
+#endif
 	RedrawWindowL(current_video);
-		
-	}
+}
 
 TKeyResponse CEBasicAppUi::HandleControlKeyKeysL(const TKeyEvent& aKeyEvent,TEventCode aType)
 {
@@ -561,19 +538,19 @@ TKeyResponse CEBasicAppUi::HandleControlKeyKeysL(const TKeyEvent& aKeyEvent,TEve
 				TInt yAdd=0;
 				if(aKeyEvent.iScanCode == EStdKeyUpArrow || aKeyEvent.iScanCode == EStdKeyDownArrow)
 				{
-					yAdd = aKeyEvent.iScanCode == EStdKeyUpArrow?-10:10; 
+					yAdd = aKeyEvent.iScanCode == EStdKeyUpArrow?-10:10;
 				}
-				
+
 				if(aKeyEvent.iScanCode == EStdKeyLeftArrow || aKeyEvent.iScanCode == EStdKeyRightArrow)
 				{
-					xAdd = aKeyEvent.iScanCode == EStdKeyLeftArrow?-10:10; 
+					xAdd = aKeyEvent.iScanCode == EStdKeyLeftArrow?-10:10;
 				}
-				
-				current_video->hidden->iPutOffset+=TSize(xAdd,yAdd);	
-				RedrawWindowL(current_video);  
+
+				current_video->hidden->iPutOffset+=TSize(xAdd,yAdd);
+				RedrawWindowL(current_video);
 			}
 			break;
-		case EStdKeyDevice3: 
+		case EStdKeyDevice3:
 			{
 				if(!(current_video->hidden->iSX0Mode & ESX0Stretched))
 				{
@@ -585,10 +562,10 @@ TKeyResponse CEBasicAppUi::HandleControlKeyKeysL(const TKeyEvent& aKeyEvent,TEve
 					{
 						current_video->hidden->iPutOffset = TPoint(-11,0);
 					}
-					RedrawWindowL(current_video);  
+					RedrawWindowL(current_video);
 				}
 			}
-			break;	
+			break;
 #else
 #if defined (UIQ3)
 		case EStdDeviceKeyTwoWayDown:
@@ -601,14 +578,14 @@ TKeyResponse CEBasicAppUi::HandleControlKeyKeysL(const TKeyEvent& aKeyEvent,TEve
 #endif
 		case EStdKeyDevice3: // Used for center
 			UpdateScreenOffset(aKeyEvent.iScanCode);
-		break;
+			break;
 		case EStdKeyDownArrow:
 		case EStdKeyLeftArrow:
 			{
 			if(!(current_video->hidden->iSX0Mode & ESX0Stretched))
 				{
 				UpdateScreenOffset(aKeyEvent.iScanCode);
-				}			
+				}
 			else
 				DecreaseVolume();
 			}
@@ -620,7 +597,7 @@ TKeyResponse CEBasicAppUi::HandleControlKeyKeysL(const TKeyEvent& aKeyEvent,TEve
 #endif
 		case EStdKeyUpArrow:
 		case EStdKeyRightArrow:
-			{	
+			{
 			if(!(current_video->hidden->iSX0Mode & ESX0Stretched))
 				{
 				UpdateScreenOffset(aKeyEvent.iScanCode);
@@ -642,11 +619,12 @@ TKeyResponse CEBasicAppUi::HandleControlKeyKeysL(const TKeyEvent& aKeyEvent,TEve
 				iIntialTap = ETrue;
 				current_video->hidden->iInputModeTimer=0;
 #if defined (UIQ3)
-				current_video->hidden->iVirtualKeyBoardActive = ETrue;				
+				current_video->hidden->iVirtualKeyBoardActive = ETrue;
 #endif
 				UpdateInputState();
 				}
-			}break;
+			}
+			break;
 		case 'C':
 		case 'c':
 		case EStdKeyNkp8:
@@ -660,7 +638,7 @@ TKeyResponse CEBasicAppUi::HandleControlKeyKeysL(const TKeyEvent& aKeyEvent,TEve
 				current_video->hidden->iVirtualKeyBoardActive = EFalse;
 #else
 				current_video->hidden->iStatusChar = _L("C");
-#endif			
+#endif
 				UpdateInputState();
 				}
 			}break;
@@ -672,15 +650,16 @@ TKeyResponse CEBasicAppUi::HandleControlKeyKeysL(const TKeyEvent& aKeyEvent,TEve
 			if(current_video->hidden->iInputMode!=EJoystick)
 				{
 				current_video->hidden->iInputMode=EJoystick;
-				current_video->hidden->iInputModeTimer=80;		
+				current_video->hidden->iInputModeTimer=80;
 #if defined (UIQ3)
 				current_video->hidden->iVirtualKeyBoardActive = EFalse;
 #else
 				current_video->hidden->iStatusChar = _L("J");
-#endif			
-				UpdateInputState();					
+#endif
+				UpdateInputState();
 				}
-			}break;		
+			}
+			break;
 		case 'M':
 		case 'm':
 		case '0':
@@ -688,32 +667,32 @@ TKeyResponse CEBasicAppUi::HandleControlKeyKeysL(const TKeyEvent& aKeyEvent,TEve
 			if(current_video->hidden->iInputMode!=EMouseMode)
 				{
 				current_video->hidden->iInputMode=EMouseMode;
-				current_video->hidden->iInputModeTimer=80;		
+				current_video->hidden->iInputModeTimer=80;
 #if defined (UIQ3)
 				current_video->hidden->iVirtualKeyBoardActive = EFalse;
 #else
 				current_video->hidden->iStatusChar = _L("M");
 #endif
-				UpdateInputState();					
-				}			
+				UpdateInputState();
+				}
 			break;
 		case 'N':
 		case 'n':
 		case EStdKeyNkp1:
-		case '1':		
+		case '1':
 			ToggleFNMode();
-					break;
+			break;
 		case 'I':
-		case 'i':							
+		case 'i':
 			{
 				switch(current_video->hidden->iInputMode)
 				{
 				case EJoystick:
 					current_video->hidden->iInputMode=EKeyboard;
 					iIntialTap = ETrue;
-					current_video->hidden->iInputModeTimer=0; 
+					current_video->hidden->iInputModeTimer=0;
 #if defined (UIQ3)
-					current_video->hidden->iVirtualKeyBoardActive = ETrue;	
+					current_video->hidden->iVirtualKeyBoardActive = ETrue;
 #else
 					current_video->hidden->iStatusChar = _L("K");
 #endif
@@ -722,7 +701,7 @@ TKeyResponse CEBasicAppUi::HandleControlKeyKeysL(const TKeyEvent& aKeyEvent,TEve
 					current_video->hidden->iInputMode=EJoystick;
 					current_video->hidden->iInputModeTimer=80;
 #if defined (UIQ3)
-					current_video->hidden->iVirtualKeyBoardActive = EFalse;	
+					current_video->hidden->iVirtualKeyBoardActive = EFalse;
 #else
 					current_video->hidden->iStatusChar = _L("J");
 #endif
@@ -735,12 +714,12 @@ TKeyResponse CEBasicAppUi::HandleControlKeyKeysL(const TKeyEvent& aKeyEvent,TEve
 					current_video->hidden->iVirtualKeyBoardActive = EFalse;
 #else
 					current_video->hidden->iStatusChar = _L("C");
-#endif					
+#endif
 					break;
 				default:
 					break;
 				}
-				
+
 				UpdateInputState();
 			}
 			break;
@@ -749,11 +728,11 @@ TKeyResponse CEBasicAppUi::HandleControlKeyKeysL(const TKeyEvent& aKeyEvent,TEve
 		case EStdKeyNkp2:
 		case '2':
 			{
-			current_video->hidden->iSX0Mode=current_video->hidden->iSX0Mode^ESX0Portrait;						
+			current_video->hidden->iSX0Mode=current_video->hidden->iSX0Mode^ESX0Portrait;
 			UpdateAndRedrawScreenL();
 			//UpdateScreenOffset(KErrNotFound);
 			SetStatusCharAndTimer((current_video->hidden->iSX0Mode&ESX0Portrait)?_L("POR"):_L("LND"));
-			}break;	
+			}break;
 		case 'F':
 		case 'f':
 		case EStdKeyNkp3:
@@ -761,7 +740,7 @@ TKeyResponse CEBasicAppUi::HandleControlKeyKeysL(const TKeyEvent& aKeyEvent,TEve
 			{
 				if(!(current_video->hidden->iSX0Mode & ESX0Portrait))
 				{
-					current_video->hidden->iSX0Mode=current_video->hidden->iSX0Mode^ESX0Flipped;						
+					current_video->hidden->iSX0Mode=current_video->hidden->iSX0Mode^ESX0Flipped;
 					UpdateAndRedrawScreenL();
 				}
 			}
@@ -793,11 +772,11 @@ TKeyResponse CEBasicAppUi::HandleControlKeyKeysL(const TKeyEvent& aKeyEvent,TEve
 			UpdateAndRedrawScreenL();
 			SetStatusCharAndTimer((current_video->hidden->iSX0Mode&ESX0KeepAspect)?_L("ASPECT"):_L("MAX"));
 			}break;
-#ifdef S60V3
+#ifdef __S60_3X__
 		case EStdKeyNkpAsterisk:
 		case '*':
-			current_video->hidden->iVKBTopLeft = !current_video->hidden->iVKBTopLeft;			
-			UpdateAndRedrawScreenL();			
+			current_video->hidden->iVKBTopLeft = !current_video->hidden->iVKBTopLeft;
+			UpdateAndRedrawScreenL();
 			break;
 #endif
 		case '#':
@@ -805,16 +784,12 @@ TKeyResponse CEBasicAppUi::HandleControlKeyKeysL(const TKeyEvent& aKeyEvent,TEve
 			{
 			current_video->hidden->iSX0Mode=current_video->hidden->iSX0Mode^ESX0InvisibleUI;
 			UpdateAndRedrawScreenL();
-			SetStatusCharAndTimer((current_video->hidden->iSX0Mode&ESX0InvisibleUI)?_L("INVIS"):_L("VIS"));			
+			SetStatusCharAndTimer((current_video->hidden->iSX0Mode&ESX0InvisibleUI)?_L("INVIS"):_L("VIS"));
 			}break;
 		default:
-			{
-			
-			}break;
-			
+			break;
 		}
 	}
-
 	return EKeyWasConsumed;
 }
 #endif
@@ -825,20 +800,20 @@ TBool HandleJoyAndMouseKeys(const TInt aSwitchCode ,TBool aDown)
 		{
 
 #if defined (UIQ)
-			case EStdQuartzKeyConfirm:				
+			case EStdQuartzKeyConfirm:
 #endif
-#if defined (UIQ3) || defined (S60) || defined (S60V3)	
+#if defined (UIQ3) || defined (S60) || defined (__S60_3X__)
 			case KRightButtonCodeCase: // Joystick button 2 or keyboard space
 				if(current_video->hidden->iInputMode == EJoystick) {
 					current_video->hidden->iJoystickStatus[EJoyBUT2]=aDown;
 					return ETrue;
 				}
-				else if(current_video->hidden->iInputMode == EMouseMode) {					
+				else if(current_video->hidden->iInputMode == EMouseMode) {
 					SDL_PrivateMouseButton(aDown?SDL_PRESSED:SDL_RELEASED, SDL_BUTTON_RIGHT, 0, 0);
 					return ETrue;
 				}
-			case KLeftButtonCodeCase:// Joystick button 2 or keyboard return					
-#endif // defined (UIQ3) || defined (S60) || defined (S60V3)
+			case KLeftButtonCodeCase:// Joystick button 2 or keyboard return
+#endif // defined (UIQ3) || defined (S60) || defined (__S60_3X__)
 				if(current_video->hidden->iInputMode==EJoystick) {
 					current_video->hidden->iJoystickStatus[EJoyBUT1]=aDown;
 					return ETrue;
@@ -846,8 +821,8 @@ TBool HandleJoyAndMouseKeys(const TInt aSwitchCode ,TBool aDown)
 				else if(current_video->hidden->iInputMode == EMouseMode) {
 					SDL_PrivateMouseButton(aDown?SDL_PRESSED:SDL_RELEASED, SDL_BUTTON_LEFT, 0, 0);
 					return ETrue;
-				}				
-				
+				}
+
 #if defined (UIQ)
 			case EStdQuartzKeyFourWayUp:
 					current_video->hidden->iJoystickStatus[EJoyRIGHT]=on;
@@ -858,9 +833,9 @@ TBool HandleJoyAndMouseKeys(const TInt aSwitchCode ,TBool aDown)
 			case EStdKeyNkp2:
 #endif
 			case EStdKeyUpArrow:
-#if defined(S60) || defined (S80) || defined (S90) || defined (S60V3) || defined (UIQ3)
-#if defined (S60) || defined (S60V3) || defined (UIQ3)
-				if(current_video->hidden->iInputMode == EMouseMode)													
+#if defined(S60) || defined (S80) || defined (S90) || defined (__S60_3X__) || defined (UIQ3)
+#if defined (S60) || defined (__S60_3X__) || defined (UIQ3)
+				if(current_video->hidden->iInputMode == EMouseMode)
 				{
 					if(!(current_video->hidden->iSX0Mode & ESX0Portrait))
 					{
@@ -874,14 +849,14 @@ TBool HandleJoyAndMouseKeys(const TInt aSwitchCode ,TBool aDown)
 					{
 						current_video->hidden->_km.y_down_count = aDown;
 						current_video->hidden->_km.y_vel = aDown?-1:0;
-					}				
+					}
 					return ETrue;
 				}
 				else
 #endif
 				if(current_video->hidden->iInputMode == EJoystick)
 				{
-#if defined (S60) || defined (S60V3) || defined (UIQ3)
+#if defined (S60) || defined (__S60_3X__) || defined (UIQ3)
 					if(!(current_video->hidden->iSX0Mode & ESX0Portrait))
 					{
 						if(current_video->hidden->iSX0Mode & ESX0Flipped)
@@ -890,7 +865,7 @@ TBool HandleJoyAndMouseKeys(const TInt aSwitchCode ,TBool aDown)
 							current_video->hidden->iJoystickStatus[EJoyRIGHT]=aDown;
 					}
 					else
-#endif // defined (S60) || defined (S60V3) || defined (UIQ3)
+#endif // defined (S60) || defined (__S60_3X__) || defined (UIQ3)
 #endif
 					current_video->hidden->iJoystickStatus[EJoyUP]=aDown;
 					return ETrue;
@@ -903,17 +878,17 @@ TBool HandleJoyAndMouseKeys(const TInt aSwitchCode ,TBool aDown)
 			case EStdKeyNkp8:
 #endif
 			case EStdKeyDownArrow:
-#if defined(S60) || defined (S80) || defined (S90) || defined (S60V3) || defined (UIQ3)
-#if defined (S60) || defined (S60V3) || defined (UIQ3)
-				if(current_video->hidden->iInputMode == EMouseMode)												
+#if defined(S60) || defined (S80) || defined (S90) || defined (__S60_3X__) || defined (UIQ3)
+#if defined (S60) || defined (__S60_3X__) || defined (UIQ3)
+				if(current_video->hidden->iInputMode == EMouseMode)
 				{
 					if(!(current_video->hidden->iSX0Mode & ESX0Portrait))
 					{
 						if(current_video->hidden->iSX0Mode & ESX0Flipped) {
-							current_video->hidden->_km.x_vel = aDown?1:0; 
+							current_video->hidden->_km.x_vel = aDown?1:0;
 						}
 						else{
-							current_video->hidden->_km.x_vel = aDown?-1:0; 
+							current_video->hidden->_km.x_vel = aDown?-1:0;
 						}
 						current_video->hidden->_km.x_down_count = aDown;
 					}
@@ -926,9 +901,9 @@ TBool HandleJoyAndMouseKeys(const TInt aSwitchCode ,TBool aDown)
 				}
 				else
 #endif
-				if(current_video->hidden->iInputMode == EJoystick) 
+				if(current_video->hidden->iInputMode == EJoystick)
 					{
-#if defined (S60) || defined (S60V3) || defined (UIQ3)
+#if defined (S60) || defined (__S60_3X__) || defined (UIQ3)
 					if(!(current_video->hidden->iSX0Mode & ESX0Portrait))
 					{
 						if(current_video->hidden->iSX0Mode & ESX0Flipped)
@@ -944,7 +919,7 @@ TBool HandleJoyAndMouseKeys(const TInt aSwitchCode ,TBool aDown)
 					current_video->hidden->iJoystickStatus[EJoyDOWN]=aDown;
 					return ETrue;
 					}
-					
+
 #if defined (UIQ)
 			case EStdQuartzKeyFourWayLeft:
 #endif
@@ -952,16 +927,16 @@ TBool HandleJoyAndMouseKeys(const TInt aSwitchCode ,TBool aDown)
 			case EStdDeviceKeyFourWayLeft:
 			case EStdKeyNkp4:
 #endif
-				
+
 			case EStdKeyLeftArrow:
-#if defined(S60) || defined (S60V3) || defined (UIQ3)
+#if defined(S60) || defined (__S60_3X__) || defined (UIQ3)
 				if(current_video->hidden->iInputMode == EKeyboard)
 				{
 					if( current_video->hidden->iCurrentChar>32 && aDown)
 						current_video->hidden->iCurrentChar-=1;
 					return ETrue;
 				}
-				else if(current_video->hidden->iInputMode == EMouseMode)									
+				else if(current_video->hidden->iInputMode == EMouseMode)
 				{
 					if(!(current_video->hidden->iSX0Mode & ESX0Portrait))
 					{
@@ -987,7 +962,7 @@ TBool HandleJoyAndMouseKeys(const TInt aSwitchCode ,TBool aDown)
 						else
 							current_video->hidden->iJoystickStatus[EJoyUP]=aDown;
 					}
-					else	
+					else
 #elif defined(S80)
 				if(current_video->hidden->iInputMode == EJoystick) // Cursor or joystick
 				{
@@ -1002,9 +977,9 @@ TBool HandleJoyAndMouseKeys(const TInt aSwitchCode ,TBool aDown)
 			case EStdDeviceKeyFourWayRight:
 			case EStdKeyNkp6:
 #endif
-				
+
 			case EStdKeyRightArrow:
-#if defined(S60)  || defined (S60V3) || defined (UIQ3)
+#if defined(S60)  || defined (__S60_3X__) || defined (UIQ3)
 				if(current_video->hidden->iInputMode == EKeyboard)
 				{
 					if(current_video->hidden->iCurrentChar<125 && aDown)
@@ -1017,20 +992,20 @@ TBool HandleJoyAndMouseKeys(const TInt aSwitchCode ,TBool aDown)
 					{
 						if(current_video->hidden->iSX0Mode & ESX0Flipped)
 						{
-						current_video->hidden->_km.y_vel = aDown?-1:0; 
+						current_video->hidden->_km.y_vel = aDown?-1:0;
 						}
 						else
 						{
-						current_video->hidden->_km.y_vel = aDown?1:0; 
+						current_video->hidden->_km.y_vel = aDown?1:0;
 						}
-						
+
 						current_video->hidden->_km.y_down_count = aDown;
 					}
 					else
 					{
 						current_video->hidden->_km.x_down_count = aDown;
 						current_video->hidden->_km.x_vel = aDown?1:0;
-					}			
+					}
 					return ETrue;
 				}
 				else if(current_video->hidden->iInputMode == EJoystick)
@@ -1043,7 +1018,7 @@ TBool HandleJoyAndMouseKeys(const TInt aSwitchCode ,TBool aDown)
 							current_video->hidden->iJoystickStatus[EJoyDOWN]=aDown;
 					}
 					else
-#elif defined(S80) 
+#elif defined(S80)
 				if(current_video->hidden->iInputMode == EJoystick) // Cursor or joystick
 				{
 #endif
@@ -1070,13 +1045,13 @@ TKeyResponse CEBasicAppUi::HandleKeyEventL(const TKeyEvent& aKeyEvent,TEventCode
 		}*/
 			TBool on=aType ==EEventKeyDown;
 			TInt switchCode = aKeyEvent.iScanCode;
-#if defined (S60) || defined (S60V3) || defined (UIQ3)// Special multitap handling for S60 and UIQ3
+#if defined (S60) || defined (__S60_3X__) || defined (UIQ3)// Special multitap handling for S60 and UIQ3
 			if(current_video->hidden->iInputMode == EKeyboard && !current_video->hidden->iControlKeyDown)
-			{			
+			{
 				TKeyResponse response = HandleMultiTapInput(aKeyEvent, aType);
 				if(response == EKeyWasConsumed)
 				{
-#if defined (S60) || defined (S60V3)
+#if defined (S60) || defined (__S60_3X__)
 					iView->UpdateScreen();
 #endif
 					iWasControlEvent = ETrue;
@@ -1086,39 +1061,40 @@ TKeyResponse CEBasicAppUi::HandleKeyEventL(const TKeyEvent& aKeyEvent,TEventCode
 			else if (current_video->hidden->iControlKeyDown)
 			{
 				iWasControlEvent = ETrue;
-				
+
 				return HandleControlKeyKeysL(aKeyEvent, aType);
 			}
-#endif			
+#endif
 			if(aKeyEvent.iScanCode == current_video->hidden->iLeftButtonCode2 || aKeyEvent.iScanCode == current_video->hidden->iLeftButtonCode1)
 				{
 				switchCode = KLeftButtonCodeCase;
 				}
-			
+
 			if(aKeyEvent.iScanCode == current_video->hidden->iRightButtonCode)
 				{
 				switchCode = KRightButtonCodeCase;
 				}
-			
+
 			if( HandleJoyAndMouseKeys(switchCode, on) )
 				{
 				return EKeyWasConsumed;
 				}
-			
+
 			switch(switchCode)
 			{
 
-#ifdef S60V3			  
+#ifdef __S60_3X__
 			  case EStdKeyRightFunc:
 				  {
 				  if(on)
 					  {
-						current_video->hidden->iKeyboardModifier = !current_video->hidden->iKeyboardModifier;						
-						current_video->hidden->iInputModeTimer=80;	
+						current_video->hidden->iKeyboardModifier = !current_video->hidden->iKeyboardModifier;
+						current_video->hidden->iInputModeTimer=80;
 						current_video->hidden->iStatusChar = _L("F");
 						return EKeyWasConsumed;
 					  }
-				  }break;
+				  }
+				  break;
 #endif
 #ifdef S80
 			case EStdKeyDevice1: // Joystick button 2
@@ -1127,7 +1103,7 @@ TKeyResponse CEBasicAppUi::HandleKeyEventL(const TKeyEvent& aKeyEvent,TEventCode
 					current_video->hidden->iJoystickStatus[EJoyBUT2]=on;
 				}
 				break;
-			case EStdKeyDevice2: // Joystick button 3 
+			case EStdKeyDevice2: // Joystick button 3
 				if(current_video->hidden->iInputMode == EJoystick) // Cursor or joystick
 				{
 					current_video->hidden->iJoystickStatus[EJoyBUT3]=on;
@@ -1138,9 +1114,9 @@ TKeyResponse CEBasicAppUi::HandleKeyEventL(const TKeyEvent& aKeyEvent,TEventCode
 					{
 						current_video->hidden->iSX0Mode = current_video->hidden->iSX0Mode^ESX0Stretched;
 						current_video->hidden->EPOC_ScreenOffset = !(current_video->hidden->iSX0Mode & ESX0Stretched)?(current_video->hidden->EPOC_ScreenSize.iWidth - current_video->screen->w) / 2:(current_video->hidden->EPOC_ScreenSize.iWidth-current_video->screen->w*current_video->hidden->iXScale)/2 ;
-						RedrawWindowL(current_video);  
+						RedrawWindowL(current_video);
 					}
-					
+
 				}
 				break;
 			case EStdKeyDevice3:
@@ -1158,8 +1134,8 @@ TKeyResponse CEBasicAppUi::HandleKeyEventL(const TKeyEvent& aKeyEvent,TEventCode
 						break;
 					default:
 						{}break;
-					}	
-					
+					}
+
 					SetJoystickState((current_video->hidden->iInputMode==EJoystick));
 				}
 				break;
@@ -1167,15 +1143,15 @@ TKeyResponse CEBasicAppUi::HandleKeyEventL(const TKeyEvent& aKeyEvent,TEventCode
 				if(current_video->hidden->iInputMode==EJoystick)
 							current_video->hidden->iJoystickStatus[EJoyBUT1]=on;
 						else if(current_video->hidden->iInputMode == EMouseMode)
-							SDL_PrivateMouseButton(on?SDL_PRESSED:SDL_RELEASED, SDL_BUTTON_LEFT, 0, 0);					
-						break;				
+							SDL_PrivateMouseButton(on?SDL_PRESSED:SDL_RELEASED, SDL_BUTTON_LEFT, 0, 0);
+						break;
 #endif
 #ifdef S90
 			case EStdKeyDevice5: // Input mode
 				if(current_video->hidden->iControlKeyDown)
 				{
 					if(aType == EEventKeyUp)
-					{						
+					{
 						switch(current_video->hidden->iInputMode)
 						{
 						case EJoystick:
@@ -1185,7 +1161,7 @@ TKeyResponse CEBasicAppUi::HandleKeyEventL(const TKeyEvent& aKeyEvent,TEventCode
 						case ECursorKeys:
 							current_video->hidden->iInputMode=EJoystick;
 							iEikonEnv->InfoMsg(_L("JOY"));
-							break;			
+							break;
 						}
 						SetJoystickState((current_video->hidden->iInputMode==EJoystick));
 					}
@@ -1199,51 +1175,48 @@ TKeyResponse CEBasicAppUi::HandleKeyEventL(const TKeyEvent& aKeyEvent,TEventCode
 #endif
 			case EStdKeyDevice7:
 				current_video->hidden->iControlKeyDown = on;
-				break;				
-			case EStdKeyDevice4: // Toggle screen mode					
+				break;
+			case EStdKeyDevice4: // Toggle screen mode
 				if(current_video->hidden->iControlKeyDown) // Button 1
 				{
 					if(aType == EEventKeyUp)
 					{
 						current_video->hidden->iSX0Mode = current_video->hidden->iSX0Mode^ESX0Stretched;
 						current_video->hidden->EPOC_ScreenOffset = !(current_video->hidden->iSX0Mode) & ESX0Stretched?(current_video->hidden->EPOC_ScreenSize.iWidth - current_video->screen->w) / 2:(current_video->hidden->EPOC_ScreenSize.iWidth-current_video->screen->w*current_video->hidden->iXScale)/2 ;
-						RedrawWindowL(current_video);  
+						RedrawWindowL(current_video);
 					}
 				}
 				else
 					if(current_video->hidden->iInputMode==EJoystick)
 								current_video->hidden->iJoystickStatus[EJoyBUT1]=on;
 							else if(current_video->hidden->iInputMode == EMouseMode)
-								SDL_PrivateMouseButton(on?SDL_PRESSED:SDL_RELEASED, SDL_BUTTON_LEFT, 0, 0);					
+								SDL_PrivateMouseButton(on?SDL_PRESSED:SDL_RELEASED, SDL_BUTTON_LEFT, 0, 0);
 							break;
-#endif			
-		
-		}		
+#endif
+
+		}
 	  }
-#if defined (S60) || defined (S60V3) || defined (UIQ3)
+#if defined (S60) || defined (__S60_3X__) || defined (UIQ3)
 	  else if(aType == EEventKey)
-	  {		  
-		  
+	  {
 		  switch(aKeyEvent.iScanCode)
 		  {
-#ifdef UIQ3		  
+#ifdef UIQ3
 		  case EStdDeviceKeyYes:
 #else
 		  case EStdKeyYes:
 #endif
 			  {
 				  current_video->hidden->iControlKeyDown = !current_video->hidden->iControlKeyDown;
-				  RedrawWindowL(current_video);  
+				  RedrawWindowL(current_video);
 			  }
 			  break;
-		  }					  
+		  }
 	  }
 #endif
 	}
-	
 	return EKeyWasNotConsumed;
 }
-
 
 void CEBasicAppUi::HandleWsEventL(const TWsEvent& aEvent, CCoeControl* aDestination)
 {
@@ -1268,8 +1241,8 @@ void CEBasicAppUi::HandleWsEventL(const TWsEvent& aEvent, CCoeControl* aDestinat
 			EPOC_HandleWsEvent(current_video,aEvent);
 		}
 	}
-	
 }
+
 TInt CEBasicAppUi::StaticSDLStartL(TAny* aAppUi)
 {
 	static_cast<CEBasicAppUi*>(aAppUi)->SDLStartL();
@@ -1278,7 +1251,7 @@ TInt CEBasicAppUi::StaticSDLStartL(TAny* aAppUi)
 
 void CEBasicAppUi::SDLStartL()
 {
-#if defined (S60) || defined (S60V3)
+#if defined (S60) || defined (__S60_3X__)
 	SetKeyBlockMode(ENoKeyBlock);
 #endif
 #if defined (UIQ)
@@ -1294,7 +1267,7 @@ void CEBasicAppUi::SDLStartL()
 #else
 	iEikonEnv->FsSession().ShareAuto();
 #endif
-	
+
 	/**
 	 * This has a default empty implementation.
 	 * Is called just before SDL_Main is called to allow init of system vars
@@ -1303,7 +1276,7 @@ void CEBasicAppUi::SDLStartL()
 	{
 		static_cast<CSDLApp*>(Application())->PreInitializeAppL();
 	}
-	TRAPD(exiterr, static_cast<CSDLApp*>(Application())->LaunchAppL(1, iExecutableParams));	
+	TRAPD(exiterr, static_cast<CSDLApp*>(Application())->LaunchAppL(1, iExecutableParams));
 #if defined (UIQ) || defined (S80) || defined (S90) || defined (S60)
 	iEikonEnv->FsSession().Share(RSessionBase::EExplicitAttach);
 #endif
@@ -1320,17 +1293,17 @@ void CEBasicAppUi::symbian_at_exit()
 void CEBasicAppUi::SetExecutablePathL()
 {
 #ifdef __WINS__
-#if defined UIQ3 || defined S60V3
+#if defined UIQ3 || defined __S60_3X__
 #ifdef UIQ3
 	iExecutablePath.Append(_L("C:\\Shared\\"));
 #else
 	iExecutablePath.Append(_L("C:\\Data\\"));
-#endif	
+#endif
 	TBuf<64> dataFolder = KNullDesC();
 	static_cast<CSDLApp*>(Application())->GetDataFolder(dataFolder);
 	if(dataFolder.Length() == 0)
 		{
-		TParse parser;		
+		TParse parser;
 		parser.Set(Application()->AppFullName(),NULL,NULL);
 		iExecutablePath.Append(parser.Name());
 		}
@@ -1338,9 +1311,9 @@ void CEBasicAppUi::SetExecutablePathL()
 		{
 		iExecutablePath.Append(dataFolder);
 		}
-	
+
 	iExecutablePath.Append(_L("\\"));
-	
+
 	if(iExecutablePath.Length()>0 && iExecutablePath[0]=='\\')
 	{
 		iExecutablePath.Insert(0,_L("C:"));
@@ -1363,16 +1336,16 @@ void CEBasicAppUi::SetExecutablePathL()
 	RProcess process;
 #if defined (UIQ)  // only UIQ uses APP, process.FileName() refers to Z:\System\Programs\AppRun.exe
 	fname = Application()->AppFullName();
-#elif defined(UIQ3)	|| defined (S60V3)
+#elif defined(UIQ3)	|| defined (__S60_3X__)
 #ifdef UIQ3
 	fname = _L("C:\\Shared\\");
 #else
 	fname = _L("C:\\Data\\");
-#endif	
+#endif
 	TBuf<64> dataFolder = KNullDesC();
 	static_cast<CSDLApp*>(Application())->GetDataFolder(dataFolder);
 	if(dataFolder.Length() == 0)
-		{	
+		{
 		TParse fparser;
 		fparser.Set(process.FileName(),NULL,NULL);
 		fname.Append(fparser.Name());
@@ -1404,11 +1377,11 @@ void CEBasicAppUi::ConstructL()
 #ifdef UIQ3
 	//	SetAutoExitOnAppSwitch(EFalse);
 #endif
-	BaseConstructL();	
+	BaseConstructL();
 #else //!EPOC_AS_APP
-	BaseConstructL(ENoAppResourceFile);	
+	BaseConstructL(ENoAppResourceFile);
 #endif //EPOC_AS_APP
-	
+
 #if defined (UIQ) || defined (UIQ3)
 #ifdef UIQ
 	iView = new (ELeave) CEBasicView;
@@ -1417,7 +1390,7 @@ void CEBasicAppUi::ConstructL()
 #endif
 	TRect rect= ClientRect();
 	iView->ConstructL(rect);
-	
+
 	iView->SetAppUi(Application()->AppDllUid());
 #ifdef UIQ3
 	AddViewL(*iView);
@@ -1428,26 +1401,26 @@ void CEBasicAppUi::ConstructL()
 	CaptureKeysL();
 #endif
 #else //!UIQ variant
-	iView = new (ELeave) CEBasicView;
+	iView = new (ELeave) CEBasicView();
 	iView->ConstructL();
 	AddToStackL(iView);
 #endif
-	
-#if defined (S60) || defined (S60V3)
+
+#if defined (S60) || defined (__S60_3X__)
 	SetKeyBlockMode(ENoKeyBlock);
-#ifdef S60V3
+#ifdef __S60_3X__
 	iRemoteCtrlMonitor = CRemoteCtrlEventMonitor::NewL();
 #endif
 #endif
 	SetExecutablePathL();
-	
+
 	TRAPD(err,BaflUtils::EnsurePathExistsL(iEikonEnv->FsSession(),iExecutablePath));
-	
+
 	TFileName iniFilePath = iExecutablePath;
-	iniFilePath.Append(KLitIniFileName); 
-	
+	iniFilePath.Append(KLitIniFileName);
+
 	iConfig = new CIniFile(iniFilePath);
-		
+
 	iMultitapTimer = CPeriodic::NewL(CActive::EPriorityStandard);
 	TCallBack start(StaticSDLStartL,this);
 	iSDLstart.Set(start);
@@ -1458,9 +1431,9 @@ void CEBasicAppUi::ConstructL()
 void CEBasicAppUi::HandleForegroundEventL(TBool aForeground)
 {
 	iView->iForeground=aForeground;
-#if defined (S60) || defined (S60V3)
+#if defined (S60) || defined (__S60_3X__)
 	CAknAppUi::HandleForegroundEventL(aForeground);
-	
+
 	if(aForeground)
 	{
 		SetKeyBlockMode(ENoKeyBlock);
@@ -1474,8 +1447,9 @@ void CEBasicAppUi::HandleForegroundEventL(TBool aForeground)
 			                                                *iEikonEnv);
 		iEikonEnv->WsSession().SetPointerCursorMode( EPointerCursorNone );
 	}
+
 #elif defined(UIQ)
-	CQikAppUi::HandleForegroundEventL(aForeground);
+	BaseAppUi_t::HandleForegroundEventL(aForeground);
 	if(aForeground)
 	{
 		CaptureKeysL();
@@ -1485,12 +1459,12 @@ void CEBasicAppUi::HandleForegroundEventL(TBool aForeground)
 		CancelCaptureKeys();
 	}
 #elif defined (UIQ3)
-	CQikAppUi::HandleForegroundEventL(aForeground);
+	BaseAppUi_t::HandleForegroundEventL(aForeground);
 #else
-	CEikAppUi::HandleForegroundEventL(aForeground);
+	BaseAppUi_t::HandleForegroundEventL(aForeground);
 #endif
 
-#if !defined(UIQ)	
+#if !defined(UIQ)
 	if(!aForeground)
 	{
 		iView->AbortNow(RDirectScreenAccess::ETerminateCancel);
@@ -1506,9 +1480,7 @@ void CEBasicAppUi::HandleForegroundEventL(TBool aForeground)
 	SDL_PauseAudio(!aForeground);
 }
 
-
-void CEBasicAppUi::DrawView()
-{
+void CEBasicAppUi::DrawView() {
 	iView->DrawNow();
 }
 
@@ -1527,7 +1499,7 @@ void CEBasicAppUi::SetConfig()
 	iConfig->WriteInt("Video","RightButtonCode",priv->iRightButtonCode);
 #if defined (S80) || defined(S90) || defined (UIQ3)	|| defined (UIQ)
 	iConfig->WriteInt("Video","ScreenMode", priv->iSX0Mode);
-#else // S60 & S60V3
+#else // S60 & __S60_3X__
 	iConfig->WriteInt("Video","ScreenMode",priv->iSX0Mode);
 	iConfig->WriteInt("Video","OffsetX",priv->iPutOffset.iX);
 	iConfig->WriteInt("Video","OffsetY",priv->iPutOffset.iY);
@@ -1547,7 +1519,7 @@ void CEBasicAppUi::GetConfig(SDL_VideoDevice* aDevice)
 	priv->iSX0Mode = iConfig->ReadInt("Video","ScreenMode",ESX0Stretched);
 #elif defined (S80) || defined(S90)|| defined (UIQ)
 	priv->iSX0Mode = iConfig->ReadInt("Video","ScreenMode",0);
-#else // (S60) (S60V3)
+#else // (S60) (__S60_3X__)
 	if(fileExist)
 		{
 		priv->iSX0Mode = iConfig->ReadInt("Video","ScreenMode", ESX0Stretched|ESX0Flipped);
@@ -1556,29 +1528,27 @@ void CEBasicAppUi::GetConfig(SDL_VideoDevice* aDevice)
 		{
 		priv->iSX0Mode = priv->EPOC_ScreenSize.iWidth > priv->EPOC_ScreenSize.iHeight?ESX0Stretched|ESX0Flipped|ESX0Portrait:ESX0Stretched|ESX0Flipped;
 		}
-	
+
 	priv->iPutOffset.iX = iConfig->ReadInt("Video","OffsetX",0);
 	priv->iPutOffset.iY = iConfig->ReadInt("Video","OffsetY",0);
 	priv->iShiftOn = ETrue;
 	priv->iActivateButtonSize = iConfig->ReadInt("Video","ActivateButtonSize", KDefaultActivateButtonSize);
 	SetKeyBlockMode(ENoKeyBlock); // Just as a precaution
-#endif // S60|| S60V3
+#endif // S60|| __S60_3X__
 }
 
-#if defined (S60) || defined (S60V3)
+#if defined(S60) || defined(__S60_3X__)
 void CEBasicAppUi::SetKeyBlockMode(TAknKeyBlockMode aMode)
 {
 	CAknAppUi::SetKeyBlockMode(aMode);
 }
-
-
 #endif
-MY_EXPORT_C RWindow& CSDLApp::MainWindow()
-	{
-	return TheBasicAppUi->View()->Win();
-	}
-#if defined (UIQ) || defined(UIQ3)
 
+MY_EXPORT_C RWindow& CSDLApp::MainWindow() {
+	return TheBasicAppUi->View()->Win();
+}
+
+#if defined(UIQ) || defined(UIQ3)
 #ifdef UIQ
 void CEBasicAppUi::CaptureKeysL()
 {
@@ -1589,7 +1559,7 @@ void CEBasicAppUi::CaptureKeysL()
 		iCapKey3= iEikonEnv->RootWin().CaptureKey(EKeyDevice0,0,0,1);
 		iCapKey4= iEikonEnv->RootWin().CaptureKey(EKeyDeviceD,0,0,0);
 		iCapKey5= iEikonEnv->RootWin().CaptureKey(EKeyDeviceE,0,0,0);
-		
+
 		iCapKey1b = iEikonEnv->RootWin().CaptureKeyUpAndDowns(EStdKeyApplication0,0,0,1);
 		iCapKey2b = iEikonEnv->RootWin().CaptureKeyUpAndDowns(EStdKeyApplication1,0,0,1);
 		iCapKey3b = iEikonEnv->RootWin().CaptureKeyUpAndDowns(EStdKeyDevice0,0,0,1);
@@ -1597,30 +1567,31 @@ void CEBasicAppUi::CaptureKeysL()
 		iCapKey5b = iEikonEnv->RootWin().CaptureKeyUpAndDowns(EStdKeyDeviceE,0,0,0);
 	}
 }
+
 /**
 *Cancels any captured Keys
 */
 void CEBasicAppUi::CancelCaptureKeys()
 {
 	if(	iCapKey1 !=-1)
-	{		
+	{
 		iEikonEnv->RootWin().CancelCaptureKey(iCapKey1);
 		iEikonEnv->RootWin().CancelCaptureKey(iCapKey2);
 		iEikonEnv->RootWin().CancelCaptureKey(iCapKey3);
 		iEikonEnv->RootWin().CancelCaptureKey(iCapKey4);
 		iEikonEnv->RootWin().CancelCaptureKey(iCapKey5);
-		
+
 		iEikonEnv->RootWin().CancelCaptureKeyUpAndDowns(iCapKey1b);
 		iEikonEnv->RootWin().CancelCaptureKeyUpAndDowns(iCapKey2b);
 		iEikonEnv->RootWin().CancelCaptureKeyUpAndDowns(iCapKey3b);
 		iEikonEnv->RootWin().CancelCaptureKeyUpAndDowns(iCapKey4b);
 		iEikonEnv->RootWin().CancelCaptureKeyUpAndDowns(iCapKey5b);
-		iCapKey1=-1;	
+		iCapKey1=-1;
 	}
 }
 #endif
-////////// CEBasicView //////////////////////////////////////////////////
 
+////////// CEBasicView //////////////////////////////////////////////////
 #ifdef UIQ
 CEBasicView::CEBasicView()
 #else // UIQ3
@@ -1665,7 +1636,7 @@ void CEBasicView::ConstructL(const TRect& aRect)
 	SetRect(TRect(TPoint(0,0),TSize(aRect.Width(),320)));
 	iWantedRect = Rect();
 	iBitOffset = TPoint (0,0);
-	
+
 	ActivateL();
 }
 
@@ -1695,7 +1666,7 @@ void CEBasicView::Draw(const TRect& /*aRect*/) const
 		TRect realRect( 0,0,240,320 );
 		gc.BitBlt(TPoint (0,0),current_video->hidden->EPOC_Bitmap,realRect);
 	}
-#endif	
+#endif
 
 	DrawVKeyBoard(gc);
 	DrawCharSelector(gc);
@@ -1706,8 +1677,7 @@ void CEBasicView::DrawVKeyBoard(CWindowGc& aGc) const
 {
 	aGc.SetBrushColor(KRgbBlack);
 	aGc.SetBrushStyle(CGraphicsContext::ESolidBrush);
-	
-	
+
 	TInt base=Size().iWidth-KOnScreenBoxWidth;
 	if(current_video && !current_video->hidden->iVirtualKeyBoardActive)
 	{
@@ -1720,11 +1690,11 @@ void CEBasicView::DrawVKeyBoard(CWindowGc& aGc) const
 	}
 
 	aGc.SetPenColor(KRgbGray);
-	aGc.DrawRect(TRect(TPoint(base,KScreenKeySize),TSize(KOnScreenBoxWidth,KScreenKeySize))); 		
+	aGc.DrawRect(TRect(TPoint(base,KScreenKeySize),TSize(KOnScreenBoxWidth,KScreenKeySize)));
 	// Draw escape round
 	aGc.DrawRect(TRect(TPoint(base,KScreenKeySize*2),TSize(KOnScreenBoxWidth,KScreenKeySize)));
 	// Draw keyboard select out
-	aGc.DrawRect(TRect(TPoint(base,KScreenKeySize*3),TSize(KOnScreenBoxWidth,KScreenKeySize))); // outerline	
+	aGc.DrawRect(TRect(TPoint(base,KScreenKeySize*3),TSize(KOnScreenBoxWidth,KScreenKeySize))); // outerline
 	// Control key
 	aGc.SetBrushColor(current_video && current_video->hidden->iControlKeyDown?KRgbGreen:KRgbDarkGray);
 	aGc.DrawRect(TRect(TPoint(base, 0),TSize(KOnScreenBoxWidth,KScreenKeySize))); // outerline
@@ -1763,25 +1733,25 @@ void CEBasicView::DrawVKeyBoard(CWindowGc& aGc) const
 		aGc.SetPenColor(KRgbGray);
 	}
 #endif
-	
+
 	aGc.SetPenColor(KRgbWhite);
 	// Draw escape
 	for(TInt loop=0;loop<12;loop++)
 		{
-		aGc.DrawLine(TPoint(KEscape[loop*4]+base+1,KEscape[loop*4+1]+KScreenKeySize*2+2),TPoint(KEscape[loop*4+2]+base+1,KEscape[loop*4+3]+KScreenKeySize*2+2)); 
+		aGc.DrawLine(TPoint(KEscape[loop*4]+base+1,KEscape[loop*4+1]+KScreenKeySize*2+2),TPoint(KEscape[loop*4+2]+base+1,KEscape[loop*4+3]+KScreenKeySize*2+2));
 		}
-	
+
 	if(current_video && current_video->hidden->iMouseButtonSet == ERightMouseButton)
-		{		
+		{
 			aGc.SetBrushColor(KRgbWhite);
 			aGc.DrawRect(TRect(TPoint(base+2,19),TSize(4,4)));
 		}
-		else if(current_video && current_video->hidden->iMouseButtonSet == ELeftMouseButton)		
-		{	
+		else if(current_video && current_video->hidden->iMouseButtonSet == ELeftMouseButton)
+		{
 			aGc.SetBrushColor(KRgbWhite);
 			aGc.DrawRect(TRect(TPoint(base+2,25),TSize(4,4)));
 		}
-	
+
 	if(current_video && current_video->hidden->iVirtualKeyBoardActive)
 		{
 		aGc.SetPenColor(KRgbGray);
@@ -1791,15 +1761,14 @@ void CEBasicView::DrawVKeyBoard(CWindowGc& aGc) const
 		// Enter button
 		aGc.DrawRect(TRect(TPoint(base,KScreenKeySize*4),TSize(KOnScreenBoxWidth,KScreenKeySize))); // outerline
 		aGc.SetPenColor(KRgbWhite);
-		aGc.DrawLine(TPoint(base+2,KScreenKeySize*4+4),TPoint(base+6,KScreenKeySize*4+4)); 
-		aGc.DrawLine(TPoint(base+5,KScreenKeySize*4+10),TPoint(base+5,KScreenKeySize*4+4)); //enter		
+		aGc.DrawLine(TPoint(base+2,KScreenKeySize*4+4),TPoint(base+6,KScreenKeySize*4+4));
+		aGc.DrawLine(TPoint(base+5,KScreenKeySize*4+10),TPoint(base+5,KScreenKeySize*4+4)); //enter
 
-	
 		// Delete button
-		aGc.DrawLine(TPoint(base+3,KScreenKeySize*5+2),TPoint(base+3,KScreenKeySize*5+KScreenKeySize-2)); 
-		aGc.DrawLine(TPoint(base+5,KScreenKeySize*5+9),TPoint(base+3,KScreenKeySize*5+KScreenKeySize-2)); 
+		aGc.DrawLine(TPoint(base+3,KScreenKeySize*5+2),TPoint(base+3,KScreenKeySize*5+KScreenKeySize-2));
+		aGc.DrawLine(TPoint(base+5,KScreenKeySize*5+9),TPoint(base+3,KScreenKeySize*5+KScreenKeySize-2));
 		aGc.DrawLine(TPoint(base+1,KScreenKeySize*5+9),TPoint(base+3,KScreenKeySize*5+KScreenKeySize-2));
-		
+
 		// Draw arrow upper
 		aGc.SetPenColor(KRgbGray);
 		aGc.DrawRect(TRect(TPoint(base,304),TSize(KOnScreenBoxWidth,KScreenKeySize)));
@@ -1811,7 +1780,6 @@ void CEBasicView::DrawVKeyBoard(CWindowGc& aGc) const
 		aGc.DrawLine(TPoint(base+1,310),TPoint(base+3,317)); // arrow
 		aGc.DrawLine(TPoint(base+3,317),TPoint(base+6,310));
 	}
-	
 }
 
 void CEBasicView::SetCurrentMultiTapKey(TInt aKey)
@@ -1821,7 +1789,6 @@ void CEBasicView::SetCurrentMultiTapKey(TInt aKey)
 	{
 		UpdateCharSelector(tapIndex);
 	}
-
 }
 
 void CEBasicView::DrawCharSelector(CWindowGc& aGc) const
@@ -1830,7 +1797,7 @@ void CEBasicView::DrawCharSelector(CWindowGc& aGc) const
 	{
 		aGc.SetBrushColor(KRgbBlack);
 		aGc.SetBrushStyle(CGraphicsContext::ESolidBrush);
-		
+
 #ifdef UIQ3
 		TCoeFont font(9,TCoeFont::EPlain);
 		const CFont* usedFont = &ScreenFont(font);//&ScreenFont(TCoeFont(TCoeFont::EExtraSmall,TCoeFont::EPlain));
@@ -1843,10 +1810,10 @@ void CEBasicView::DrawCharSelector(CWindowGc& aGc) const
 		for(TInt chr=0;chr<KNoOnScreenKeys;chr++)
 		{
 			aGc.SetPenColor(KRgbGray);
-			
+
 			aGc.DrawRect(TRect(TPoint(base,KScreenKeysOffset+chr*KScreenKeySize),TSize(KOnScreenBoxWidth,KScreenKeySize)));
 			aGc.SetPenColor(KRgbWhite);
-			
+
 			if(chr+iLetterOffset<KOnScreenChars().Length())
 			{
 				TBuf<2>chrbuf=KOnScreenChars().Mid(chr+iLetterOffset,1);
@@ -1868,7 +1835,7 @@ TCoeInputCapabilities CEBasicView::InputCapabilities() const
 	{
 		caps.SetCapabilities(TCoeInputCapabilities::EAllText|TCoeInputCapabilities::ENavigation);
 	}
-	
+
 	return caps;
 }
 
@@ -1965,22 +1932,22 @@ void CEBasicView::UpdateClipRect()
 		rect.iBr.iX+=8;
 		clipRegion.AddRect(rect);
 	}
-	
+
 	iDsa->Gc()->SetClippingRegion(clipRegion);
 	clipRegion.Close();
 }
-
 
 void CEBasicView::AbortNow(RDirectScreenAccess::TTerminationReasons /*aReason*/)
 {
 	iDrawingOn=EFalse;
 	iDsa->Cancel();
-	
+
 	if(current_video != NULL)
 	{
 		current_video->hidden->iNeedFullRedraw=ETrue;
 	}
 }
+
 void CEBasicView::ClearScreen()
 {
 	if(iDrawingOn)
@@ -1989,6 +1956,7 @@ void CEBasicView::ClearScreen()
 		iDsa->Gc()->Clear();
 	}
 }
+
 void CEBasicView::PutBitmap(CFbsBitmap* aBitmap,TPoint aPoint,TRect aRect)
 {
 	if(iDrawingOn)
@@ -2003,10 +1971,10 @@ void CEBasicView::PutBitmap(CFbsBitmap* aBitmap,TPoint aPoint,TRect aRect)
 void CEBasicView::UpdateMouseCursor()
 {
 	if(iDrawingOn && current_video->hidden->iCursor != NULL && SDL_ShowCursor(-1) == 1 )
-	{		
+	{
 		CWsBitmap* cursorBitmap = NULL;
 		CWsBitmap* cursorMask = NULL;
-	
+
 		TPoint pos;
 		TPoint orgPos;
 		SDL_GetMouseState(&pos.iX, &pos.iY);
@@ -2015,7 +1983,7 @@ void CEBasicView::UpdateMouseCursor()
 		{
 		pos.iX = current_video->hidden->iXScale*pos.iX;
 		pos.iY= current_video->hidden->iYScale*pos.iY;
-			
+
 			cursorBitmap = current_video->hidden->iCursor->iCursorPBitmap;
 			cursorMask = current_video->hidden->iCursor->iCursorPMask;
 		}
@@ -2026,17 +1994,17 @@ void CEBasicView::UpdateMouseCursor()
 			cursorBitmap = current_video->hidden->iCursor->iCursorLFBitmap;
 			cursorMask = current_video->hidden->iCursor->iCursorLFMask;
 			pos.iY = current_video->hidden->iXScale*orgPos.iX;
-			pos.iX= current_video->hidden->iStretchSize.iHeight-(current_video->hidden->iYScale*orgPos.iY);	
+			pos.iX= current_video->hidden->iStretchSize.iHeight-(current_video->hidden->iYScale*orgPos.iY);
 			}
 			else
 			{
 			cursorBitmap = current_video->hidden->iCursor->iCursorLBitmap;
 			cursorMask = current_video->hidden->iCursor->iCursorLMask;
 			pos.iY = current_video->hidden->iStretchSize.iWidth-(current_video->hidden->iXScale*orgPos.iX);
-			pos.iX= current_video->hidden->iYScale*orgPos.iY;	
+			pos.iX= current_video->hidden->iYScale*orgPos.iY;
 			}
 		}
-		
+
 		TSize sze = cursorBitmap->SizeInPixels();
 		if(!(current_video->hidden->iSX0Mode & ESX0Stretched))
 			{
@@ -2046,12 +2014,11 @@ void CEBasicView::UpdateMouseCursor()
 		if(pos != current_video->hidden->iCursorPos)
 		{
 		iDsa->Gc()->BitBlt(current_video->hidden->iCursorPos, current_video->hidden->EPOC_Bitmap, TRect(current_video->hidden->iCursorPos, sze));
-		iDsa->Gc()->BitBltMasked(pos, cursorBitmap, TRect(sze),  cursorMask, EFalse);		
+		iDsa->Gc()->BitBltMasked(pos, cursorBitmap, TRect(sze),  cursorMask, EFalse);
 		current_video->hidden->iCursorPos = pos;
 		}
 	}
 }
-
 
 void CEBasicView::UpdateScreen()
 {
@@ -2060,13 +2027,14 @@ void CEBasicView::UpdateScreen()
 		iDsa->ScreenDevice()->Update();
 	}
 }
+
 /**
-Inherited from CQikViewBase and called upon by the UI Framework. 
+Inherited from CQikViewBase and called upon by the UI Framework.
 It creates the views with command from resource.
 */
 void CEBasicView::ViewConstructL()
 {
-	// Loads information about the UI configurations this view supports 
+	// Loads information about the UI configurations this view supports
 	// together with definition of each view, its layout and commands.
 	ViewConstructFromResourceL(static_cast<CSDLApp*>(iEikonEnv->EikAppUi()->Application())->ViewResourceId());
 }
