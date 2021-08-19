@@ -5,16 +5,35 @@
 #include <coeview.h>
 #include <eikapp.h>
 #include <e32base.h>
-#if defined (S60V3)
+
+#if defined (__SERIES60_3X__)
 class CRemoteCtrlEventMonitor;
 #endif
-#include "IniFile.h"
-
 
 _LIT(KOnScreenChars," .ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz");
 const TInt KNoOnScreenKeys = 12;
 const TInt KScreenKeysOffset = 112;
 const TInt KScreenKeySize = 16;
+
+#if defined(UIQ) || defined(UIQ3)
+#include <qikappui.h>
+#include <qikdocument.h>
+typedef CQikAppUi    BaseAppUi_t;
+typedef CQikDocument BaseDocument_t;
+#elif defined(S60) || defined(__SERIES60_3X__)
+#include <akndoc.h>
+#include <aknappUI.h>
+typedef CAknAppUi    BaseAppUi_t;
+typedef CAknDocument BaseDocument_t;
+#else
+#include <eikdoc.h>
+#include <eikappui.h>
+typedef CEikAppUi    BaseAppUi_t;
+typedef CEikDocument BaseDocument_t;
+#endif
+
+
+#include "IniFile.h"
 
 // so we can access the config from anywhere
 #define Configuration	static_cast<CEBasicAppUi*>(CEikonEnv::Static()->EikAppUi())->Config()
@@ -22,16 +41,8 @@ const TInt KScreenKeySize = 16;
 struct SDL_VideoDevice;
 struct SDL_AudioDevice;
 
-#if defined  (UIQ) || defined(UIQ3)
-#include <qikdocument.h>
-class CEBasicDoc:public CQikDocument
-#elif defined (S60) || defined (S60V3)
-#include <akndoc.h>
-class CEBasicDoc:public CAknDocument
-#else
-#include <eikdoc.h>
-class CEBasicDoc:public CEikDocument
-#endif
+
+class CEBasicDoc: public BaseDocument_t
 {
 public:	
 	~CEBasicDoc();
@@ -44,16 +55,8 @@ private:
 };
 
 class CEBasicView;
-#if defined  (UIQ) || defined(UIQ3)
-#include <qikappui.h>
-class CEBasicAppUi:public CQikAppUi
-#elif defined (S60) || defined (S60V3)
-#include <aknappUI.h>
-class CEBasicAppUi:public CAknAppUi
-#else
-#include <eikappui.h>
-class CEBasicAppUi:public CEikAppUi
-#endif
+
+class CEBasicAppUi: public BaseAppUi_t
 {
 	public:
 		CEBasicAppUi();
@@ -78,13 +81,13 @@ class CEBasicAppUi:public CEikAppUi
 #ifdef UIQ3
 		void LaunchSettingsDialogL();
 #endif
-#if defined (S60) || defined (S60V3) || defined (UIQ3)
+#if defined (S60) || defined(__SERIES60_3X__) || defined(UIQ3)
 		TKeyResponse HandleControlKeyKeysL(const TKeyEvent& aKeyEvent,TEventCode aType);
 		void HandleScreenDeviceChangedL();
 		void UpdateInputState();
-#if defined (S60) || defined (S60V3)
+#if defined(S60) || defined(__SERIES60_3X__)
 		void SetKeyBlockMode(TAknKeyBlockMode aMode);
-#ifdef S60V3	
+#ifdef 	__SERIES60_3X__
 	CRemoteCtrlEventMonitor* iRemoteCtrlMonitor;
 #endif
 #endif
@@ -138,7 +141,7 @@ class CEBasicAppUi:public CEikAppUi
 
 
 
-#if defined (UIQ) || defined (UIQ3)
+#if defined(UIQ) || defined(UIQ3)
 #ifdef UIQ
 class CEBasicView:public CCoeControl,public MCoeView
 #else
