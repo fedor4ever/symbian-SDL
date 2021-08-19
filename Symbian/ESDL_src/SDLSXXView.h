@@ -1,20 +1,22 @@
 #ifndef SDLSXXAPPH
 #define SDLSXXAPPH
-#if defined (S60) || defined (S80) || defined (S90) || defined(S60V3)
+
+#if defined(S60) || defined(S80) || defined(S90) || defined(__S60_3X__)
 	#include <e32base.h>
 	#include <eikappui.h>
 	#include <coecntrl.h>
-#ifdef S60V3
+
+#ifdef __S60_3X__
 class TKeyboardData
 	{
 public:
 	TRect iKeyRect;
 	TInt16 iScanCode1;
-	TInt16 iScanCode2;	
+	TInt16 iScanCode2;
 	};
-
 #endif
-	class CEBasicView:public CCoeControl,public MDirectScreenAccess
+
+class CEBasicView:public CCoeControl,public MDirectScreenAccess
 	{
 	public:
 		CEBasicView() {
@@ -32,12 +34,14 @@ public:
 		void AbortNow(RDirectScreenAccess::TTerminationReasons aReason);
 		void SetAppUi(TUid aUid){iAppUid=aUid;};
 		void ActGc(){ActivateGc();};
-		void DeGc(){DeactivateGc();};	
+		void DeGc(){DeactivateGc();};
 		void ClearScreen();
 		void UpdateClipRect();
-#if defined (S60) || defined (S60V3)
+
+#if defined(S60) || defined(__S60_3X__)
+	public:
 		void DrawScreenStatus(CBitmapContext& aGc) const;
-#ifdef S60V3
+#ifdef __S60_3X__
 		void DrawCharSelector(CWindowGc& aGc) const;
 		void DrawVKeyBoard(CBitmapContext& aGc) const;
 		void UpdateVirtualKeyboard();
@@ -48,28 +52,29 @@ public:
 		TSize iControlSize;
 		TRect iControlRect;
 		TInt iSimulatedKey;
-		
 #endif
-#endif
+#endif // defined(S60) || defined(__S60_3X__)
+
 		RWindow& Win() const {return Window();};
 #ifdef S90
+	public:
 		void UpdateCharSelector(TInt aLetterOffset);
 		void DrawCharSelector(CWindowGc& aGc) const;
 		TInt iLetterOffset;
 		void UpdateVKeyBoard();
 		void DrawVKeyBoard(CWindowGc& aGc) const;
-
 #endif
 
+//	private: //TODO: Make them private
 		CDirectScreenAccess* iDsa;
 		TBool iDrawingOn;
 		TBool iForeground;
-		TUid iAppUid;		
-#ifdef S60V3
+		TUid iAppUid;
+#ifdef __S60_3X__
 		CArrayFixFlat<TKeyboardData>* iTouchKeys;
 		TRect iToggleVKBStateRect;
 #endif
-    RRegion iClipRegion;
+		RRegion iClipRegion;
 		TRect iClipRect;
 	};
 #endif
