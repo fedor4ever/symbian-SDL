@@ -44,7 +44,7 @@ struct SDL_AudioDevice;
 
 class CEBasicDoc: public BaseDocument_t
 {
-public:	
+public:
 	~CEBasicDoc();
 	virtual CEikAppUi* CreateAppUiL();
 	CEBasicDoc(CEikApplication& aApp);
@@ -78,32 +78,39 @@ class CEBasicAppUi: public BaseAppUi_t
 		CIniFile* Config() { return iConfig; }
 		TFileName GetExecutablePath() { return iExecutablePath; }
 		char* GetExecutablePathCStr() { return (char*)&iExecutablePathCStr; }
+
 #ifdef UIQ3
 		void LaunchSettingsDialogL();
 #endif
+
 #if defined (S60) || defined(__SERIES60_3X__) || defined(UIQ3)
 		TKeyResponse HandleControlKeyKeysL(const TKeyEvent& aKeyEvent,TEventCode aType);
 		void HandleScreenDeviceChangedL();
 		void UpdateInputState();
+
 #if defined(S60) || defined(__SERIES60_3X__)
 		void SetKeyBlockMode(TAknKeyBlockMode aMode);
+
 #ifdef 	__SERIES60_3X__
 	CRemoteCtrlEventMonitor* iRemoteCtrlMonitor;
+
 #endif
 #endif
-#endif
+#endif // defined (S60) || defined(__SERIES60_3X__) || defined(UIQ3)
 		void ReleaseMultitapKeysL();
 		void UpdateAndRedrawScreenL();
 	protected:
 		void SetExecutablePathL();
 		TKeyResponse HandleMultiTapInput(const TKeyEvent& aKeyEvent,TEventCode aType);
 		void UpdateScreenOffset(TInt aKeyCode);
-#ifdef UIQ	
-		/** 
+
+#ifdef UIQ
+	protected:
+		/**
 		 * Capture special Application keys
 		 */
 		void CaptureKeysL();
-	
+
 		/**
 		 *Cancels any captured Keys
 		 */
@@ -113,7 +120,7 @@ class CEBasicAppUi: public BaseAppUi_t
 		TInt32 iCapKey3;
 		TInt32 iCapKey4;
 		TInt32 iCapKey5;
-	
+
 		TInt32 iCapKey1b;
 		TInt32 iCapKey2b;
 		TInt32 iCapKey3b;
@@ -125,15 +132,15 @@ class CEBasicAppUi: public BaseAppUi_t
 		CEBasicView* iView;
 		CAsyncCallBack iSDLstart;
 		TBool iWasControlEvent;
-		
+
 		CIniFile* iConfig;
 		TFileName iExecutablePath;
 		char iExecutablePathCStr[KMaxFileName];
 		char* iExecutableParams[1];
 		static TInt StaticMultitapTimeoutL(TAny* aAppUi);
 		void MultitapTimeoutL();
-	
-		CPeriodic* iMultitapTimer;	
+
+		CPeriodic* iMultitapTimer;
 		RArray<TChar>		iReleaseKeys;
 		TBool iTapTimerReleased;
 		TBool iIntialTap;
@@ -188,7 +195,7 @@ public:
 
 	TKeyResponse OfferKeyEventL(const TKeyEvent& aKeyEvent,TEventCode aType);
 	/**
-	Inherited from CQikViewBase and called upon by the UI Framework. 
+	Inherited from CQikViewBase and called upon by the UI Framework.
 	It creates the views with command from resource.
 	*/
 	void ViewConstructL();
