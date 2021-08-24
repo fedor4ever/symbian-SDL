@@ -1874,6 +1874,7 @@ void CEBasicView::ViewActivatedL(const TVwsViewId& aPrevViewId,TUid aCustomMessa
 #endif
 	gViewVisible=true;
 }
+
 void CEBasicView::ViewDeactivated()
 {
 	gViewVisible=false;
@@ -1903,15 +1904,6 @@ void CEBasicView::UpdateClipRect()
 	clipRegion.Close();
 }
 
-void CEBasicView::ClearScreen()
-{
-	if(iDrawingOn)
-	{
-		iDsa->Gc()->SetBrushColor(KRgbBlack);
-		iDsa->Gc()->Clear();
-	}
-}
-
 void CEBasicView::PutBitmap(CFbsBitmap* aBitmap,TPoint aPoint,TRect aRect)
 {
 	if(iDrawingOn)
@@ -1920,66 +1912,6 @@ void CEBasicView::PutBitmap(CFbsBitmap* aBitmap,TPoint aPoint,TRect aRect)
 		current_video->hidden->iCursorPos = TPoint();
 		UpdateMouseCursor();
 		current_video->hidden->iWasUpdated = ETrue;
-	}
-}
-
-void CEBasicView::UpdateMouseCursor()
-{
-	if(iDrawingOn && current_video->hidden->iCursor != NULL && SDL_ShowCursor(-1) == 1 )
-	{
-		CWsBitmap* cursorBitmap = NULL;
-		CWsBitmap* cursorMask = NULL;
-
-		TPoint pos;
-		TPoint orgPos;
-		SDL_GetMouseState(&pos.iX, &pos.iY);
-		orgPos = pos;
-		if(current_video->hidden->iSX0Mode & ESX0Portrait)
-		{
-		pos.iX = current_video->hidden->iXScale*pos.iX;
-		pos.iY= current_video->hidden->iYScale*pos.iY;
-
-			cursorBitmap = current_video->hidden->iCursor->iCursorPBitmap;
-			cursorMask = current_video->hidden->iCursor->iCursorPMask;
-		}
-		else
-		{
-			if(current_video->hidden->iSX0Mode & ESX0Flipped)
-			{
-			cursorBitmap = current_video->hidden->iCursor->iCursorLFBitmap;
-			cursorMask = current_video->hidden->iCursor->iCursorLFMask;
-			pos.iY = current_video->hidden->iXScale*orgPos.iX;
-			pos.iX= current_video->hidden->iStretchSize.iHeight-(current_video->hidden->iYScale*orgPos.iY);
-			}
-			else
-			{
-			cursorBitmap = current_video->hidden->iCursor->iCursorLBitmap;
-			cursorMask = current_video->hidden->iCursor->iCursorLMask;
-			pos.iY = current_video->hidden->iStretchSize.iWidth-(current_video->hidden->iXScale*orgPos.iX);
-			pos.iX= current_video->hidden->iYScale*orgPos.iY;
-			}
-		}
-
-		TSize sze = cursorBitmap->SizeInPixels();
-		if(!(current_video->hidden->iSX0Mode & ESX0Stretched))
-			{
-			pos-=current_video->hidden->iPutOffset;
-			}
-
-		if(pos != current_video->hidden->iCursorPos)
-		{
-		iDsa->Gc()->BitBlt(current_video->hidden->iCursorPos, current_video->hidden->EPOC_Bitmap, TRect(current_video->hidden->iCursorPos, sze));
-		iDsa->Gc()->BitBltMasked(pos, cursorBitmap, TRect(sze),  cursorMask, EFalse);
-		current_video->hidden->iCursorPos = pos;
-		}
-	}
-}
-
-void CEBasicView::UpdateScreen()
-{
-	if(iDrawingOn)
-	{
-		iDsa->ScreenDevice()->Update();
 	}
 }
 
