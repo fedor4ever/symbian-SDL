@@ -18,6 +18,7 @@
 #include "SDL_epocevents_c.h"
 #include "ebasicapp.h"
 #include "SDL_Keyboard.h"
+
 #ifdef S60V3
 #include <coefont.h>
 
@@ -79,8 +80,8 @@ const TInt16 KKeyboardConstantsKeyb[84] = // 3x8 array
 		 EStdKeyKeyboardExtend, -1,  EStdKeyNo, EStdKeyNo, EStdKeyDictaphonePlay, EStdKeyDictaphonePlay //8
 };
 
+#endif //S60V3
                                                      
-#endif
 CEBasicView::~CEBasicView()
 {
 	iDsa->Cancel();
@@ -89,23 +90,6 @@ CEBasicView::~CEBasicView()
 	delete iTouchKeys;
   iClipRegion.Close();
 #endif
-}
-
-
-void CEBasicView::Restart(RDirectScreenAccess::TTerminationReasons /*aReason*/)
-{
-	if(iForeground)
-	{
-	iDsa->Cancel();
-	iDsa->StartL();
-	UpdateClipRect();
-	iDrawingOn=ETrue;
-  ClearScreen();
-  UpdateVirtualKeyboard();
-#if defined (S60) || defined (S60V3)
-	static_cast<CEBasicAppUi*>(iEikonEnv->EikAppUi())->SetKeyBlockMode(ENoKeyBlock);
-#endif
-	}
 }
 
 #ifdef S60V3
@@ -255,17 +239,14 @@ void CEBasicView::UpdateClipRect()
 		iDsa->Gc()->CancelClippingRect();
 		iDsa->Gc()->SetClippingRegion(iClipRegion);		
 	}   
-#endif	
-
+#endif
 }
 
-void CEBasicView::AbortNow(RDirectScreenAccess::TTerminationReasons /*aReason*/)
-{
-	iDsa->Cancel();
-	iDrawingOn=EFalse;
-}
 #ifdef S90
-const TInt KEscape[48]={0,0,0,2,0,2,4,2,4,2,4,-1,0,4,0,6,0,6,2,6,2,6,2,4,2,4,4,4,4,4,4,7,0,8,0,10,0,10,4,10,2,10,2,8,4,10,4,7};
+const TInt KEscape[48]={0,0,0,2,0,2,4,2,4,2,4,-1,
+						0,4,0,6,0,6,2,6,2,6,2,4,
+						2,4,4,4,4,4,4,7,0,8,0,10,
+						0,10,4,10,2,10,2,8,4,10,4,7};
 #endif
 void CEBasicView::Draw(const TRect& aRect) const
 {
@@ -560,18 +541,6 @@ void CEBasicView::DrawCharSelector(CWindowGc& aGc) const
 	}
 }
 
-void CEBasicView::UpdateCharSelector(TInt aLetterOffset)
-{
-	iLetterOffset=aLetterOffset;
-	ActivateGc();
-	CWindowGc& gc = SystemGc();
-	gc.SetPenColor(KRgbWhite);
-	gc.SetBrushColor(KRgbBlack);
-	gc.SetBrushStyle(CGraphicsContext::ESolidBrush);
-	DrawCharSelector(gc);
-	DeactivateGc();
-}
-
 void CEBasicView::DrawVKeyBoard(CWindowGc& aGc) const
 {
 	aGc.SetBrushColor(KRgbBlack);
@@ -626,17 +595,6 @@ void CEBasicView::DrawVKeyBoard(CWindowGc& aGc) const
 		aGc.SetBrushColor(KRgbBlack);
 		aGc.DrawRect(TRect(TPoint(48,base+2),TSize(4,4)));		
 	}
-}
-void CEBasicView::UpdateVKeyBoard()
-{
-	ActivateGc();
-	CWindowGc& gc = SystemGc();
-	gc.SetPenColor(KRgbWhite);
-	gc.SetBrushColor(KRgbBlack);
-	gc.SetBrushStyle(CGraphicsContext::ESolidBrush);
-	DrawVKeyBoard(gc);
-	DrawCharSelector(gc);
-	DeactivateGc();
 }
 #endif
 

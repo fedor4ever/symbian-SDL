@@ -1651,7 +1651,11 @@ void CEBasicView::SizeChanged()
 #endif
 	}
 
-const TInt KEscape[48]={0,0,0,2,0,2,4,2,4,2,4,-1,0,4,0,6,0,6,2,6,2,6,2,4,2,4,4,4,4,4,4,7,0,8,0,10,0,10,4,10,2,10,2,8,4,10,4,7};
+const TInt KEscape[48]={0,0,0,2,0,2,4,2,4,2,4,-1,
+						0,4,0,6,0,6,2,6,2,6,2,4,
+						2,4,4,4,4,4,4,7,0,8,0,10,
+						0,10,4,10,2,10,2,8,4,10,4,7};
+};
 void CEBasicView::Draw(const TRect& /*aRect*/) const
 {
 	CWindowGc& gc = SystemGc();
@@ -1880,45 +1884,7 @@ void CEBasicView::ViewDeactivated()
 #endif
 }
 
-void CEBasicView::UpdateVKeyBoard()
-{
-	ActivateGc();
-	CWindowGc& gc = SystemGc();
-	gc.SetPenColor(KRgbWhite);
-	gc.SetBrushColor(KRgbBlack);
-	gc.SetBrushStyle(CGraphicsContext::ESolidBrush);
-	DrawVKeyBoard(gc);
-	DrawCharSelector(gc);
-	DeactivateGc();
-}
-
-void CEBasicView::UpdateCharSelector(TInt aLetterOffset)
-{
-	iLetterOffset=aLetterOffset;
-	ActivateGc();
-	CWindowGc& gc = SystemGc();
-	gc.SetPenColor(KRgbWhite);
-	gc.SetBrushColor(KRgbBlack);
-	gc.SetBrushStyle(CGraphicsContext::ESolidBrush);
-	DrawCharSelector(gc);
-	DeactivateGc();
-}
-
 #ifdef UIQ3
-void CEBasicView::Restart(RDirectScreenAccess::TTerminationReasons /*aReason*/)
-{
-	if(iForeground)
-	{
-		iDsa->Cancel();
-		TRAPD(err,iDsa->StartL());
-		if(err == KErrNone)
-		{
-			iDrawingOn=ETrue;
-			UpdateClipRect();
-		}
-	}
-}
-
 void CEBasicView::UpdateClipRect()
 {
 	TRect rect = iDsa->ScreenDevice()->SizeInPixels();
@@ -1935,17 +1901,6 @@ void CEBasicView::UpdateClipRect()
 
 	iDsa->Gc()->SetClippingRegion(clipRegion);
 	clipRegion.Close();
-}
-
-void CEBasicView::AbortNow(RDirectScreenAccess::TTerminationReasons /*aReason*/)
-{
-	iDrawingOn=EFalse;
-	iDsa->Cancel();
-
-	if(current_video != NULL)
-	{
-		current_video->hidden->iNeedFullRedraw=ETrue;
-	}
 }
 
 void CEBasicView::ClearScreen()
