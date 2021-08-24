@@ -36,12 +36,13 @@ class CEBasicView:public CCoeControl,public MDirectScreenAccess
 		void ActGc(){ActivateGc();};
 		void DeGc(){DeactivateGc();};
 		void ClearScreen();
-		void UpdateClipRect();
 
 #if defined(S60) || defined(__S60_3X__)
 	public:
 		void DrawScreenStatus(CBitmapContext& aGc) const;
+
 #ifdef __S60_3X__
+		void UpdateClipRect();
 		void DrawCharSelector(CWindowGc& aGc) const;
 		void DrawVKeyBoard(CBitmapContext& aGc) const;
 		void UpdateVirtualKeyboard();
