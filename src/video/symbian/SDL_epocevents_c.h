@@ -26,7 +26,7 @@
     Handle the event stream, converting Epoc events into SDL events
 
     Epoc version by Hannu Viitala (hannu.j.viitala@mbnet.fi) and Markus Mertama
-    
+
 */
 
 
@@ -45,7 +45,7 @@ extern "C" {
 #define MAX_SCANCODE 255
 #ifdef UIQ3
 #include <devicekeys.h>
-#define KDefaultLeftButtonCode1 EStdDeviceKeyAction 
+#define KDefaultLeftButtonCode1 EStdDeviceKeyAction
 #define KDefaultLeftButtonCode2 EStdDeviceKeySoftkey1
 #define KDefaultRightButtonCode EStdDeviceKeySoftkey2
 #else
@@ -59,7 +59,7 @@ extern "C" {
 #define KLeftButtonCodeCase (ENonCharacterKeyBase+ENonCharacterKeyCount)
 #define KRightButtonCodeCase (ENonCharacterKeyBase+ENonCharacterKeyCount+1)
 
-/* Variables and functions exported by SDL_sysevents.c to other parts 
+/* Variables and functions exported by SDL_sysevents.c to other parts
    of the native video subsystem (SDL_sysvideo.c)
 */
 

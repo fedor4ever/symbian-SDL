@@ -71,7 +71,7 @@ TInt gScaleYStep[641];
 TBool gHeapIsLocked=EFalse;
 
 extern "C" void EPOC_CalcStretchFactors(_THIS,TSize aTargetSize);
-	
+
 #if defined (S60) || defined (S60V3)
 void EPOC_SetS60Mode(_THIS,TInt aS60Mode);
 #endif
@@ -80,7 +80,7 @@ void UpdateScaleFactors()
 	{
 	if(current_video != NULL)
 		{
-#if defined (S60V3) || defined (S60)						
+#if defined (S60V3) || defined (S60)
 		EPOC_SetS60Mode(current_video,current_video->hidden->iSX0Mode);
 #ifdef S60V3
 		current_video->hidden->iWindowCreator->UpdateVirtualKeyboard();
@@ -101,7 +101,7 @@ void UpdateScaleFactors()
 				current_video->hidden->iCenterOffset.iX = current_video->hidden->EPOC_DisplaySize.iWidth/2-current_video->hidden->iModeSize.iHeight/2;
 				current_video->hidden->iCenterOffset.iY = current_video->hidden->EPOC_DisplaySize.iHeight/2 - current_video->hidden->iModeSize.iWidth/2;
 				}
-			}		
+			}
 		}
 
 	}
@@ -111,7 +111,7 @@ void ClearBackBuffer(_THIS)
 	/* Clear backbuffer */
 #if defined (__WINS__)|| defined (S60) || defined (S80) || defined(S90)||defined(UIQ3)||defined(S60V3)
 	TBool lockedHeap=EFalse;
-	TBitmapUtil lock(Private->EPOC_Bitmap);	
+	TBitmapUtil lock(Private->EPOC_Bitmap);
 	if(!gHeapIsLocked)
 	{
 		lock.Begin(TPoint(0,0)); // Lock bitmap heap
@@ -140,7 +140,7 @@ void RDebug_Print_b(char* error_str, void* param)
     error.Copy(error8);
     if (param) //!! Do not work if the parameter is really 0!!
         RDebug::Print(error, param);
-    else 
+    else
         RDebug::Print(error);
     }
 
@@ -153,7 +153,7 @@ extern "C" void RDebug_Print(char* error_str, void* param)
 int Debug_AvailMem2()
     {
     //User::CompressAllHeaps();
-    TMemoryInfoV1Buf membuf; 
+    TMemoryInfoV1Buf membuf;
     User::LeaveIfError(UserHal::MemoryInfo(membuf));
     TMemoryInfoV1 minfo = membuf();
 	return(minfo.iFreeRamInBytes);
@@ -223,7 +223,7 @@ static void EPOC_DeleteDevice(SDL_VideoDevice *device)
 	free(device);
 }
 
-static SDL_GrabMode EPOC_GrabInput(_THIS, SDL_GrabMode mode) {  
+static SDL_GrabMode EPOC_GrabInput(_THIS, SDL_GrabMode mode) {
   return mode;
 }
 
@@ -235,7 +235,7 @@ static SDL_VideoDevice *EPOC_CreateDevice(int /*devindex*/)
 	device = (SDL_VideoDevice *)malloc(sizeof(SDL_VideoDevice));
 	if ( device ) {
 		memset(device, 0, (sizeof *device));
-		device->hidden = new SDL_PrivateVideoData;				
+		device->hidden = new SDL_PrivateVideoData;
 		device->gl_data = static_cast<struct SDL_PrivateGLData*>
 				(User::Alloc((sizeof (SDL_PrivateGLData))));
 	}
@@ -247,7 +247,7 @@ static SDL_VideoDevice *EPOC_CreateDevice(int /*devindex*/)
 		return(0);
 	}
 	//memset(device->hidden, 0, (sizeof *device->hidden));
-	
+
 	/* Set the function pointers */
 	device->handles_any_size = 1;
 	device->VideoInit = EPOC_VideoInit;
@@ -279,13 +279,13 @@ static SDL_VideoDevice *EPOC_CreateDevice(int /*devindex*/)
 	device->free = EPOC_DeleteDevice;
 	device->hidden->iEikEnv=CEikonEnv::Static();
 	/*gles funtions*/
-	
+
 	device->GL_LoadLibrary 		= GlesLoadLibrary;
    	device->GL_GetProcAddress	= GlesGetProcAddress;
    	device->GL_GetAttribute 	= GlesGetAttribute;
    	device->GL_MakeCurrent 		= GlesMakeCurrent;
    	device->GL_SwapBuffers 		= GlesSwapBuffers;
-   		
+
 	device->gl_data->iLibrary.SetHandle(0);
 
 	return device;
@@ -313,7 +313,7 @@ void EPOC_CreateCursorBitmap(_THIS, WMcursor* aCursor, TUint8* data, TUint8* mas
 	{
 	TInt w = aCursor->iWidth;
 	TInt h = aCursor->iHeight;
-	
+
 	aCursor->iCursorPBitmap = new CWsBitmap(_this->hidden->iEikEnv->WsSession());
 	aCursor->iCursorPMask = new CWsBitmap(_this->hidden->iEikEnv->WsSession());
 	aCursor->iCursorLBitmap = new CWsBitmap(_this->hidden->iEikEnv->WsSession());
@@ -322,34 +322,34 @@ void EPOC_CreateCursorBitmap(_THIS, WMcursor* aCursor, TUint8* data, TUint8* mas
 	aCursor->iCursorLFMask = new CWsBitmap(_this->hidden->iEikEnv->WsSession());;
 	aCursor->iCursorPBitmap->Create(TSize(w,h), EGray2);
 	aCursor->iCursorPMask->Create(TSize(w,h), EGray2);
-	
+
 	aCursor->iCursorLFBitmap->Create(TSize(h,w), EGray2);
 	aCursor->iCursorLFMask->Create(TSize(h,w), EGray2);
-		
+
 	aCursor->iCursorLBitmap->Create(TSize(h,w), EGray2);
 	aCursor->iCursorLMask->Create(TSize(h,w), EGray2);
-	
+
 	aCursor->iCursorPBitmap->LockHeap();
 	TUint8* addr =(TUint8*) aCursor->iCursorPBitmap->DataAddress();
 	TUint8* maskaddr =(TUint8*) aCursor->iCursorPMask->DataAddress();
 
-	TUint8 bytes = (w/8);	
+	TUint8 bytes = (w/8);
 
 	TUint8 padding = ((w/8)%4); // four bytes aligned
 	for(TInt hh = 0;hh<h;hh++)
-		{		
+		{
 			for(TInt ww = 0;ww<bytes;ww++)
 			{
 			*addr = MsbToLsb(*data);
 			*maskaddr = MsbToLsb(*mask);
-		
+
 			mask++;
 			data++;
-		
+
 			addr++;
 			maskaddr++;
-			}	
-	
+			}
+
 			addr+=padding;
 			maskaddr+=padding;
 		}
@@ -376,32 +376,32 @@ void EPOC_CreateCursorBitmap(_THIS, WMcursor* aCursor, TUint8* data, TUint8* mas
 		{
 		bmUtilA.SetPos(TPoint(0, hh));
 		bmUtilB.SetPos(TPoint(0, hh));
-				
+
 		bmUtilC.SetPos(TPoint(hh, width-1));
 		bmUtilD.SetPos(TPoint(hh, width-1));
-		
+
 		bmUtilE.SetPos(TPoint((height-1)-hh, 0));
 		bmUtilF.SetPos(TPoint((height-1)-hh, 0));
 		for(TInt ww = 0;ww<width;ww++)
 			{
 			dat = bmUtilA.GetPixel();
 			msk = bmUtilB.GetPixel();
-			
+
 			bmUtilC.SetPixel(dat);
 			bmUtilD.SetPixel(msk);
-			
+
 			bmUtilE.SetPixel(dat);
 			bmUtilF.SetPixel(msk);
-			
+
 			bmUtilA.IncXPos();
 			bmUtilB.IncXPos();
-			
+
 			bmUtilC.DecYPos();
 			bmUtilD.DecYPos();
-			
+
 			bmUtilE.IncYPos();
 			bmUtilF.IncYPos();
-			}		
+			}
 		}
 	bmUtilF.End();
 	bmUtilE.End();
@@ -409,12 +409,12 @@ void EPOC_CreateCursorBitmap(_THIS, WMcursor* aCursor, TUint8* data, TUint8* mas
 	bmUtilC.End();
 	bmUtilB.End();
 	bmUtilA.End();
-	
+
 	}
 WMcursor *EPOC_CreateWMCursor(_THIS, Uint8* data, Uint8* mask, int w, int h, int hot_x, int hot_y)
     {
 	WMcursor* cursor = new WMcursor;
-	TInt cursorSize = (w*h)/8;	
+	TInt cursorSize = (w*h)/8;
 	cursor->iWidth = w;
 	cursor->iHeight = h;
 	cursor->iHotX = hot_x;
@@ -430,17 +430,17 @@ void EPOC_FreeWMCursor(_THIS, WMcursor* cursor)
 		delete cursor->iCursorPBitmap;
 		cursor->iCursorPBitmap = NULL;
 		delete cursor->iCursorPMask;
-		cursor->iCursorPMask = NULL;	
-		
+		cursor->iCursorPMask = NULL;
+
 		delete cursor->iCursorLBitmap;
 		cursor->iCursorLBitmap = NULL;
 		delete cursor->iCursorLMask;
 		cursor->iCursorLMask = NULL;
-		
+
 		delete cursor->iCursorLFBitmap;
 		cursor->iCursorLFBitmap = NULL;
 		delete cursor->iCursorLFMask;
-		cursor->iCursorLFMask = NULL;				
+		cursor->iCursorLFMask = NULL;
 	}
 }
 
@@ -448,12 +448,12 @@ int EPOC_ShowWMCursor(_THIS, WMcursor *cursor)
     {
 	/* Set the window cursor to our cursor, if applicable */
 	_this->hidden->iCursor = cursor;
-    return true;  
+    return true;
     }
 
 int GetBpp(TDisplayMode displaymode)
 {
-	return 16;// TDisplayModeUtils::NumDisplayModeBitsPerPixel(displaymode); 
+	return 16;// TDisplayModeUtils::NumDisplayModeBitsPerPixel(displaymode);
 }
 
 void EPOC_SetCaption(_THIS, const char * title, const char * /*icon*/)
@@ -465,7 +465,7 @@ void EPOC_SetCaption(_THIS, const char * title, const char * /*icon*/)
 		TPtrC8 titlePtr((const unsigned char*)title, titleLen);
 		titleBuffer->Des().Copy(titlePtr);
 		CApaWindowGroupName* groupName = CApaWindowGroupName::NewL(Private->iEikEnv->WsSession(), Private->iEikEnv->RootWin().Identifier());
-		CleanupStack::PushL(groupName);	
+		CleanupStack::PushL(groupName);
 		groupName->SetCaptionL(*titleBuffer);
 		groupName->SetWindowGroupName(Private->iEikEnv->RootWin());
 		CleanupStack::PopAndDestroy(2, titleBuffer);
@@ -476,7 +476,7 @@ void EPOC_SetCaption(_THIS, const char * title, const char * /*icon*/)
 void EPOC_ReconfigureVideo(_THIS)
 {
     /* Initialise Epoc frame buffer */
-    TDisplayMode displayMode =Private->iEikEnv->ScreenDevice()->DisplayMode();	    
+    TDisplayMode displayMode =Private->iEikEnv->ScreenDevice()->DisplayMode();
     /* Create bitmap, device and context for screen drawing */
 	delete Private->EPOC_Bitmap;
 	Private->EPOC_Bitmap = NULL;
@@ -486,16 +486,16 @@ void EPOC_ReconfigureVideo(_THIS)
 	{
 		displayMode=EColor64K;; // Also tried to switch to by the view.
 	}
-#if defined (S60)||defined (S60V3) // this needs to be atleast 320x200 to cope	
+#if defined (S60)||defined (S60V3) // this needs to be atleast 320x200 to cope
 #ifdef S60V3
   Private->EPOC_ScreenSize = Private->iEikEnv->ScreenDevice()->SizeInPixels();// TSize(256,320);
 	Private->EPOC_DisplaySize = Private->EPOC_ScreenSize;
 	// Must ensure that the height is at least 320 pixels height and 240 width
 	TSize createSize = Private->EPOC_ScreenSize;
-	
+
 	if(createSize.iHeight<320)
 		createSize.iHeight = 320;
-	
+
 	if(createSize.iWidth<320)
 	{
 		Private->EPOC_ScreenSize.iWidth = 320;
@@ -507,7 +507,7 @@ void EPOC_ReconfigureVideo(_THIS)
     Private->EPOC_ScreenSize=TSize(256,320);// TSize(256,320);
 	Private->EPOC_Bitmap->Create(TSize(256,320), displayMode);
 #endif
-#elif defined (S80) || defined (S90)	
+#elif defined (S80) || defined (S90)
   Private->EPOC_ScreenSize        = Private->iEikEnv->ScreenDevice()->SizeInPixels();
 	Private->EPOC_Bitmap->Create(Private->EPOC_ScreenSize, displayMode);
 #else //UIQ
@@ -517,7 +517,7 @@ void EPOC_ReconfigureVideo(_THIS)
 	if(createSize.iHeight<320)
 		createSize.iHeight = 320;
 #ifndef UIQ3
-	Private->EPOC_ScreenSize.iWidth=Private->EPOC_ScreenSize.iWidth-8;// Reserve lower 8 lines	
+	Private->EPOC_ScreenSize.iWidth=Private->EPOC_ScreenSize.iWidth-8;// Reserve lower 8 lines
 	createSize.iWidth = Private->EPOC_ScreenSize.iWidth;
 #endif
 	Private->EPOC_Bitmap->Create(createSize, displayMode);
@@ -545,12 +545,12 @@ int EPOC_VideoInit(_THIS, SDL_PixelFormat *vformat)
 #else
 	Private->iHasMouseOrTouch = EFalse;
 #endif
-	Private->iOnecallback = new CAsyncCallBack (CActive::EPriorityLow); //Service all the others first and then this	
+	Private->iOnecallback = new CAsyncCallBack (CActive::EPriorityLow); //Service all the others first and then this
 	Private->iWindowCreator=static_cast<CEBasicAppUi*>(Private->iEikEnv->EikAppUi())->View();
 
     int i;
 
-	/* Initialize all variables that we clean on shutdown */   
+	/* Initialize all variables that we clean on shutdown */
 
 	for ( i=0; i<SDL_NUMMODES; ++i ) {
 		Private->SDL_modelist[i] = (SDL_Rect *)malloc(sizeof(SDL_Rect));
@@ -585,15 +585,15 @@ int EPOC_VideoInit(_THIS, SDL_PixelFormat *vformat)
     TScreenInfoV01 screenInfo;
 	TPckg<TScreenInfoV01> sInfo(screenInfo);
 	UserSvr::ScreenInfo(sInfo);
-	
-	Private->EPOC_ScreenSize		=screenInfo.iScreenSize; 
+
+	Private->EPOC_ScreenSize		=screenInfo.iScreenSize;
 	Private->EPOC_DisplayMode		= displayMode;
     Private->EPOC_HasFrameBuffer	= screenInfo.iScreenAddressValid;
 	Private->EPOC_FrameBuffer		= Private->EPOC_HasFrameBuffer ? (TUint8*) screenInfo.iScreenAddress+offset : NULL;
 	Private->EPOC_BytesPerPixel	    = ((GetBpp(displayMode)-1) / 8) + 1;
 	Private->EPOC_BytesPerScanLine	= screenInfo.iScreenSize.iWidth * Private->EPOC_BytesPerPixel;
 
-    /* It seems that in SA1100 machines for 8bpp displays there is a 512 palette table at the 
+    /* It seems that in SA1100 machines for 8bpp displays there is a 512 palette table at the
      * beginning of the frame buffer. E.g. Series 7 and Netbook.
      * In 12 bpp machines the table has 16 entries.
 	 */
@@ -605,23 +605,23 @@ int EPOC_VideoInit(_THIS, SDL_PixelFormat *vformat)
 		Private->EPOC_FrameBuffer += 16 * 2;
 #endif
 #else /* defined __WINS__ || S60 || S80||S90 || UIQ3*/
-    EPOC_ReconfigureVideo(_this);  	
+    EPOC_ReconfigureVideo(_this);
 #if defined (S60)||defined (S60V3) // this needs to be atleast 320x200 to cope
 	Private->iSX0Mode = ESX0Stretched|ESX0Flipped;
 	Private->iCurrentChar=65; // Start of with an A
 #elif defined (S80) || defined (S90)
-#else //UIQ	
+#else //UIQ
 	Private->iSX0Mode = ESX0Stretched;
 #endif
     Private->EPOC_HasFrameBuffer    = EFalse;
-    Private->EPOC_FrameBuffer       = NULL; 
+    Private->EPOC_FrameBuffer       = NULL;
 	RThread mainThread;
 	Private->iThreadId=mainThread.Id();
 #endif /* defined __WINS__ || S60 || S80||S90 || UIQ3*/
 
 	_this->info.current_w = 320;
 	_this->info.current_h = 240;
-	
+
     /* The "best" video format should be returned to caller. */
     vformat->BitsPerPixel       = GetBpp(Private->EPOC_DisplayMode) ;
     vformat->BytesPerPixel      = Private->EPOC_BytesPerPixel;
@@ -629,10 +629,10 @@ int EPOC_VideoInit(_THIS, SDL_PixelFormat *vformat)
 	TheBasicAppUi->GetConfig(_this);
 	/* Modes sorted largest to smallest !!TODO:sorting order??*/
 	Private->SDL_modelist[0]->w = 320; Private->SDL_modelist[0]->h = 200;
-	Private->SDL_modelist[1]->w = 640; Private->SDL_modelist[1]->h = 200; 
-	Private->SDL_modelist[2]->w = 640; Private->SDL_modelist[2]->h = 400; 
+	Private->SDL_modelist[1]->w = 640; Private->SDL_modelist[1]->h = 200;
+	Private->SDL_modelist[2]->w = 640; Private->SDL_modelist[2]->h = 400;
 	Private->SDL_modelist[3]->w = 640; Private->SDL_modelist[3]->h = 480;
-	Private->SDL_modelist[4]->w = 320; Private->SDL_modelist[4]->h = 240;	
+	Private->SDL_modelist[4]->w = 320; Private->SDL_modelist[4]->h = 240;
 	Private->SDL_modelist[5]->w = 240; Private->SDL_modelist[5]->h = 320;
 	Private->SDL_modelist[6]->w = 640; Private->SDL_modelist[6]->h = 360;
 	Private->SDL_modelist[7]->w = 360 ; Private->SDL_modelist[7]->h = 640;
@@ -643,7 +643,7 @@ int EPOC_VideoInit(_THIS, SDL_PixelFormat *vformat)
     //!! TODO: error handling
 #if defined (__WINS__) || defined (S60) || defined (S80)|| defined(S90)||defined(UIQ3)||defined(S60V3)
 	TBool lockedHeap=EFalse;
-	TBitmapUtil lock(Private->EPOC_Bitmap);	
+	TBitmapUtil lock(Private->EPOC_Bitmap);
 	if(!gHeapIsLocked)
 	{
 		lock.Begin(TPoint(0,0)); // Lock bitmap heap
@@ -676,27 +676,27 @@ int EPOC_SetColors(_THIS, int firstcolor, int ncolors, SDL_Color *colors)
 {
 	if(_this->info.vfmt->palette != NULL)
 	{
-		TBool palchanged = EFalse;	
-	
+		TBool palchanged = EFalse;
+
 		if(ncolors+firstcolor>256)
 		{
 			ncolors = 256-firstcolor;
 		}
 
 		for(int i = 0; i < ncolors; i++) {
-			
+
 			// 4k value: 000rgb
 			TUint16 colornK = 0;
 			if(Private->EPOC_DisplayMode==EColor4K)
 			{
-				colornK |= ((colors[i].r & 0x0000f0) << 4); 
-				colornK |= (colors[i].g & 0x0000f0);      
+				colornK |= ((colors[i].r & 0x0000f0) << 4);
+				colornK |= (colors[i].g & 0x0000f0);
 				colornK |= ((colors[i].b & 0x0000f0) >> 4);
 			}
 			else
 			{
-				colornK |= (colors[i].r & 0x0000f8) << 8; 
-				colornK |= (colors[i].g & 0x0000fc)<<3;      
+				colornK |= (colors[i].r & 0x0000f8) << 8;
+				colornK |= (colors[i].g & 0x0000fc)<<3;
 				colornK |= (colors[i].b & 0x0000f8) >> 3;
 			}
 
@@ -704,13 +704,13 @@ int EPOC_SetColors(_THIS, int firstcolor, int ncolors, SDL_Color *colors)
 			{
 				EPOC_HWPalette_256_to_DisplayMode[i+firstcolor] = colornK;
 				palchanged = ETrue;
-			}		
+			}
 		}
 
 		if(palchanged)
 		{
 			SDL_Rect updaterect;
-			
+
 			updaterect.x = updaterect.y = 0;
 			updaterect.w = _this->screen->w;
 			updaterect.h = _this->screen->h;
@@ -735,15 +735,15 @@ int GlesLoadLibrary(SDL_VideoDevice* _this, const char* path)
 		const char* name8 = path == NULL ? gles_lib[i] : path;
 		TFileName lib;
 		lib.Copy(TPtrC8((unsigned char*)name8));
-		err = _this->gl_data->iLibrary.Load(lib); 
+		err = _this->gl_data->iLibrary.Load(lib);
 		}
 	if(err == KErrNone)
 		_this->gl_config.driver_loaded = 1;
 	return err;
 	}
-	
-typedef TInt (*Ftp)(...);	
-#define DC(x) ((Ftp) GlesGetProcAddress(_this, #x))	
+
+typedef TInt (*Ftp)(...);
+#define DC(x) ((Ftp) GlesGetProcAddress(_this, #x))
 
 const char* const OpenGL[] = //these funtions are in gl, but not in gles, at least in all in all versions...
 	{
@@ -758,13 +758,13 @@ const char* const OpenGL[] = //these funtions are in gl, but not in gles, at lea
 	"glVertex2i",
 	"glTexParameteri"
 	};
-	
+
 TInt NotSupported()
 	{
 	//User::Panic(_L("SDL, Gles"), KErrNotSupported);
 	return 0;
 	}
-		
+
 void* GlesGetProcAddress(_THIS, const char *proc)
 	{
 	if(_this->gl_data->iLibrary.Handle() == 0)
@@ -778,20 +778,20 @@ void* GlesGetProcAddress(_THIS, const char *proc)
 			break;
 			}
 		}
-	
+
 	if(f != NULL) /*Lookup may fail*/
-		return  (void*) f;	
-		
+		return  (void*) f;
+
 	for(TInt i = 0; i < sizeof(OpenGL) / sizeof(char*); i++)
 		{
 		if(strcmp(OpenGL[i], proc) == 0)
 			return (void*) NotSupported;
 		}
-		
+
 	return NULL;
 	}
-	
-		
+
+
 
 int GlesGetAttribute(_THIS, SDL_GLattr aAttrib, int* aValue)
 	{
@@ -807,7 +807,7 @@ int GlesGetAttribute(_THIS, SDL_GLattr aAttrib, int* aValue)
 	    case SDL_GL_DOUBLEBUFFER: *aValue = 1; return 0; //always
 	    case SDL_GL_DEPTH_SIZE: attrib = EGL_DEPTH_SIZE; break;
 	    case SDL_GL_STENCIL_SIZE: attrib = EGL_STENCIL_SIZE; break;
-	    case SDL_GL_ACCUM_RED_SIZE: 
+	    case SDL_GL_ACCUM_RED_SIZE:
 	    case SDL_GL_ACCUM_GREEN_SIZE:
 	    case SDL_GL_ACCUM_BLUE_SIZE:
 	    case SDL_GL_ACCUM_ALPHA_SIZE:
@@ -827,7 +827,7 @@ int GlesGetAttribute(_THIS, SDL_GLattr aAttrib, int* aValue)
 		aValue);
 	return success == EGL_FALSE ? -1 : 0;
 	}
-	
+
 int GlesMakeCurrent(_THIS)
 	{
 	DC(eglMakeCurrent)
@@ -854,97 +854,97 @@ LOCAL_C void glAssert(_THIS)
 		}
 	}
 
-LOCAL_C void CreateGles(_THIS, RWindow& aWindow, int aBpp, SDL_PrivateGLData& aData)	
-	{		
+LOCAL_C void CreateGles(_THIS, RWindow& aWindow, int aBpp, SDL_PrivateGLData& aData)
+	{
 	SDL_GL_LoadLibrary(NULL); //just if its not already loaded
 	aData.iDisplay = DC(eglGetDisplay)(EGL_DEFAULT_DISPLAY);
 	DC(eglInitialize)(aData.iDisplay, NULL, NULL);
-	
+
 	glAssert(_this);
-	
+
 	int configs = 0;
 	EGLConfig* configList = NULL;
 	int configSz = 0;
 	DC(eglGetConfigs)(aData.iDisplay, configList, configSz, &configs);
-	configSz = configs; 
-	
+	configSz = configs;
+
 	glAssert(_this);
-	
+
 	configList = (EGLConfig*) User::Alloc(sizeof(EGLConfig) * configSz);
 
-#ifdef __WIN32__	
+#ifdef __WIN32__
 	const TDisplayMode mode = aWindow.DisplayMode();
 	const TInt sz = TDisplayModeUtils::NumDisplayModeBitsPerPixel(mode);
 	aBpp;
 #else
-	TInt red, green, blue;	
+	TInt red, green, blue;
 	if(aBpp == 16)
 		{
 		red = 5;
 		green = 6;
-		blue = 5;	
+		blue = 5;
 		}
 	else
-		{ 
+		{
 		red = 8;
 		green = 8;
 		blue = 8;
 		}
-#endif		
-		
-	const EGLint attribList[] = 
+#endif
+
+	const EGLint attribList[] =
 		{
 		EGL_SURFACE_TYPE, EGL_WINDOW_BIT,
 #ifdef __WIN32__
 		EGL_BUFFER_SIZE, sz,
 #else
 		EGL_RED_SIZE, red,
-		EGL_GREEN_SIZE, green, 
+		EGL_GREEN_SIZE, green,
 		EGL_BLUE_SIZE, blue,
 		EGL_BUFFER_SIZE, EGL_DONT_CARE,
-#endif 
+#endif
 		EGL_DEPTH_SIZE, 24,
 	//	EGL_ALPHA_SIZE, 0,
 		EGL_NONE
 		};
-	
+
 	DC(eglChooseConfig)(aData.iDisplay,
 		 attribList,
 		 configList,
 		 configSz,
 		 &configs);
-			 
-		 
+
+
 	glAssert(_this);
-	
+
 	__ASSERT_ALWAYS(configs > 0, User::Invariant());
-	
+
 	aData.iConfig = configList[0];
-		 
-	User::Free(configList);	 
-		 
+
+	User::Free(configList);
+
 	aData.iContext = DC(eglCreateContext)(aData.iDisplay,
 		 	aData.iConfig,
 		  	EGL_NO_CONTEXT,
 		  	NULL);
-		  	
+
 	glAssert(_this);
-		  	
+
 	aData.iSurface	= DC(eglCreateWindowSurface)(aData.iDisplay,
 		 aData.iConfig,
-		 &aWindow, 
+		 &aWindow,
 		 NULL);
-		 
+
 	glAssert(_this);
-		 	
+
 	}
-	
+
 
 LOCAL_C void DestroyGles(_THIS)
 	{
 	if(	_this->gl_config.driver_loaded)
 		{
-		DC(eglMakeCurrent)(_this->gl_data->iDisplay, 
+		DC(eglMakeCurrent)(_this->gl_data->iDisplay,
 		EGL_NO_SURFACE,
 		EGL_NO_SURFACE,
 		EGL_NO_CONTEXT);
@@ -977,38 +977,38 @@ SDL_Surface *EPOC_SetVideoMode(_THIS, SDL_Surface *current,
    	if(flags & SDL_OPENGL)
    		{
    	//	current_video->hidden->iFlags &= ~EContainerChange;
-   		
+
    		current->flags |= SDL_OPENGL;
    		current->w = width;
    		current->h = height;
-   			
+
 		RWindow* win = &TheBasicAppUi->View()->Win();
-				
-		CreateGles(_this, *win, bpp, *_this->gl_data);		
-		
+
+		CreateGles(_this, *win, bpp, *_this->gl_data);
+
 		const TSize sz(width, height);
 		const TInt param = reinterpret_cast<TInt>(&sz);
 
    		return current;
    		}
-   	
+
     /* Set up the new mode framebuffer */
-    if (bpp == 8) 
-	    current->flags = (SDL_FULLSCREEN|SDL_SWSURFACE|SDL_PREALLOC|SDL_HWPALETTE); 
+    if (bpp == 8)
+	    current->flags = (SDL_FULLSCREEN|SDL_SWSURFACE|SDL_PREALLOC|SDL_HWPALETTE);
     else // 12,16 bpp
-	    current->flags = (SDL_FULLSCREEN|SDL_SWSURFACE|SDL_PREALLOC); 
+	    current->flags = (SDL_FULLSCREEN|SDL_SWSURFACE|SDL_PREALLOC);
 	current->w = width;
 	if(height == 256)
 	{
-	current->h = 240;	
+	current->h = 240;
 	}
 	else
 	{
 	current->h = height;
 	}
-	
-    int numBytesPerPixel = ((bpp-1)>>3) + 1;   
-	current->pitch = numBytesPerPixel * width; // Number of bytes in scanline 
+
+    int numBytesPerPixel = ((bpp-1)>>3) + 1;
+	current->pitch = numBytesPerPixel * width; // Number of bytes in scanline
 
 	current->pixels = malloc(width * height * numBytesPerPixel);
 	memset(current->pixels, 0, width * height * numBytesPerPixel);
@@ -1052,21 +1052,21 @@ SDL_Surface *EPOC_SetVideoMode(_THIS, SDL_Surface *current,
 		{
 			i240StartTable[loop]=loop;
 		}
-	}		
+	}
 #elif defined (S60) || defined(S60V3)
 	Private->iIs240Mode = (current->h==240 || current->h == 480);
 #elif defined (S90)
 		for(TInt loop=0;loop<240;loop++)
 		{
 			i240StartTable[loop]=loop;
-		}		
+		}
 #endif // End UIQ & S80
 	UpdateScaleFactors();
     /* Centralize game window on device screen  */
     Private->EPOC_ScreenOffset = 0;//
 #if defined (S80) || defined(S90)
 	Private->EPOC_ScreenOffset = !(Private->iSX0Mode & ESX0Stretched)?(Private->EPOC_ScreenSize.iWidth - current->w) / 2:(Private->EPOC_ScreenSize.iWidth-current->w*Private->iXScale)/2 ;
-#endif	
+#endif
 	/* We're done */
 	return(current);
 }
@@ -1098,7 +1098,7 @@ void RedrawWindowL(_THIS)
 #if defined (__WINS__) || defined (S60) || defined (S80)|| defined(S90)||defined(UIQ3)||defined(S60V3)
 	Private->iNeedFullRedraw = ETrue;
 	TBool lockedHeap=EFalse;
-	    TBitmapUtil lock(Private->EPOC_Bitmap);	
+	    TBitmapUtil lock(Private->EPOC_Bitmap);
 		if(!gHeapIsLocked)
 		{
 	        lock.Begin(TPoint(0,0)); // Lock bitmap heap
@@ -1180,7 +1180,7 @@ void EPOC_VideoQuit(_THIS)
 			Private->SDL_modelist[i] = NULL;
 		}
 	}
-	
+
     if ( _this->screen && (_this->screen->flags & SDL_HWSURFACE) ) {
 		/* Direct screen access, no memory buffer */
 		_this->screen->pixels = NULL;
@@ -1202,7 +1202,7 @@ void EPOC_VideoQuit(_THIS)
 	TheBasicAppUi->SetConfig();
 	Configuration->WriteToFile();
 	delete Private->iOnecallback;
-	Private->iOnecallback = NULL;	
+	Private->iOnecallback = NULL;
 }
 
 #ifdef UIQ

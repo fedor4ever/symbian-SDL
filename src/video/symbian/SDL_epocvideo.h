@@ -37,7 +37,7 @@ extern "C" {
 }
 #include <egltypes.h>
 #include <e32std.h>
-#include <bitdev.h> 
+#include <bitdev.h>
 #include <w32std.h>
 #include <eikenv.h>
 
@@ -46,7 +46,7 @@ extern "C" {
 #include "SDLSXXView.h"
 #endif
 #define KDefaultActivateButtonSize 48
-enum TInputModes 
+enum TInputModes
 	{
 		EJoystick,
 		EKeyboard,
@@ -58,7 +58,7 @@ enum TInputModes
 enum TVKBState
 	{
 		EDisplayMiniControls,
-		EDisplayControls,		
+		EDisplayControls,
 		EDisplayKeys
 	};
 
@@ -68,17 +68,17 @@ enum TVKBState
 	};
 
 /* The implementation dependent data for the window manager cursor */
-struct WMcursor {	
+struct WMcursor {
 	CWsBitmap*			iCursorPBitmap;
 	CWsBitmap*			iCursorPMask;
 	CWsBitmap*			iCursorLBitmap;
 	CWsBitmap*			iCursorLMask;
 	CWsBitmap*			iCursorLFBitmap;
-	CWsBitmap*			iCursorLFMask;	
+	CWsBitmap*			iCursorLFMask;
 	TInt				iWidth;
 	TInt				iHeight;
 	TInt				iHotX;
-	TInt 				iHotY;		
+	TInt 				iHotY;
 };
 
 enum TSX0ScreenMode
@@ -167,11 +167,11 @@ public:
 	TBool				iKeyboardModifier;
 	TRect				iKeyboardRect;
 	TVKBState			iVKBState;
-	TBool				iVKBTopLeft;	
+	TBool				iVKBTopLeft;
 	TBool				iNumLockOn;
 	TInt				iActivateButtonSize;
 	TBool				iNoStretch;
-#endif //S60 S80 S90 
+#endif //S60 S80 S90
 	TPoint				iVKBOffset;
 #if defined (UIQ3)
 	TInt				iModeState;
@@ -197,7 +197,7 @@ public:
     /* Simulate double screen height */
     TBool               EPOC_ShrinkedHeight;
 	/*might also shrink the width for UIQ and S60 */
-    TBool               EPOC_ShrinkedWidth; 
+    TBool               EPOC_ShrinkedWidth;
 	/* Flip the screen this is because on the P800 the screen has a 208 pixels wide and 320 pixels high screen  */
 	TBool				EPOC_IsFlipped;
 	TBool				iControlKeyDown;
@@ -219,9 +219,9 @@ struct SDL_PrivateGLData
 	EGLDisplay	iDisplay;
 	EGLConfig	iConfig;
 	EGLSurface	iContext;
-	EGLSurface	iSurface;	
+	EGLSurface	iSurface;
 	RLibrary	iLibrary;
-	};    
+	};
 
 void ClearBackBuffer(_THIS);
 void UpdateScaleFactors();
