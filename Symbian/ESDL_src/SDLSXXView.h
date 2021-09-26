@@ -16,12 +16,12 @@ public:
 	};
 #endif
 
-class CEBasicView:public CCoeControl,public MDirectScreenAccess
+class CEBasicView: public CCoeControl, public MDirectScreenAccess
 	{
 	public:
 		CEBasicView() {
 #ifdef S90
-				iLetterOffset=0;
+			iLetterOffset=0;
 #endif
 		};
 		~CEBasicView();
