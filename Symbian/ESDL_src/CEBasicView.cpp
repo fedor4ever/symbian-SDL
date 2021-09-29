@@ -25,40 +25,16 @@ void CEBasicView::ClearScreen()
 #ifndef UIQ
 void CEBasicView::UpdateScreen()
 {
-	if(iDrawingOn)
-	{
+	if(!iDrawingOn) return;
+
 #if defined (S60) || defined (S60V3)
-		DrawScreenStatus(*iDsa->Gc());		
+	DrawScreenStatus(*iDsa->Gc());		
 #endif
 #ifdef S90
-		if(current_video != NULL)
-		{				
-			if(current_video->hidden->iInputModeTimer>0)
-			{
-				iDsa->Gc()->SetBrushColor(KRgbWhite);			  
-
-				current_video->hidden->iInputModeTimer--;			
-				TBuf<1> inputType = current_video->hidden->iInputMode == EJoystick?_L("J"):_L("C");
-				iDsa->Gc()->UseFont(iEikonEnv->DenseFont());
-				iDsa->Gc()->SetPenColor(KRgbRed);
-				iDsa->Gc()->DrawText(inputType,TPoint(3,14));
-
-				iDsa->Gc()->DiscardFont();
-				if(current_video->hidden->iInputModeTimer==0)
-				{
-					iDsa->Gc()->SetBrushColor(KRgbBlack);
-					iDsa->Gc()->Clear();
-					current_video->hidden->iNeedFullRedraw=ETrue;
-				}
-			}
-		}
+	UpdateDSA();
 #endif		    
-		iDsa->ScreenDevice()->Update();
-	}
+	iDsa->ScreenDevice()->Update();
 }
-#endif
-
-#ifndef UIQ
 #endif
 
 #ifndef UIQ

@@ -40,10 +40,8 @@ class CEBasicView: public CCoeControl, public MDirectScreenAccess
 #if defined(S60) || defined(__S60_3X__)
 	public:
 		void DrawScreenStatus(CBitmapContext& aGc) const;
-
 #ifdef __S60_3X__
 		void UpdateClipRect();
-		void DrawCharSelector(CWindowGc& aGc) const;
 		void DrawVKeyBoard(CBitmapContext& aGc) const;
 		void UpdateVirtualKeyboard();
 		TInt GetGameKeys(TPoint aCurrentPos);
@@ -64,6 +62,7 @@ class CEBasicView: public CCoeControl, public MDirectScreenAccess
 		TInt iLetterOffset;
 		void UpdateVKeyBoard();
 		void DrawVKeyBoard(CWindowGc& aGc) const;
+		void UpdateDSA();
 #endif
 
 //	private: //TODO: Make them private
