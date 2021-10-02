@@ -42,6 +42,8 @@ static char rcsid =
 
 #define SDL_MUTEX_TIMEOUT -2
 
+const char EMPTY_sem[] = "Passed a NULL sem";
+
 struct SDL_semaphore
  {
  TInt handle;
@@ -54,7 +56,7 @@ extern TInt CreateUnique(TInt (*aFunc)(const TDesC& aName, TAny*, TAny*), TAny*,
 extern TInt NewThread(const TDesC& aName, TAny* aPtr1, TAny* aPtr2);
 #endif
 
-TInt NewSema(const TDesC& aName, TAny* aPtr1, TAny* aPtr2) 
+TInt NewSema(const TDesC& aName, TAny* aPtr1, TAny* aPtr2)
     {
     TInt value = *((TInt*) aPtr2);
     return ((RSemaphore*)aPtr1)->CreateGlobal(aName, value);
@@ -63,14 +65,14 @@ TInt NewSema(const TDesC& aName, TAny* aPtr1, TAny* aPtr2)
 /* Create a semaphore */
 SDL_sem *SDL_CreateSemaphore(Uint32 initial_value)
 {
-   RSemaphore s;
-   TInt status = CreateUnique(NewSema, &s, &initial_value);
-   if(status != KErrNone)
-	 {
-			SDL_SetError("Couldn't create semaphore");
+	RSemaphore s;
+	TInt status = CreateUnique(NewSema, &s, &initial_value);
+	if(status != KErrNone)
+	{
+		SDL_SetError("Couldn't create semaphore");
 	}
-    SDL_semaphore* sem = new /*(ELeave)*/ SDL_semaphore;  
-    sem->handle = s.Handle();
+	SDL_semaphore* sem = new /*(ELeave)*/ SDL_semaphore;
+	sem->handle = s.Handle();
 	sem->count = initial_value;
 	return(sem);
 }
@@ -78,7 +80,7 @@ SDL_sem *SDL_CreateSemaphore(Uint32 initial_value)
 /* Free the semaphore */
 void SDL_DestroySemaphore(SDL_sem *sem)
 {
-	if ( sem ) 
+	if(sem)
 	{
     RSemaphore sema;
     sema.SetHandle(sem->handle);
@@ -95,99 +97,95 @@ void SDL_DestroySemaphore(SDL_sem *sem)
 
 #ifndef EKA2
 
-  struct TInfo
-    {
-        TInfo(TInt aTime, TInt aHandle) : 
-        iTime(aTime), iHandle(aHandle), iVal(0) {}
-        TInt iTime;
-        TInt iHandle;
-        TInt iVal; 
-    };
-
-
+struct TInfo
+{
+	TInfo(TInt aTime, TInt aHandle) :
+	iTime(aTime), iHandle(aHandle), iVal(0) {}
+	TInt iTime;
+	TInt iHandle;
+	TInt iVal;
+};
 
 TBool ThreadRun(TAny* aInfo)
-    {
-        TInfo* info = STATIC_CAST(TInfo*, aInfo);
-        User::After(info->iTime);
-        RSemaphore sema;
-        sema.SetHandle(info->iHandle);
-        sema.Signal();
-        info->iVal = SDL_MUTEX_TIMEOUT;
-        return 0;
-    }
-    
-#endif 
-    
-    
+{
+	TInfo* info = STATIC_CAST(TInfo*, aInfo);
+	User::After(info->iTime);
+	RSemaphore sema;
+	sema.SetHandle(info->iHandle);
+	sema.Signal();
+	info->iVal = SDL_MUTEX_TIMEOUT;
+	return 0;
+}
+
+#endif
+
+
 void _WaitAll(SDL_sem *sem)
-    {
-       //since SemTryWait may changed the counter.
-       //this may not be atomic, but hopes it works.
+{
+	//since SemTryWait may changed the counter.
+	//this may not be atomic, but hopes it works.
     RSemaphore sema;
     sema.SetHandle(sem->handle);
     sema.Wait();
     while(sem->count < 0)
-        {
+	{
         sema.Wait();
-        }    
-    }
+	}
+}
 
 int SDL_SemWaitTimeout(SDL_sem *sem, Uint32 timeout)
 {
-	if ( ! sem ) {
-		SDL_SetError("Passed a NULL sem");
+	if (!sem) {
+		SDL_SetError(EMPTY_sem);
 		return -1;
 	}
 
-	if ( timeout == SDL_MUTEX_MAXWAIT )
-	    {
+	if ( timeout == SDL_MUTEX_MAXWAIT ) {
 	    _WaitAll(sem);
 		return SDL_MUTEX_MAXWAIT;
-	    } 
-	
-#ifdef EKA2
+	}
 
+#ifdef EKA2
     RSemaphore sema;
     sema.SetHandle(sem->handle);
     if(KErrNone == sema.Wait(timeout))
     	return 0;
     return -1;
 #else
+
 	RThread thread;
-	
+
 	TInfo* info = new (ELeave)TInfo(timeout, sem->handle);
-	
+
     TInt status = CreateUnique(NewThread, &thread, info);
-  
+
 	if(status != KErrNone)
 	    return status;
-	
+
 	thread.Resume();
-	
+
 	_WaitAll(sem);
-	
+
 	if(thread.ExitType() == EExitPending)
-	    {
-	        thread.Kill(SDL_MUTEX_TIMEOUT);
-	    }
-	
+	{
+		thread.Kill(SDL_MUTEX_TIMEOUT);
+	}
+
 	thread.Close();
-	
+
 	return info->iVal;
 #endif
 }
 
 int SDL_SemTryWait(SDL_sem *sem)
 {
-    if(sem->count > 0)
-        {
+    if(sem->count > 0) {
         sem->count--;
-        }
+	}
     return SDL_MUTEX_TIMEOUT;
 }
 
-int SDL_SemWait(SDL_sem *sem) 
+int SDL_SemWait(SDL_sem *sem)
 {
 	return SDL_SemWaitTimeout(sem, SDL_MUTEX_MAXWAIT);
 }
@@ -195,8 +193,8 @@ int SDL_SemWait(SDL_sem *sem)
 /* Returns the current count of the semaphore */
 Uint32 SDL_SemValue(SDL_sem *sem)
 {
-	if ( ! sem ) {
-		SDL_SetError("Passed a NULL sem");
+	if (!sem) {
+		SDL_SetError(EMPTY_sem);
 		return 0;
 	}
 	return sem->count;
@@ -205,7 +203,7 @@ Uint32 SDL_SemValue(SDL_sem *sem)
 int SDL_SemPost(SDL_sem *sem)
 {
 	if ( ! sem ) {
-		SDL_SetError("Passed a NULL sem");
+		SDL_SetError(EMPTY_sem);
 		return -1;
 	}
 	sem->count++;
