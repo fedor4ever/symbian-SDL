@@ -39,20 +39,12 @@ extern "C" {
 #include "SDL_timer.h"
 #include "SDL_timer_c.h"
 
-#if defined (UIQ3) || defined(S60V3)
 static TTime start;
-#else
-static TTime start;
-#endif
 
 void SDL_StartTicks(void)
 {
 	/* Set first ticks value */
-#if defined (UIQ3) || defined(S60V3)
 	start.HomeTime();
-#else
-    start.HomeTime();
-#endif
 }
 
 #if defined (UIQ3) || defined(S60V3)
@@ -60,19 +52,17 @@ const TUint32 KTickDelay = 5000;
 #else
 const TUint32 KTickDelay = 15624;
 #endif
+
 Uint32 SDL_GetTicks(void)
 {
+	TTime now;
+	now.HomeTime();
 #if defined (UIQ3) || defined(S60V3)
-	TTime now;
-	now.HomeTime();
 	Uint32 ms = (now.MicroSecondsFrom(start).Int64())/1000;
-	return ms;
 #else
-	TTime now;
-	now.HomeTime();
 	Uint32 ms = ((now.MicroSecondsFrom(start).Int64())/1000).GetTInt();
-	return ms; 
 #endif
+	return ms;
 }
 
 void SDL_Delay(Uint32 ms)
@@ -82,7 +72,7 @@ void SDL_Delay(Uint32 ms)
 #else
     // Lets round down to the nearest 1/64 second available.. i.e anything less than 1/64 is a zero delay
 	TInt ticks = ms>>4; // Shift down by three. 1/64 is 15.625 millisecs, so 16 millisecs is the closest
-						// SymbianOS built in ticker can ONLY delay to the closest tick, that means 
+						// SymbianOS built in ticker can ONLY delay to the closest tick, that means
 						// That even for a delay of 1 microsecond a delay of one tick (1/64) is made
 	if(ticks>0)
 	{
@@ -102,7 +92,7 @@ static int RunTimer(void * /*unused*/)
 			SDL_ThreadedTimerCheck();
 		}
 #if defined (UIQ3) || defined(S60V3)
-    User::AfterHighRes(KTickDelay);
+		User::AfterHighRes(KTickDelay);
 #else
 		// Wait for one tick before checking again
 		User::After(KTickDelay);
