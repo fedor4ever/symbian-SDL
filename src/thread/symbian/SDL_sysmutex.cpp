@@ -62,10 +62,10 @@ SDL_mutex *SDL_CreateMutex(void)
 
     TInt status = CreateUnique(NewMutex, &rmutex, NULL);
 	if(status != KErrNone)
-	    {
-			SDL_SetError("Couldn't create mutex");
-		}
-    SDL_mutex* mutex = new /*(ELeave)*/ SDL_mutex;
+	{
+		SDL_SetError("Couldn't create mutex");
+	}
+    SDL_mutex* mutex = new /*(ELeave)*/ SDL_mutex();
 	mutex->owner = 0;
 	mutex->recursive = 0;
     mutex->handle = rmutex.Handle();
@@ -75,7 +75,7 @@ SDL_mutex *SDL_CreateMutex(void)
 /* Free the mutex */
 void SDL_DestroyMutex(SDL_mutex *mutex)
 {
-	if ( mutex ) 
+	if (mutex)
 	{
     RMutex rmutex;
     rmutex.SetHandle(mutex->handle);
@@ -102,7 +102,7 @@ int SDL_mutexP(SDL_mutex *mutex)
 	} else {
 	    RMutex rmutex;
 		rmutex.SetHandle(mutex->handle);
-		rmutex.Wait(); 
+		rmutex.Wait();
 		mutex->owner = this_thread.Id();
 		mutex->recursive = 0;
 	}
@@ -123,18 +123,17 @@ int SDL_mutexV(SDL_mutex *mutex)
 		if ( mutex->recursive ) {
 			--mutex->recursive;
 		} else {
-			/* The order of operations is important.
-			   First reset the owner so another thread doesn't lock
-			   the mutex and set the ownership before we reset it,
-			   then release the lock semaphore.
-			 */
+/* The order of operations is important.
+   First reset the owner so another thread doesn't lock
+   the mutex and set the ownership before we reset it,
+   then release the lock semaphore.
+ */
 			mutex->owner = 0;
 			RMutex rmutex;
 			rmutex.SetHandle(mutex->handle);
 			rmutex.Signal();
 		}
 	}
-
 
 	this_thread.Close();
 	return(0);
