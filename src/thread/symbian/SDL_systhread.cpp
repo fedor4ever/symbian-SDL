@@ -45,28 +45,28 @@ static int object_count;
 
 int RunThread(TAny* data)
 {
-	CTrapCleanup* cleanup = CTrapCleanup::New();
-	CActiveScheduler* scheduler = new CActiveScheduler;
-	CActiveScheduler::Install(scheduler);
-	TRAPD(error, SDL_RunThread(data));
-	CActiveScheduler::Install(NULL);
-	delete scheduler;
-	delete cleanup;
-	return(0);
+    CTrapCleanup* cleanup = CTrapCleanup::New();
+    CActiveScheduler* scheduler = new CActiveScheduler();
+    CActiveScheduler::Install(scheduler);
+    TRAPD(error, SDL_RunThread(data));
+// The current active scheduler can be uninstalled by passing a NULL pointer
+    CActiveScheduler::Install(NULL);
+    delete scheduler;
+    delete cleanup;
+    return(0);
 }
 
-
 TInt NewThread(const TDesC& aName, TAny* aPtr1, TAny* aPtr2)
-    {
+{
     return ((RThread*)(aPtr1))->Create(aName,
             RunThread,
             KSDLDefaultStackSize,
             NULL,
             aPtr2);
-    }
+}
 
 int CreateUnique(TInt (*aFunc)(const TDesC& aName, TAny*, TAny*), TAny* aPtr1, TAny* aPtr2)
-    {
+{
     TBuf<16> name;
     TInt status = KErrNone;
     do
@@ -77,47 +77,46 @@ int CreateUnique(TInt (*aFunc)(const TDesC& aName, TAny*, TAny*), TAny* aPtr1, T
         }
         while(status == KErrAlreadyExists);
     return status;
-    }
-
+}
 
 int SDL_SYS_CreateThread(SDL_Thread *thread, void *args)
 {
     RThread rthread;
-   
+
     TInt status = CreateUnique(NewThread, &rthread, args);
-    if (status != KErrNone) 
+    if (status != KErrNone)
     {
         delete(((RThread*)(thread->handle)));
         thread->handle = NULL;
-		SDL_SetError("Not enough resources to create thread");
-		return(-1);
-	}
-	rthread.Resume();
+        SDL_SetError("Not enough resources to create thread");
+        return(-1);
+    }
+    rthread.Resume();
     thread->handle = rthread.Handle();
-	return(0);
+    return(0);
 }
 
 void SDL_SYS_SetupThread(void)
 {
-	return;
+    return;
 }
 
 Uint32 SDL_ThreadID(void)
 {
     RThread current;
     TThreadId id = current.Id();
-	return id;
+    return id;
 }
 
 void SDL_SYS_WaitThread(SDL_Thread *thread)
 {
     RThread theThread;
-	if(theThread.Open(TThreadId(thread->threadid)) == KErrNone)
-	{
+    if(theThread.Open(TThreadId(thread->threadid)) == KErrNone)
+    {
     TRequestStatus status = KRequestPending;
     theThread.Logon(status);
-	User::WaitForRequest(status);
-	}
+    User::WaitForRequest(status);
+    }
     theThread.Close();
 }
 
@@ -128,9 +127,9 @@ void SDL_SYS_WaitThread(SDL_Thread *thread)
 void SDL_SYS_KillThread(SDL_Thread *thread)
 {
     RThread rthread;
-	if(rthread.Open(TThreadId(thread->threadid)) == KErrNone)
-	{
-	rthread.Kill(0);
-	}
-	rthread.Close();
+    if(rthread.Open(TThreadId(thread->threadid)) == KErrNone)
+    {
+        rthread.Kill(0);
+    }
+    rthread.Close();
 }
