@@ -74,23 +74,24 @@ int SDL_SYS_JoystickOpen(SDL_Joystick * joystick)
     joystick->nbuttons=1;
 #elif defined (S60) || defined (__S60_3X__) || defined (S80)
     joystick->nbuttons=3;
-    if(current_video && current_video->hidden)
-    {
-    SetJoystickState((current_video->hidden->iInputMode==EJoystick));// Joystick is opened set it as default and disable cursor keys
-    }
 #elif defined (S90) || defined (UIQ3)
     joystick->nbuttons=2;
+#endif
+    
+#if defined (S60) || defined (__S60_3X__) || defined (S80) ||\
+	defined (S90) || defined (UIQ) || defined (UIQ3)
     if(current_video && current_video->hidden)
-    {
-    SetJoystickState((current_video->hidden->iInputMode==EJoystick));// Joystick is opened set it as default and disable cursor keys
+    { // Joystick is opened set it as default and disable cursor keys
+    	SetJoystickState((current_video->hidden->iInputMode == EJoystick));
     }
 #endif
+
     joystick->naxes=2;
 //    current_video->hidden->->iTheJoystick=joystick;
     return 0;
 }
 
-#define JOY_DEADZONE 6400 // From scumm
+#define JOY_DEADZONE 6400 // From scummvm
 
 /* Function to update the state of a joystick - called as a device poll.
  * This function shouldn't update the joystick structure directly,
@@ -118,7 +119,6 @@ void SDL_SYS_JoystickUpdate(SDL_Joystick * joystick)
         current_video->hidden->iLastJoystickStatus[EJoyUP] = current_video->hidden->iJoystickStatus[EJoyUP];
         current_video->hidden->iLastJoystickStatus[EJoyDOWN] = current_video->hidden->iJoystickStatus[EJoyDOWN];
     }
-
 
     if(current_video->hidden->iJoystickStatus[EJoyBUT1]!= current_video->hidden->iLastJoystickStatus[EJoyBUT1])
     {
