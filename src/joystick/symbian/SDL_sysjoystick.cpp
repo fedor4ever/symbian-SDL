@@ -30,19 +30,19 @@ static char rcsid =
 /* Win32 MultiMedia Joystick driver, contributed by Andrei de A. Formiga */
 
 #include <stdlib.h>
-#include <stdio.h>		/* For the definition of NULL */
+#include <stdio.h>        /* For the definition of NULL */
 #include <e32base.h>
 #include "SDL_epocvideo.h"
 extern  SDL_VideoDevice * current_video;
 
-extern "C" 
+extern "C"
 {
 #include "SDL_error.h"
 #include "SDL_joystick.h"
 #include "SDL_sysjoystick.h"
 #include "SDL_joystick_c.h"
 #include "SDL_sysvideo.h"
-#if defined (S60) || defined (S80) || defined (S90) || defined (S60V3) || defined (UIQ3)
+#if defined (S60) || defined (S80) || defined (S90) || defined (__S60_3X__) || defined (UIQ3)
 extern void SetJoystickState(TBool aJoystickOn);
 #endif
 
@@ -53,14 +53,14 @@ extern void SetJoystickState(TBool aJoystickOn);
  */
 int SDL_SYS_JoystickInit(void)
 {
-	return 1;
+    return 1;
 }
 
 const char KEpocJoyName[10]="Joystick";
 /* Function to get the device-dependent name of a joystick */
 const char *SDL_SYS_JoystickName(int /*index*/)
 {
-	return  KEpocJoyName;
+    return  KEpocJoyName;
 }
 
 /* Function to open a joystick for use.
@@ -70,30 +70,24 @@ const char *SDL_SYS_JoystickName(int /*index*/)
  */
 int SDL_SYS_JoystickOpen(SDL_Joystick * joystick)
 {
-#if defined (UIQ) 
-	joystick->nbuttons=1;
-#elif defined (S60) || defined (S60V3) 
-	joystick->nbuttons=3;
-	if(current_video && current_video->hidden)
-	{
-	SetJoystickState((current_video->hidden->iInputMode==EJoystick));// Joystick is opened set it as default and disable cursor keys
-	}
-#elif defined (S80)
-	joystick->nbuttons=3;
-	if(current_video && current_video->hidden)
-	{
-	SetJoystickState((current_video->hidden->iInputMode==EJoystick));// Joystick is opened set it as default and disable cursor keys
-	}
+#if defined (UIQ)
+    joystick->nbuttons=1;
+#elif defined (S60) || defined (__S60_3X__) || defined (S80)
+    joystick->nbuttons=3;
+    if(current_video && current_video->hidden)
+    {
+    SetJoystickState((current_video->hidden->iInputMode==EJoystick));// Joystick is opened set it as default and disable cursor keys
+    }
 #elif defined (S90) || defined (UIQ3)
-	joystick->nbuttons=2;
-	if(current_video && current_video->hidden)
-	{
-	SetJoystickState((current_video->hidden->iInputMode==EJoystick));// Joystick is opened set it as default and disable cursor keys
-	}
+    joystick->nbuttons=2;
+    if(current_video && current_video->hidden)
+    {
+    SetJoystickState((current_video->hidden->iInputMode==EJoystick));// Joystick is opened set it as default and disable cursor keys
+    }
 #endif
-	joystick->naxes=2;
-//	current_video->hidden->->iTheJoystick=joystick;
-	return 0;
+    joystick->naxes=2;
+//    current_video->hidden->->iTheJoystick=joystick;
+    return 0;
 }
 
 #define JOY_DEADZONE 6400 // From scumm
@@ -105,57 +99,56 @@ int SDL_SYS_JoystickOpen(SDL_Joystick * joystick)
  */
 void SDL_SYS_JoystickUpdate(SDL_Joystick * joystick)
 {
-	if(current_video->hidden->iJoystickStatus[EJoyLEFT]!= current_video->hidden->iLastJoystickStatus[EJoyLEFT]|| current_video->hidden->iJoystickStatus[EJoyRIGHT]!= current_video->hidden->iLastJoystickStatus[EJoyRIGHT])
-	{
-		if(!current_video->hidden->iJoystickStatus[EJoyLEFT] && !current_video->hidden->iJoystickStatus[EJoyRIGHT])
-		SDL_PrivateJoystickAxis(joystick,0,0);
-			else
-		SDL_PrivateJoystickAxis(joystick,0,current_video->hidden->iJoystickStatus[EJoyLEFT]?-JOY_DEADZONE:JOY_DEADZONE);
-		current_video->hidden->iLastJoystickStatus[EJoyLEFT] = current_video->hidden->iJoystickStatus[EJoyLEFT];
-		current_video->hidden->iLastJoystickStatus[EJoyRIGHT] = current_video->hidden->iJoystickStatus[EJoyRIGHT];
-	}
+    if(current_video->hidden->iJoystickStatus[EJoyLEFT]!= current_video->hidden->iLastJoystickStatus[EJoyLEFT]|| current_video->hidden->iJoystickStatus[EJoyRIGHT]!= current_video->hidden->iLastJoystickStatus[EJoyRIGHT])
+    {
+        if(!current_video->hidden->iJoystickStatus[EJoyLEFT] && !current_video->hidden->iJoystickStatus[EJoyRIGHT])
+        SDL_PrivateJoystickAxis(joystick,0,0);
+            else
+        SDL_PrivateJoystickAxis(joystick,0,current_video->hidden->iJoystickStatus[EJoyLEFT]?-JOY_DEADZONE:JOY_DEADZONE);
+        current_video->hidden->iLastJoystickStatus[EJoyLEFT] = current_video->hidden->iJoystickStatus[EJoyLEFT];
+        current_video->hidden->iLastJoystickStatus[EJoyRIGHT] = current_video->hidden->iJoystickStatus[EJoyRIGHT];
+    }
 
-	if(current_video->hidden->iJoystickStatus[EJoyUP]!= current_video->hidden->iLastJoystickStatus[EJoyUP]|| current_video->hidden->iJoystickStatus[EJoyDOWN]!= current_video->hidden->iLastJoystickStatus[EJoyDOWN])
-	{
-		if(!current_video->hidden->iJoystickStatus[EJoyUP] && !current_video->hidden->iJoystickStatus[EJoyDOWN])
-		SDL_PrivateJoystickAxis(joystick,1,0);
-			else
-		SDL_PrivateJoystickAxis(joystick,1,current_video->hidden->iJoystickStatus[EJoyUP]?-JOY_DEADZONE:JOY_DEADZONE);
-		current_video->hidden->iLastJoystickStatus[EJoyUP] = current_video->hidden->iJoystickStatus[EJoyUP];
-		current_video->hidden->iLastJoystickStatus[EJoyDOWN] = current_video->hidden->iJoystickStatus[EJoyDOWN];
-	}
+    if(current_video->hidden->iJoystickStatus[EJoyUP]!= current_video->hidden->iLastJoystickStatus[EJoyUP]|| current_video->hidden->iJoystickStatus[EJoyDOWN]!= current_video->hidden->iLastJoystickStatus[EJoyDOWN])
+    {
+        if(!current_video->hidden->iJoystickStatus[EJoyUP] && !current_video->hidden->iJoystickStatus[EJoyDOWN])
+        SDL_PrivateJoystickAxis(joystick,1,0);
+            else
+        SDL_PrivateJoystickAxis(joystick,1,current_video->hidden->iJoystickStatus[EJoyUP]?-JOY_DEADZONE:JOY_DEADZONE);
+        current_video->hidden->iLastJoystickStatus[EJoyUP] = current_video->hidden->iJoystickStatus[EJoyUP];
+        current_video->hidden->iLastJoystickStatus[EJoyDOWN] = current_video->hidden->iJoystickStatus[EJoyDOWN];
+    }
 
 
-	if(current_video->hidden->iJoystickStatus[EJoyBUT1]!= current_video->hidden->iLastJoystickStatus[EJoyBUT1])
-	{
-		SDL_PrivateJoystickButton(joystick,0,current_video->hidden->iJoystickStatus[EJoyBUT1]);
-		current_video->hidden->iLastJoystickStatus[EJoyBUT1] = current_video->hidden->iJoystickStatus[EJoyBUT1];
-	}
+    if(current_video->hidden->iJoystickStatus[EJoyBUT1]!= current_video->hidden->iLastJoystickStatus[EJoyBUT1])
+    {
+        SDL_PrivateJoystickButton(joystick,0,current_video->hidden->iJoystickStatus[EJoyBUT1]);
+        current_video->hidden->iLastJoystickStatus[EJoyBUT1] = current_video->hidden->iJoystickStatus[EJoyBUT1];
+    }
 
-	if(current_video->hidden->iJoystickStatus[EJoyBUT2]!= current_video->hidden->iLastJoystickStatus[EJoyBUT2])
-	{
-		SDL_PrivateJoystickButton(joystick,1,current_video->hidden->iJoystickStatus[EJoyBUT2]);
-		current_video->hidden->iLastJoystickStatus[EJoyBUT2] = current_video->hidden->iJoystickStatus[EJoyBUT2];
-	}
-	
-	if(current_video->hidden->iJoystickStatus[EJoyBUT3]!= current_video->hidden->iLastJoystickStatus[EJoyBUT3])
-	{
-		SDL_PrivateJoystickButton(joystick,2,current_video->hidden->iJoystickStatus[6]);
-		current_video->hidden->iLastJoystickStatus[EJoyBUT3] = current_video->hidden->iJoystickStatus[EJoyBUT3];
-	}
+    if(current_video->hidden->iJoystickStatus[EJoyBUT2]!= current_video->hidden->iLastJoystickStatus[EJoyBUT2])
+    {
+        SDL_PrivateJoystickButton(joystick,1,current_video->hidden->iJoystickStatus[EJoyBUT2]);
+        current_video->hidden->iLastJoystickStatus[EJoyBUT2] = current_video->hidden->iJoystickStatus[EJoyBUT2];
+    }
+
+    if(current_video->hidden->iJoystickStatus[EJoyBUT3]!= current_video->hidden->iLastJoystickStatus[EJoyBUT3])
+    {
+        SDL_PrivateJoystickButton(joystick,2,current_video->hidden->iJoystickStatus[6]);
+        current_video->hidden->iLastJoystickStatus[EJoyBUT3] = current_video->hidden->iJoystickStatus[EJoyBUT3];
+    }
 }
 
 /* Function to close a joystick after use */
 void SDL_SYS_JoystickClose(SDL_Joystick * /*joystick*/)
 {
-#if defined (S60) || defined (S80) || defined (S60V3) || defined (UIQ3)
-	SetJoystickState(EFalse);
+#if defined (S60) || defined (S80) || defined (__S60_3X__) || defined (UIQ3)
+    SetJoystickState(EFalse);
 #endif
 }
 
 /* Function to perform any system-specific joystick related cleanup */
-void SDL_SYS_JoystickQuit(void)
-{
-}
-}
+void SDL_SYS_JoystickQuit(void) {}
+
+} //extern "C"
 
