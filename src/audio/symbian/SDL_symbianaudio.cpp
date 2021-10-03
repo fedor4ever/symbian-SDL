@@ -1,9 +1,9 @@
 /****
 * SDL_EpocAudio.h
-* 
+*
 * Copyright (C) 2003 Andreas Karlsson, 2005 Lars Persson
 * All rights reserved
-*/ 
+*/
 
 #include <string.h> //memset
 
@@ -27,6 +27,7 @@ void SetStatusCharAndTimer(TPtrC aValue);
 
 SDL_AudioSpec gSpec;
 class CStreamEngine;
+
 class CSoundThreadWatcher:public CActive
 {
 public:
@@ -42,84 +43,84 @@ private:
 class CStreamEngine : public MMdaAudioOutputStreamCallback, public CActive
 {
 public:
-	
+
 	enum TState
     {
         /** No operation */
 		EIdle,
-			/** Preparing to play a stream */
-			EStreamPrepare,
-			/** Stream initiated */
-			EStreamStarted,
-			/** Requires new stream data */
-			ENextStreamBuf,
-			/** Error in playing stream */
-			EStreamError,
-			/** Stream closing down */
-			EStreamStopping
+		/** Preparing to play a stream */
+		EStreamPrepare,
+		/** Stream initiated */
+		EStreamStarted,
+		/** Requires new stream data */
+		ENextStreamBuf,
+		/** Error in playing stream */
+		EStreamError,
+		/** Stream closing down */
+		EStreamStopping
 	};
-	
+
 	static CStreamEngine *NewL();
-	
+
 	~CStreamEngine();
-	
+
 	void OpenL(TInt aSampleRate, TInt aChannels);
-	
+
 	void Close();
-	
+
 	void PlayStreamL();
-	
+
 	TUint8 *Buffer();
-	
+
 	TState State();
-	
+
 	void WaitForOpenToComplete();
 	void ThreadDied();
 #if defined (UIQ3) || defined (S60V3)
 	void WaitForAudio();
-#endif		
-	
+#endif
+
 	TThreadId					 iSndThreadId;
-	
+
 protected:
 	CStreamEngine();
 	void ConstructL();
-	
+
 	// Implement MMdaAudioOutputStreamCallback
 	void MaoscPlayComplete(TInt aError);
-	
+
 	void MaoscBufferCopied(TInt aError, const TDesC8& aBuffer);
-	
+
 	void MaoscOpenComplete( TInt aError );
-	
+
 	void DoCancel();
-	
+
 	void RunL();
 
 	CMdaAudioOutputStream		*iAudioStreamPlayer;
 	TMdaAudioDataSettings		 iSettings;
-	
+
 	TInt8						 iLastVolume;
 	TInt						 iMaxVolume;
-	
+
 	TState						 iState;
-	
+
 	HBufC8*						iBuffer;
-	
+
 	TBool						 iIsOpen;
 	TBool					  	 iIsStarted;
 	// The streamengine is created in the sound thread and must be destroyed from it too
 	TBool						iDestroyEngine;
-	
+
 	// If an error occurs during output then we need to reset the output settings for things to work
 	TBool						iSetSettings;
-	
+
 	/** Set when anything but underflow happens */
 	TBool						iReOpenStream;
-	
+
 	/** Protects agaisnt failed writes */
 	RTimer						iProtectionTimer;
-	
+
 	TBool						iThreadDied;
 #if defined (UIQ3) || defined (S60V3)
 	TInt32						iBytesWritten;
@@ -135,15 +136,15 @@ void IncreaseVolume()
 	{
 		if(current_audio->hidden->iVolume < KMaxVolume)
 		{
-			current_audio->hidden->iVolume = current_audio->hidden->iVolume+1;		
+			current_audio->hidden->iVolume = current_audio->hidden->iVolume+1;
 			Configuration->WriteInt("Audio", "Volume", current_audio->hidden->iVolume);
 #if defined (S60V3)
 			TBuf<2> format;
 			format.Format(_L("%02d"), current_audio->hidden->iVolume);
-			SetStatusCharAndTimer(format);			
-#endif			
+			SetStatusCharAndTimer(format);
+#endif
 		}
-	
+
 	}
 }
 
@@ -158,9 +159,9 @@ void DecreaseVolume()
 #if defined (S60V3)
 			TBuf<2> format;
 			format.Format(_L("%02d"), current_audio->hidden->iVolume);
-			SetStatusCharAndTimer(format);			
-#endif			
-		}		
+			SetStatusCharAndTimer(format);
+#endif
+		}
 	}
 }
 
@@ -177,7 +178,7 @@ CStreamEngine *CStreamEngine::NewL()
 	CleanupStack::PushL( self );
 	self->ConstructL();
 	CleanupStack::Pop();
-	
+
 	return self;
 }
 
@@ -194,7 +195,7 @@ CStreamEngine::~CStreamEngine()
 	if(currentThread.Id() == iSndThreadId)
 	{
 		if( iAudioStreamPlayer )
-		{		
+		{
 			delete iAudioStreamPlayer;
 			iAudioStreamPlayer = NULL;
 		}
@@ -214,7 +215,7 @@ CStreamEngine::~CStreamEngine()
 			}
 		}
 	}
-	
+
 	delete iBuffer;
 	iBuffer = NULL;
 }
@@ -240,26 +241,22 @@ void CStreamEngine::OpenL(TInt aSampleRate, TInt aChannels)
 	iSettings.iChannels = aChannels;
 	iSettings.iFlags = 0;
 	iSettings.iVolume = 0;
-	
+
 	iAudioStreamPlayer = CMdaAudioOutputStream::NewL( *this );
 	iAudioStreamPlayer->Open( &iSettings );
-	
-	iProtectionTimer.CreateLocal();	
+
+	iProtectionTimer.CreateLocal();
 	CActiveScheduler::Add(this);
-	
+
 	WaitForOpenToComplete();
 }
 
 void CStreamEngine::Close()
 {
 	RThread currentThread;
-	if(currentThread.Id() == iSndThreadId)
+	if((currentThread.Id() == iSndThreadId) && iAudioStreamPlayer)
 	{
-
-		if(iAudioStreamPlayer != NULL)
-		{
-			iAudioStreamPlayer->Stop();
-		}
+		iAudioStreamPlayer->Stop();
 	}
 }
 
@@ -287,23 +284,23 @@ void CStreamEngine::WaitForAudio()
 {
 	TInt32 bytes = iAudioStreamPlayer?iAudioStreamPlayer->GetBytes():0;
 	TInt32 diff = (iBytesWritten-bytes);
-	
+
 	if(diff > 0)
-	{	
+	{
 		// Bytes per second are actually half kb per second normal calculation ((1000000*diff)/2)/bytes per second
-		// But bytes per second are already divided by 1000, and does not count the 16 bit number.. 
+		// But bytes per second are already divided by 1000, and does not count the 16 bit number..
 		// Diff in second is diff/iBytesPerSecond
 		// This is (diff/iBytesPerSecond)*1000000 micro seconds
-		
+
 		TUint32 timeout = (125*diff)/iBytesPerSecond;
-		
+
 		if(timeout > 10000)
 		{
-			// If the value is to high that means that the bytes are not updated (not rendering).. so keep the engine happy.. 
+			// If the value is to high that means that the bytes are not updated (not rendering).. so keep the engine happy..
 			// Since we always need more data to keep rendering the audio
 			timeout = 10000;
 		}
-		
+
 		User::AfterHighRes(timeout);
 	}
 }
@@ -313,7 +310,7 @@ void CStreamEngine::WaitForAudio()
 void CStreamEngine::PlayStreamL()
 {
 	if(iIsOpen)
-	{		
+	{
 		iAudioStreamPlayer->WriteL( *iBuffer );
 
 		if(iLastVolume != current_audio->hidden->iVolume)
@@ -326,28 +323,28 @@ void CStreamEngine::PlayStreamL()
 		iBytesWritten+= iLastWritten;;
 #endif
 		Cancel();
-		
+
 		iProtectionTimer.After(iStatus,499999);
-		
+
 		SetActive();
-		
+
 		iIsStarted=ETrue;
-		
+
 		CActiveScheduler::Start();
-		
+
 		Cancel();
-		
+
 		if(iSetSettings)
 		{
 			iSetSettings = EFalse;
 			iAudioStreamPlayer->Stop();
 			TRAPD(err,iAudioStreamPlayer->SetAudioPropertiesL(iSettings.iSampleRate,iSettings.iChannels));
 			if(err != KErrNone)
-			{				
+			{
 				iIsOpen =EFalse;
 			}
 		}
-		
+
 		if(iReOpenStream)
 		{
 			iReOpenStream = EFalse;
@@ -364,11 +361,11 @@ void CStreamEngine::PlayStreamL()
 	{
 		User::After(15624); // Wait for a tick.. sound is not opened properly
 	}
-	
+
 	if(iDestroyEngine)
 	{
 		if(iAudioStreamPlayer != NULL)
-		{		
+		{
 			delete iAudioStreamPlayer;
 			iAudioStreamPlayer = NULL;
 		}
@@ -381,7 +378,7 @@ TUint8 *CStreamEngine::Buffer()
 {
 	if(iState == EStreamStarted || iState == ENextStreamBuf)
 		return (TUint8*)iBuffer->Des().Ptr();
-	return 
+	return
 		NULL;
 }
 
@@ -390,12 +387,10 @@ CStreamEngine::TState CStreamEngine::State()
 	return iState;
 }
 
-
-
 void CStreamEngine::WaitForOpenToComplete()
 {
 	iIsStarted=ETrue;
-	
+
 	CActiveScheduler::Start();
 	if (!iIsOpen)
 	{
@@ -405,11 +400,11 @@ void CStreamEngine::WaitForOpenToComplete()
 	{
 		iAudioStreamPlayer->SetPriority(EMdaPriorityNormal , EMdaPriorityPreferenceNone); // Set the priority
 		TRAPD(err,iAudioStreamPlayer->SetAudioPropertiesL(iSettings.iSampleRate,iSettings.iChannels)); // Set the properties
-		
+
 		if(err == KErrNone)
 		{
 			iState = EStreamStarted;
-		}	
+		}
 	}
 }
 
@@ -422,16 +417,16 @@ void CStreamEngine::ConstructL()
 
 // Implement MMdaAudioOutputStreamCallback
 void CStreamEngine::MaoscPlayComplete(TInt aError)
-{	
+{
 	if(	iIsStarted)
 	{
 		CActiveScheduler::Stop();
 		iIsStarted=EFalse;
 	}
-	
+
 	if(aError != KErrNone)
 	{
-		
+
 		if(aError != KErrUnderflow && aError != KErrAbort)
 		{
 			iReOpenStream = ETrue;
@@ -439,7 +434,7 @@ void CStreamEngine::MaoscPlayComplete(TInt aError)
 		else
 		{
 			iSetSettings = ETrue;
-		}		
+		}
 	}
 }
 
@@ -452,6 +447,7 @@ void CStreamEngine::MaoscBufferCopied(TInt aError, const TDesC8& /*aBuffer*/)
 		CActiveScheduler::Stop();
 		iIsStarted=EFalse;
 	}
+	//Tell the SDL client that it can put more buffers :D
 	if(aError != KErrNone && aError != KErrAbort)
 	{
 		if(aError != KErrUnderflow)
@@ -461,9 +457,8 @@ void CStreamEngine::MaoscBufferCopied(TInt aError, const TDesC8& /*aBuffer*/)
 		else
 		{
 			iSetSettings = ETrue;
-		}		
+		}
 	}
-	//Tell the SDL client that it can put more buffers :D
 }
 
 void CStreamEngine::MaoscOpenComplete( TInt aError )
@@ -482,11 +477,11 @@ void CStreamEngine::MaoscOpenComplete( TInt aError )
 			iLastVolume = current_audio->hidden->iVolume;
 			iAudioStreamPlayer->SetVolume((iLastVolume*iAudioStreamPlayer->MaxVolume())/KMaxVolume);
 		}
+
 		iState = EStreamStarted;
-		
 		iIsOpen = ETrue;
 	}
-	
+
 	if(	iIsStarted)
 	{
 		CActiveScheduler::Stop();
@@ -510,17 +505,16 @@ static void Audio_DeleteDevice( _THIS )
 
 static SDL_AudioDevice *Audio_CreateDevice( int /*devindex*/ )
 {
-	
 	_THIS;
-	_this = new(ELeave) SDL_AudioDevice;
-	
+	_this = new(ELeave) SDL_AudioDevice();
+
 	memset(_this, 0, sizeof(SDL_AudioDevice));
-	_this->hidden = new(ELeave) SDL_PrivateAudioData;
+	_this->hidden = new(ELeave) SDL_PrivateAudioData();
 	memset(_this->hidden, 0, sizeof(SDL_PrivateAudioData));
-	
-	_this->hidden->iStreamEngine	= NULL; //Has to be allocated in player thread... 
+
+	_this->hidden->iStreamEngine	= NULL; //Has to be allocated in player thread...
 	_this->hidden->iCleanup			= NULL; //Has to be allocated in player thread...  ??
-	
+
 	_this->OpenAudio	= EPOC_OpenAudio;
 	_this->ThreadInit	= EPOC_ThreadInit;
 	_this->WaitAudio	= EPOC_WaitAudio;
@@ -539,7 +533,7 @@ static SDL_AudioDevice *Audio_CreateDevice( int /*devindex*/ )
 	return _this;
 }
 
-AudioBootStrap	EPOC_audiobootstrap = 
+AudioBootStrap	EPOC_audiobootstrap =
 {
 	"EPOC_media_stream"
 	, "Symbian Audio Streaming"
@@ -552,10 +546,10 @@ void EPOC_ThreadInit( _THIS )
 	_this->hidden->iCleanup = CTrapCleanup::New();
 
 	//Install Active Scheduler
-	/* _this->hidden->iScheduler = new CActiveScheduler; 
+	/* _this->hidden->iScheduler = new CActiveScheduler;
 	if(_this->hidden->iScheduler == NULL)
 		User::Panic(_L("SDL Audio"), KErrNoMemory);
-	CActiveScheduler::Install(_this->hidden->iScheduler);*/ 
+	CActiveScheduler::Install(_this->hidden->iScheduler);*/
 
 	// Now lets increast the priority of this thread
 	RThread audioThread; //this is the audiothread
@@ -582,23 +576,20 @@ void EPOC_ThreadInit( _THIS )
 		break;
 	case 16:
 		gSpec.format = AUDIO_S16;
-		
-	
 	}
 
 	TRAP(err, _this->hidden->iStreamEngine->OpenL( gSpec.freq , channels ));
 	if(err)
 		User::InfoPrint(_L("SDL Audio Init error"));
-	
 }
 
 int EPOC_OpenAudio(_THIS, SDL_AudioSpec *aSpec)
 {
 //Needs to open in the same thread as playing is going to be :|
-#if defined (S60) 
+#if defined (S60)
 	int channels= Configuration->ReadInt("Audio", "Channels", 1); // only used if set
 	int samplerate = Configuration->ReadInt("Audio", "Samplerate", -1); // only used if set
-	
+
 	if(channels == -1) // Not set yet
 	{
 		channels = 1;
@@ -611,7 +602,7 @@ int EPOC_OpenAudio(_THIS, SDL_AudioSpec *aSpec)
 	}
 
 	aSpec->channels = channels;
-	
+
 	if(aSpec->format == AUDIO_U8 || aSpec->format == AUDIO_S8)
 	{
 		aSpec->size*=2;
@@ -629,7 +620,7 @@ int EPOC_OpenAudio(_THIS, SDL_AudioSpec *aSpec)
 		{
 		if(samplerate != -1) // Sample override
 		{
-		aSpec->freq =samplerate; 
+		aSpec->freq =samplerate;
 		}
 		else
 		{
@@ -699,13 +690,13 @@ void EPOC_WaitDone( _THIS )
 }
 
 void EPOC_PlayAudio( _THIS )
-{	
+{
 	TRAPD(err,_this->hidden->iStreamEngine->PlayStreamL());
 	int i = 0;
-	if(i == 1)
-		{
-			User::Leave(KErrNotFound);
-		}
+	if(i == 1) //TODO: fix code
+	{
+		User::Leave(KErrNotFound);
+	}
 }
 
 Uint8 *EPOC_GetAudioBuf(_THIS)
@@ -727,14 +718,13 @@ extern "C" void CreateThreadWatcher(int aThreadhandle,_THIS)
 		delete _this->hidden->iSoundThreadWatcher;
 		_this->hidden->iSoundThreadWatcher = NULL;
 	}
-
 	_this->hidden->iSoundThreadWatcher = new CSoundThreadWatcher(aThreadhandle, _this);
 }
 
 CSoundThreadWatcher::CSoundThreadWatcher(TInt aThreadHandle,_THIS):CActive(CActive::EPriorityStandard),_this(_this)
 {
 	CActiveScheduler::Add(this);
-	
+
 	iStatus = KRequestPending;
 	iSndThread.SetHandle(aThreadHandle);
 	iSndThread.Logon(iStatus);
