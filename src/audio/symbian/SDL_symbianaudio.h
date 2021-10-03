@@ -1,9 +1,9 @@
 /****
  * SDL_EpocAudio.h
- * 
+ *
  * Copyright (C) 2003 Andreas Karlsson
  * All rights reserved
- */ 
+ */
 
 
 #ifndef __SDL_AUDIO_EPOC_SDL_EPOCAUDIO_H__
