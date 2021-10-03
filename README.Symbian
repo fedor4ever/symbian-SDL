@@ -5,19 +5,10 @@ Using the Simple DirectMedia Layer with S60 3.x / Symbian 9.x
 These instuctions are for people developing for S60 3.x. S60 3.x
 uses Symbian OS so you need S60 SDK.
 
-extract "symbian.zip" into this folder.
+1. go to Symbian\s60v3 folder
+2. bldmake bldfiles
+3. abld build gcce
 
-go to symbian folder
-
-bldmake bldfiles
-abld build
-
-That produces WINSCW and ARMV5 versions of sdl.dll runtime library 
-and sdl.lib for development. 
-The sdlexe.dll/sdlexe.lib and sdlmain.lib are for easy SDL S60
-integration, please see http://www.mbnet.fi/~mertama/sdl.html
-for further info.
-
-
-
+That produces ARMV5 versions of sdl.lib runtime library.
+and sdl.lib for development.
 
