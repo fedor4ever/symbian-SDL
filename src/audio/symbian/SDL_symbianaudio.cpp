@@ -215,7 +215,7 @@ CStreamEngine::~CStreamEngine()
 void CStreamEngine::OpenL(TInt aSampleRate, TInt aChannels)
 {
 	TInt sampleRate = TMdaAudioDataSettings::ESampleRate8000Hz;
-	switch( aSampleRate )
+	switch(aSampleRate)
 		{
 		case  8000: sampleRate = TMdaAudioDataSettings::ESampleRate8000Hz;  break;
 		case 11025: sampleRate = TMdaAudioDataSettings::ESampleRate11025Hz; break;
@@ -224,6 +224,12 @@ void CStreamEngine::OpenL(TInt aSampleRate, TInt aChannels)
 		case 32000: sampleRate = TMdaAudioDataSettings::ESampleRate32000Hz; break;
 		case 44100: sampleRate = TMdaAudioDataSettings::ESampleRate44100Hz; break;
 		case 48000: sampleRate = TMdaAudioDataSettings::ESampleRate48000Hz; break;
+#ifdef __S60_3X__
+		case 12000: sampleRate = TMdaAudioDataSettings::ESampleRate12000Hz; break;
+		case 24000: sampleRate = TMdaAudioDataSettings::ESampleRate24000Hz; break;
+		case 96000: sampleRate = TMdaAudioDataSettings::ESampleRate96000Hz; break;
+		case 64000: sampleRate = TMdaAudioDataSettings::ESampleRate64000Hz; break;
+#endif
 		}
 
 	iBytesPerSecond = (aSampleRate*(aChannels == TMdaAudioDataSettings::EChannelsMono?1:2))/1000;
