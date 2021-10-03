@@ -79,7 +79,7 @@ void SDL_DestroyMutex(SDL_mutex *mutex)
 	{
     RMutex rmutex;
     rmutex.SetHandle(mutex->handle);
-#if !defined (UIQ3) && !defined (S60V3)
+#if !defined(UIQ3) && !defined(__SERIES60_3X__)
 	rmutex.Signal();
 #endif
 	rmutex.Close();

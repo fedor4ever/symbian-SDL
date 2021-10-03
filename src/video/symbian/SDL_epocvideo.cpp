@@ -54,7 +54,7 @@ extern "C" {
 #include "SDL_epocvideo.h"
 #include "SDL_epocevents_c.h"
 #include "EBasicApp.h"
-#if !defined UIQ3 && !defined S60V3
+#if !defined UIQ3 && !defined __SERIES60_3X__
 #include <hal.h>
 #endif
 
@@ -72,7 +72,7 @@ TBool gHeapIsLocked=EFalse;
 
 extern "C" void EPOC_CalcStretchFactors(_THIS,TSize aTargetSize);
 
-#if defined (S60) || defined (S60V3)
+#if defined (S60) || defined (__SERIES60_3X__)
 void EPOC_SetS60Mode(_THIS,TInt aS60Mode);
 #endif
 
@@ -80,9 +80,9 @@ void UpdateScaleFactors()
 	{
 	if(current_video != NULL)
 		{
-#if defined (S60V3) || defined (S60)
+#if defined (__SERIES60_3X__) || defined (S60)
 		EPOC_SetS60Mode(current_video,current_video->hidden->iSX0Mode);
-#ifdef S60V3
+#ifdef __SERIES60_3X__
 		current_video->hidden->iWindowCreator->UpdateVirtualKeyboard();
 #endif
 #else
@@ -109,7 +109,7 @@ void UpdateScaleFactors()
 void ClearBackBuffer(_THIS)
 {
 	/* Clear backbuffer */
-#if defined (__WINS__)|| defined (S60) || defined (S80) || defined(S90)||defined(UIQ3)||defined(S60V3)
+#if defined (__WINS__)|| defined (S60) || defined (S80) || defined(S90)||defined(UIQ3)||defined(__SERIES60_3X__)
 	TBool lockedHeap=EFalse;
 	TBitmapUtil lock(Private->EPOC_Bitmap);
 	if(!gHeapIsLocked)
@@ -123,7 +123,7 @@ void ClearBackBuffer(_THIS)
 	TUint16* screenBuffer = (TUint16*)Private->EPOC_FrameBuffer;
 #endif
 	memset(screenBuffer, 0, Private->EPOC_ScreenSize.iHeight*Private->EPOC_ScreenSize.iWidth*Private->EPOC_BytesPerPixel);
-#if defined (__WINS__) || defined (S60) || defined (S80) || defined(S90) || defined(UIQ3) || defined(S60V3)
+#if defined (__WINS__) || defined (S60) || defined (S80) || defined(S90) || defined(UIQ3) || defined(__SERIES60_3X__)
 	if(lockedHeap)
 	{
 		lock.End();
@@ -472,7 +472,7 @@ void EPOC_SetCaption(_THIS, const char * title, const char * /*icon*/)
 	}
 }
 
-#if defined  (__WINS__) ||  defined (S60) ||  defined (S80) ||  defined (S90) ||  defined (UIQ3) || defined(S60V3)
+#if defined  (__WINS__) ||  defined (S60) ||  defined (S80) ||  defined (S90) ||  defined (UIQ3) || defined(__SERIES60_3X__)
 void EPOC_ReconfigureVideo(_THIS)
 {
     /* Initialise Epoc frame buffer */
@@ -486,8 +486,8 @@ void EPOC_ReconfigureVideo(_THIS)
 	{
 		displayMode=EColor64K;; // Also tried to switch to by the view.
 	}
-#if defined (S60)||defined (S60V3) // this needs to be atleast 320x200 to cope
-#ifdef S60V3
+#if defined (S60)||defined (__SERIES60_3X__) // this needs to be atleast 320x200 to cope
+#ifdef __SERIES60_3X__
   Private->EPOC_ScreenSize = Private->iEikEnv->ScreenDevice()->SizeInPixels();// TSize(256,320);
 	Private->EPOC_DisplaySize = Private->EPOC_ScreenSize;
 	// Must ensure that the height is at least 320 pixels height and 240 width
@@ -559,7 +559,7 @@ int EPOC_VideoInit(_THIS, SDL_PixelFormat *vformat)
 
     /* Initialise Epoc frame buffer */
     TDisplayMode displayMode =Private->iEikEnv->ScreenDevice()->DisplayMode();
- #if !defined  (__WINS__) && !defined (S60) && !defined (S80) && !defined (S90) && !defined (UIQ3) && !defined(S60V3)
+ #if !defined  (__WINS__) && !defined (S60) && !defined (S80) && !defined (S90) && !defined (UIQ3) && !defined(__SERIES60_3X__)
 
 	TInt value;
 	HAL::Get(HALData::EMachineUid,value);
@@ -606,7 +606,7 @@ int EPOC_VideoInit(_THIS, SDL_PixelFormat *vformat)
 #endif
 #else /* defined __WINS__ || S60 || S80||S90 || UIQ3*/
     EPOC_ReconfigureVideo(_this);
-#if defined (S60)||defined (S60V3) // this needs to be atleast 320x200 to cope
+#if defined (S60)||defined (__SERIES60_3X__) // this needs to be atleast 320x200 to cope
 	Private->iSX0Mode = ESX0Stretched|ESX0Flipped;
 	Private->iCurrentChar=65; // Start of with an A
 #elif defined (S80) || defined (S90)
@@ -641,7 +641,7 @@ int EPOC_VideoInit(_THIS, SDL_PixelFormat *vformat)
 	Private->SDL_modelist[10] = NULL;
 
     //!! TODO: error handling
-#if defined (__WINS__) || defined (S60) || defined (S80)|| defined(S90)||defined(UIQ3)||defined(S60V3)
+#if defined (__WINS__) || defined (S60) || defined (S80)|| defined(S90)||defined(UIQ3)||defined(__SERIES60_3X__)
 	TBool lockedHeap=EFalse;
 	TBitmapUtil lock(Private->EPOC_Bitmap);
 	if(!gHeapIsLocked)
@@ -652,7 +652,7 @@ int EPOC_VideoInit(_THIS, SDL_PixelFormat *vformat)
 	}
 #endif
 	DrawBlueStripes(_this);
-#if defined (__WINS__) || defined (S60) || defined (S80) || defined(S90) || defined(UIQ3) || defined(S60V3)
+#if defined (__WINS__) || defined (S60) || defined (S80) || defined(S90) || defined(UIQ3) || defined(__SERIES60_3X__)
 	if(lockedHeap)
 	{
 		lock.End();
@@ -1053,7 +1053,7 @@ SDL_Surface *EPOC_SetVideoMode(_THIS, SDL_Surface *current,
 			i240StartTable[loop]=loop;
 		}
 	}
-#elif defined (S60) || defined(S60V3)
+#elif defined (S60) || defined(__SERIES60_3X__)
 	Private->iIs240Mode = (current->h==240 || current->h == 480);
 #elif defined (S90)
 		for(TInt loop=0;loop<240;loop++)
@@ -1074,7 +1074,7 @@ SDL_Surface *EPOC_SetVideoMode(_THIS, SDL_Surface *current,
 void DrawBlueStripes(_THIS)
 {
 	/* Draw blue stripes background */
-#if defined (__WINS__)|| defined (S60) || defined (S80) || defined(S90)||defined(UIQ3)||defined(S60V3)
+#if defined (__WINS__)|| defined (S60) || defined (S80) || defined(S90)||defined(UIQ3)||defined(__SERIES60_3X__)
 	TUint16* screenBuffer = (TUint16*)Private->EPOC_Bitmap->DataAddress();
 #else
 	TUint16* screenBuffer = (TUint16*)Private->EPOC_FrameBuffer;
@@ -1095,7 +1095,7 @@ void RedrawWindowL(_THIS)
     fullScreen.w = _this->screen->w;
     fullScreen.h = _this->screen->h;
 
-#if defined (__WINS__) || defined (S60) || defined (S80)|| defined(S90)||defined(UIQ3)||defined(S60V3)
+#if defined (__WINS__) || defined (S60) || defined (S80)|| defined(S90)||defined(UIQ3)||defined(__SERIES60_3X__)
 	Private->iNeedFullRedraw = ETrue;
 	TBool lockedHeap=EFalse;
 	    TBitmapUtil lock(Private->EPOC_Bitmap);
@@ -1111,7 +1111,7 @@ void RedrawWindowL(_THIS)
         || fullScreen.h < Private->EPOC_ScreenSize.iHeight) {
 		DrawBlueStripes(_this);
     }
-#if defined (__WINS__) || defined (S60) || defined (S80) || defined(S90)||defined(UIQ3)||defined(S60V3)
+#if defined (__WINS__) || defined (S60) || defined (S80) || defined(S90)||defined(UIQ3)||defined(__SERIES60_3X__)
 	if(lockedHeap)
 		{
 			lock.End();
@@ -1195,7 +1195,7 @@ void EPOC_VideoQuit(_THIS)
 
     /* Disable events for me */
 
- #if defined (__WINS__) || defined(S60) || defined (S80) || defined (S90) || defined (S60V3) || defined(UIQ3)
+ #if defined (__WINS__) || defined(S60) || defined (S80) || defined (S90) || defined (__SERIES60_3X__) || defined(UIQ3)
 	delete Private->EPOC_Bitmap;
 	Private->EPOC_Bitmap = NULL;
   #endif
@@ -1211,7 +1211,7 @@ void EPOC_VideoQuit(_THIS)
 #include "SDL_EpocVideo_UIQ3.inl"
 #elif defined (S60)
 #include "SDL_EpocVideo_S60.inl"
-#elif defined (S60V3)
+#elif defined (__SERIES60_3X__)
 #include "SDL_EpocVideo_S60V3.inl"
 #elif defined (S80)
 #include "SDL_EpocVideo_S80.inl"

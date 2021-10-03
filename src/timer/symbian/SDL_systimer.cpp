@@ -47,7 +47,7 @@ void SDL_StartTicks(void)
 	start.HomeTime();
 }
 
-#if defined (UIQ3) || defined(S60V3)
+#if defined (UIQ3) || defined(__SERIES60_3X__)
 const TUint32 KTickDelay = 5000;
 #else
 const TUint32 KTickDelay = 15624;
@@ -57,7 +57,7 @@ Uint32 SDL_GetTicks(void)
 {
 	TTime now;
 	now.HomeTime();
-#if defined (UIQ3) || defined(S60V3)
+#if defined (UIQ3) || defined(__SERIES60_3X__)
 	Uint32 ms = (now.MicroSecondsFrom(start).Int64())/1000;
 #else
 	Uint32 ms = ((now.MicroSecondsFrom(start).Int64())/1000).GetTInt();
@@ -67,7 +67,7 @@ Uint32 SDL_GetTicks(void)
 
 void SDL_Delay(Uint32 ms)
 {
-#if defined (UIQ3) || defined(S60V3)
+#if defined (UIQ3) || defined(__SERIES60_3X__)
     User::AfterHighRes(ms*1000);
 #else
     // Lets round down to the nearest 1/64 second available.. i.e anything less than 1/64 is a zero delay
@@ -91,7 +91,7 @@ static int RunTimer(void * /*unused*/)
 		if ( SDL_timer_running ) {
 			SDL_ThreadedTimerCheck();
 		}
-#if defined (UIQ3) || defined(S60V3)
+#if defined (UIQ3) || defined(__SERIES60_3X__)
 		User::AfterHighRes(KTickDelay);
 #else
 		// Wait for one tick before checking again

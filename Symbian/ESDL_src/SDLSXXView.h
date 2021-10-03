@@ -1,12 +1,12 @@
 #ifndef SDLSXXAPPH
 #define SDLSXXAPPH
 
-#if defined(S60) || defined(S80) || defined(S90) || defined(__S60_3X__)
+#if defined(S60) || defined(S80) || defined(S90) || defined(__SERIES60_3X__)
 	#include <e32base.h>
 	#include <eikappui.h>
 	#include <coecntrl.h>
 
-#ifdef __S60_3X__
+#ifdef __SERIES60_3X__
 class TKeyboardData
 	{
 public:
@@ -37,10 +37,10 @@ class CEBasicView: public CCoeControl, public MDirectScreenAccess
 		void DeGc(){DeactivateGc();};
 		void ClearScreen();
 
-#if defined(S60) || defined(__S60_3X__)
+#if defined(S60) || defined(__SERIES60_3X__)
 	public:
 		void DrawScreenStatus(CBitmapContext& aGc) const;
-#ifdef __S60_3X__
+#ifdef __SERIES60_3X__
 		void UpdateClipRect();
 		void DrawVKeyBoard(CBitmapContext& aGc) const;
 		void UpdateVirtualKeyboard();
@@ -52,7 +52,7 @@ class CEBasicView: public CCoeControl, public MDirectScreenAccess
 		TRect iControlRect;
 		TInt iSimulatedKey;
 #endif
-#endif // defined(S60) || defined(__S60_3X__)
+#endif // defined(S60) || defined(__SERIES60_3X__)
 
 		RWindow& Win() const {return Window();};
 #ifdef S90
@@ -70,7 +70,7 @@ class CEBasicView: public CCoeControl, public MDirectScreenAccess
 		TBool iDrawingOn;
 		TBool iForeground;
 		TUid iAppUid;
-#ifdef __S60_3X__
+#ifdef __SERIES60_3X__
 		CArrayFixFlat<TKeyboardData>* iTouchKeys;
 		TRect iToggleVKBStateRect;
 #endif

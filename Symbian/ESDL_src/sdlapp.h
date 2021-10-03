@@ -1,6 +1,6 @@
 #ifndef SDLAPPH
 #define SDLAPPH
-#if defined (UIQ2) || defined (UIQ3) || defined (S60V3)
+#if defined (UIQ2) || defined (UIQ3) || defined (__SERIES60_3X__)
 #define EPOC_AS_APP
 #define MY_IMPORT_C
 #define MY_EXPORT_C

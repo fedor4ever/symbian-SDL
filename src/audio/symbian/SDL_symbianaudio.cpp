@@ -76,7 +76,7 @@ public:
 
 	void WaitForOpenToComplete();
 	void ThreadDied();
-#if defined (UIQ3) || defined (__S60_3X__)
+#if defined (UIQ3) || defined (__SERIES60_3X__)
 	void WaitForAudio();
 #endif
 
@@ -122,7 +122,7 @@ protected:
 	RTimer						iProtectionTimer;
 
 	TBool						iThreadDied;
-#if defined (UIQ3) || defined (__S60_3X__)
+#if defined (UIQ3) || defined (__SERIES60_3X__)
 	TInt32						iBytesWritten;
 	TInt32						iLastWritten;
 #endif
@@ -141,7 +141,7 @@ void IncreaseVolume()
 		current_audio->hidden->iVolume = KMaxVolume;
 
 	Configuration->WriteInt("Audio", "Volume", current_audio->hidden->iVolume);
-#ifdef __S60_3X__
+#ifdef __SERIES60_3X__
 	TBuf<2> format;
 	format.Format(_L("%02d"), current_audio->hidden->iVolume);
 	SetStatusCharAndTimer(format);
@@ -155,7 +155,7 @@ void DecreaseVolume()
 
 	current_audio->hidden->iVolume = current_audio->hidden->iVolume-1;
 	Configuration->WriteInt("Audio", "Volume", current_audio->hidden->iVolume);
-#ifdef __S60_3X__
+#ifdef __SERIES60_3X__
 	TBuf<2> format;
 	format.Format(_L("%02d"), current_audio->hidden->iVolume);
 	SetStatusCharAndTimer(format);
@@ -224,7 +224,7 @@ void CStreamEngine::OpenL(TInt aSampleRate, TInt aChannels)
 		case 32000: sampleRate = TMdaAudioDataSettings::ESampleRate32000Hz; break;
 		case 44100: sampleRate = TMdaAudioDataSettings::ESampleRate44100Hz; break;
 		case 48000: sampleRate = TMdaAudioDataSettings::ESampleRate48000Hz; break;
-#ifdef __S60_3X__
+#ifdef __SERIES60_3X__
 		case 12000: sampleRate = TMdaAudioDataSettings::ESampleRate12000Hz; break;
 		case 24000: sampleRate = TMdaAudioDataSettings::ESampleRate24000Hz; break;
 		case 96000: sampleRate = TMdaAudioDataSettings::ESampleRate96000Hz; break;
@@ -277,7 +277,7 @@ void CStreamEngine::RunL()
 }
 
 
-#if defined (UIQ3) || defined (S60V3)
+#if defined (UIQ3) || defined (__SERIES60_3X__)
 void CStreamEngine::WaitForAudio()
 {
 	TInt32 bytes = iAudioStreamPlayer?iAudioStreamPlayer->GetBytes():0;
@@ -316,7 +316,7 @@ void CStreamEngine::PlayStreamL()
 			iLastVolume = current_audio->hidden->iVolume;
 			iAudioStreamPlayer->SetVolume((iLastVolume*iAudioStreamPlayer->MaxVolume())/KMaxVolume);
 		}
-#if defined (UIQ3) || defined (S60V3)
+#if defined (UIQ3) || defined (__SERIES60_3X__)
 		iLastWritten = iBuffer->Length();
 		iBytesWritten+= iLastWritten;;
 #endif
@@ -704,7 +704,7 @@ Uint8 *EPOC_GetAudioBuf(_THIS)
 
 void EPOC_WaitAudio( _THIS )
 {
-#if defined (UIQ3) || defined (S60V3)
+#if defined (UIQ3) || defined (__SERIES60_3X__)
 	_this->hidden->iStreamEngine->WaitForAudio();
 #endif
 }

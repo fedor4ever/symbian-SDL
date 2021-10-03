@@ -97,7 +97,7 @@ extern "C" void EPOC_GenerateKeyEvent(_THIS,int aScanCode,int aIsDown, TBool aSh
 	}
 }
 
-#ifdef S60V3
+#ifdef __SERIES60_3X__
 #include "bthidclient.h"
 
 class CHIDEventMonitor : public CActive
@@ -132,7 +132,7 @@ TBool IsScreenKeysL(_THIS,const TPointerEvent& aPointerEvent)
 			}
 
 			TInt cnt = touchKeys->Count();
-			for(TInt loop=0;loop<cnt;loop++)
+			for(TInt loop = 0; loop < cnt; loop++)
 			{
 				if((*touchKeys)[loop].iKeyRect.Contains(aPointerEvent.iPosition))
 				{
@@ -537,7 +537,7 @@ TBool IsScreenKeysL(_THIS,const TPointerEvent& aPointerEvent)
 #endif
 
 
-#if defined (S60) || defined(S60V3)
+#if defined (S60) || defined(__SERIES60_3X__)
 
 extern "C" void EPOC_CalcScaleFactors(_THIS);
 void EPOC_SetS60Mode(_THIS,TInt aS60Mode)
@@ -572,7 +572,7 @@ int EPOC_HandleWsEvent(_THIS, const TWsEvent& aWsEvent)
         const TAdvancedPointerEvent* advPointerEvent = pointerEvent.AdvancedPointerEvent();//PointerNumber
         advPointerEvent->PointerNumber();
 #endif
-#ifdef S60V3
+#ifdef __SERIES60_3X__
 		if(!Private->iHasMouseOrTouch
 				&& ((Private->EPOC_ScreenSize.iWidth > 320 && Private->EPOC_ScreenSize.iHeight>240)|| (Private->EPOC_ScreenSize.iWidth>240 && Private->EPOC_ScreenSize.iHeight>320))
 		   )
@@ -582,20 +582,20 @@ int EPOC_HandleWsEvent(_THIS, const TWsEvent& aWsEvent)
 			RedrawWindowL(current_video);
 		}
 #endif
-#if defined (UIQ) || defined (S90) || defined (UIQ3) || defined (S60V3)
-#ifdef S60V3
+#if defined (UIQ) || defined (S90) || defined (UIQ3) || defined (__SERIES60_3X__)
+#ifdef __SERIES60_3X__
 		if(!_this->hidden->iWindowCreator->TouchPointerEventL(pointerEvent))
 #endif
 
 		if(!IsScreenKeysL(_this,pointerEvent))
 #endif
 		{
-#ifdef S60V3
+#ifdef __SERIES60_3X__
 			pointerEvent.iPosition-=current_video->hidden->iVKBOffset;
 #endif
 			TPoint mousePos = pointerEvent.iPosition;
 
-#if defined (UIQ) || defined (UIQ3) || defined (S60V3)
+#if defined (UIQ) || defined (UIQ3) || defined (__SERIES60_3X__)
 #if defined (UIQ3)
 			if(Private->iSX0Mode & ESX0Portrait)
 			{
@@ -674,7 +674,7 @@ int EPOC_HandleWsEvent(_THIS, const TWsEvent& aWsEvent)
 				{
 				mousePos.iX=(mousePos.iX*1.2);
 				}
-#elif defined (S60V3)
+#elif defined (__SERIES60_3X__)
 			if(Private->iSX0Mode & ESX0Portrait)
 				{
 				if (Private->iSX0Mode & ESX0Stretched && !(Private->EPOC_ShrinkedHeight || Private->EPOC_ShrinkedWidth))
@@ -1099,7 +1099,7 @@ static TInt StopSchedulerTimeOut(TAny* /*any*/)
 	gResetCnter = (gResetCnter++)&0xFF;
 
 	if(gResetCnter == 0) {
-#if !defined (UIQ3) && !defined(S60V3)
+#if !defined (UIQ3) && !defined(__SERIES60_3X__)
 	TRawEvent	event;
 	event.Set(TRawEvent::EActive);// keep us happy even if no events has been posted
 	UserSvr::AddEvent(event);
@@ -1186,8 +1186,8 @@ void EPOC_PumpEvents(_THIS)
 	Private->iOnecallback->CallBack();
 	CActiveScheduler::Start();// Run scheduler so the pointerevents and keyboard events get placed
 
-#if defined (__WINS__ ) || defined(S60) || defined (S80) || defined(S90) || defined (UIQ3) || defined (S60V3)
-#if  defined (UIQ3) || defined (S60V3) || defined (S60)
+#if defined (__WINS__ ) || defined(S60) || defined (S80) || defined(S90) || defined (UIQ3) || defined (__SERIES60_3X__)
+#if  defined (UIQ3) || defined (__SERIES60_3X__) || defined (S60)
 	if(Private->iInputMode == EMouseMode)
 		{
 		UpdateKbdMouse();
@@ -1251,7 +1251,7 @@ void EPOC_InitOSKeymap(_THIS)
 	for ( i = 0; i<32; ++i ){
 		keymap['A' + i] = (SDLKey)(SDLK_a+i);
 	}
-#if defined (S60) || defined (S60V3) || defined (UIQ3)
+#if defined (S60) || defined (__SERIES60_3X__) || defined (UIQ3)
 	keymap[EStdKeyBackspace]    = SDLK_ESCAPE;
 #else
 	keymap[EStdKeyBackspace]    = SDLK_BACKSPACE;
@@ -1377,11 +1377,11 @@ void EPOC_InitOSKeymap(_THIS)
 	keymap[EStdKeyDeviceA]   = SDLK_KP_ENTER;// o
 #endif
 
-#if defined (S60) || defined (S60V3) || defined (UIQ3)
+#if defined (S60) || defined (__SERIES60_3X__) || defined (UIQ3)
 	SetJoystickState( current_video->hidden->iInputMode == EJoystick);
 	SetTextInputState(current_video->hidden->iInputMode==EKeyboard);
 #endif
-#ifdef S60V3
+#ifdef __SERIES60_3X__
 	TRAPD(err, gBTEventMonitor = CHIDEventMonitor::NewL());
 #endif
     /* !!TODO
@@ -1697,7 +1697,7 @@ static SDL_keysym *TranslateKey(_THIS, int scancode, SDL_keysym *keysym)
 				keysym->mod = KMOD_NONE;
 			}
 		}
-#ifdef S60V3
+#ifdef __SERIES60_3X__
 		// If this flag is on then scancodes 0-19 + '*' and '#' should be chars
 		if(Private->iKeyboardModifier)
 		{
@@ -1743,7 +1743,7 @@ static SDL_keysym *TranslateKey(_THIS, int scancode, SDL_keysym *keysym)
 	}
 #endif
 	/* Remap the arrow keys if the device is rotated */
-#if defined (S60) || defined (S60V3) || defined (UIQ3)
+#if defined (S60) || defined (__SERIES60_3X__) || defined (UIQ3)
 	if(((keysym->scancode>='0' && keysym->scancode<='9') || (keysym->scancode>=EStdKeyNkp1 && keysym->scancode<=EStdKeyNkp9))&& Private->iFNModeOn)
 		{
 		if(keysym->scancode>='0' && keysym->scancode<='9')
@@ -1901,7 +1901,7 @@ void SetTextInputState(TBool aInputOn)
 	}
 	else
 	{
-#if defined (S60) || defined (S60V3) || defined (UIQ3)
+#if defined (S60) || defined (__SERIES60_3X__) || defined (UIQ3)
 		keymap[EStdKeyBackspace]    = SDLK_ESCAPE;
 		keymap[EStdKeyDelete]    =	 SDLK_ESCAPE;
 #endif
@@ -1918,7 +1918,7 @@ void SetTextInputState(TBool aInputOn)
 
 
 
-#if defined (S60) || defined (S80) || defined (S90) || defined (S60V3) || defined (UIQ3)
+#if defined (S60) || defined (S80) || defined (S90) || defined (__SERIES60_3X__) || defined (UIQ3)
 void SetJoystickState(TBool aJoystickOn)
 {
 	if(aJoystickOn) // Joystick is handling this
@@ -2003,7 +2003,7 @@ void SetKeyboardMapMode(TBool aNumPadMode)
 #endif
 
 
-#ifdef S60V3
+#ifdef __SERIES60_3X__
 static const TUint32 hid_to_SDL[256] =
     {
     /*  00  */ 000,000,000,000,'a','b','c','d','e','f','g','h','i','j','k','l',

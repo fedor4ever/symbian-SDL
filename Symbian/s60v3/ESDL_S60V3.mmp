@@ -5,7 +5,6 @@
 TARGET          ESDL.lib
 TARGETTYPE      lib
 
-MACRO			S60V3
 MACRO			NO_SIGNAL_H
 
 // *** General sources
@@ -15,6 +14,7 @@ SOURCE		SDLSXXView.cpp
 SOURCE		IniFile.cpp
 SOURCE		remotectrlmonitor.cpp
 SOURCE		CEBasicView.cpp
+SOURCE		S90.cpp
 
 SOURCEPATH	..\..\src
 
@@ -109,4 +109,3 @@ USERINCLUDE		..\..\src\audio ..\..\src\audio\symbian
 //LIBRARY     euser.lib fbscli.lib estlib.lib ws32.LIB hal.lib gdi.lib
 //LIBRARY		bitgdi.lib mediaclientaudiostream.lib
 ALWAYS_BUILD_AS_ARM
-

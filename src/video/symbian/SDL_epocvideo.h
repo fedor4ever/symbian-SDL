@@ -42,7 +42,7 @@ extern "C" {
 #include <eikenv.h>
 
 #include "ebasicapp.h"
-#if defined (S60) || defined (S80) || defined (S90) || defined(S60V3)
+#if defined (S60) || defined (S80) || defined (S90) || defined(__SERIES60_3X__)
 #include "SDLSXXView.h"
 #endif
 #define KDefaultActivateButtonSize 48
@@ -152,7 +152,7 @@ public:
 	TReal				iYScale;
 	TInt				iInputModeTimer;
 
-#if defined (__WINS__ ) || defined(S60) || defined (S80) || defined (S90) || defined (UIQ3) || defined (S60V3)
+#if defined (__WINS__ ) || defined(S60) || defined (S80) || defined (S90) || defined (UIQ3) || defined (__SERIES60_3X__)
     CWsBitmap*          EPOC_Bitmap;
 	TInt				iThreadId;
 	TBool				iNeedUpdate;
@@ -162,7 +162,7 @@ public:
 	TPoint				iPutOffset;
 	// mouse
 	KbdMouse 			_km;
-#if defined (S60) || defined(S60V3)
+#if defined (S60) || defined(__SERIES60_3X__)
 	TBool				iIs240Mode;
 	TBool				iKeyboardModifier;
 	TRect				iKeyboardRect;
@@ -180,7 +180,7 @@ public:
 	TBool				iNumPadMode;
 #endif
 	TBool				iFNModeOn;
-#endif // WINS S60 S80 S90 UIQ3 S60V3
+#endif // WINS S60 S80 S90 UIQ3 __SERIES60_3X__
 	TBool				iJoystickStatus[ENoJoySTATES]; // 4 directons + 3 button state
 	TBool				iLastJoystickStatus[ENoJoySTATES]; // 4 directons + 2 button state
     TBool               EPOC_IsWindowFocused;
@@ -228,7 +228,7 @@ void UpdateScaleFactors();
 extern "C" {
 extern void RedrawWindowL(_THIS);
 extern void EPOC_ReconfigureVideo(_THIS);
-#ifdef S60V3
+#ifdef __SERIES60_3X__
 extern void EPOC_CalcScaleFactors(_THIS);
 #endif
 

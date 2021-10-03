@@ -84,7 +84,7 @@ void SDL_DestroySemaphore(SDL_sem *sem)
 	{
     RSemaphore sema;
     sema.SetHandle(sem->handle);
-#if !defined (UIQ3) && !defined(S60V3)
+#if !defined (UIQ3) && !defined(__SERIES60_3X__)
 	sema.Signal(sema.Count());
 #else
 	sema.Signal(sem->count);

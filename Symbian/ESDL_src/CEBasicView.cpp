@@ -1,5 +1,5 @@
 
-#if defined(S60) || defined(S80) || defined(S90) || defined(__S60_3X__)
+#if defined(S60) || defined(S80) || defined(S90) || defined(__SERIES60_3X__)
 #include "SDLSXXView.h"
 #else
 #include "UIQxBasicView.h"
@@ -27,7 +27,7 @@ void CEBasicView::UpdateScreen()
 {
 	if(!iDrawingOn) return;
 
-#if defined (S60) || defined (S60V3)
+#if defined (S60) || defined (__SERIES60_3X__)
 	DrawScreenStatus(*iDsa->Gc());		
 #endif
 #ifdef S90
@@ -50,7 +50,7 @@ void CEBasicView::Restart(RDirectScreenAccess::TTerminationReasons /*aReason*/)
 		ClearScreen();
 		UpdateVirtualKeyboard();
 #endif
-#if defined (S60) || defined (__S60_3X__)
+#if defined (S60) || defined (__SERIES60_3X__)
 		static_cast<CEBasicAppUi*>(iEikonEnv->EikAppUi())->SetKeyBlockMode(ENoKeyBlock);
 #endif
 	}

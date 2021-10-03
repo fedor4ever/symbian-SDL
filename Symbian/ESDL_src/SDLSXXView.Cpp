@@ -19,7 +19,7 @@
 #include "ebasicapp.h"
 #include "SDL_Keyboard.h"
 
-#ifdef S60V3
+#ifdef __SERIES60_3X__
 #include <coefont.h>
 
 const TInt16 KKeyboardConstantsMiniCtrl[18] =
@@ -80,19 +80,19 @@ const TInt16 KKeyboardConstantsKeyb[84] = // 3x8 array
 		 EStdKeyKeyboardExtend, -1,  EStdKeyNo, EStdKeyNo, EStdKeyDictaphonePlay, EStdKeyDictaphonePlay //8
 };
 
-#endif //S60V3
+#endif //__SERIES60_3X__
 
 CEBasicView::~CEBasicView()
 {
 	iDsa->Cancel();
 	delete iDsa;
-#ifdef S60V3
+#ifdef __SERIES60_3X__
 	delete iTouchKeys;
 	iClipRegion.Close();
 #endif
 }
 
-#ifdef S60V3
+#ifdef __SERIES60_3X__
 void CEBasicView::UpdateVirtualKeyboard()
 	{
 	if(current_video != NULL)
@@ -214,7 +214,7 @@ void CEBasicView::UpdateVirtualKeyboard()
 		}
 #endif
 
-#if defined (S60V3)
+#if defined (__SERIES60_3X__)
 void CEBasicView::UpdateClipRect()
 {
 	if(current_video != NULL && current_video->hidden != NULL && current_video->hidden->iStretchSize != TSize(0,0))
@@ -263,16 +263,16 @@ void CEBasicView::Draw(const TRect& aRect) const
 		TRect realRect( TRect(TPoint(0,0), current_video->hidden->EPOC_DisplaySize));
 		gc.BitBlt(current_video->hidden->iVKBOffset, current_video->hidden->EPOC_Bitmap,realRect);
 	}
-#if defined (S60) || defined (S60V3)
+#if defined (S60) || defined (__SERIES60_3X__)
 		DrawScreenStatus(gc);
-#ifdef S60V3
+#ifdef __SERIES60_3X__
 		DrawVKeyBoard(gc);
 #endif
 
 #elif defined (S90)
 	DrawVKeyBoard(gc);
 	DrawCharSelector(gc);
-#endif // S60, S60V3
+#endif // S60, __SERIES60_3X__
 	if(current_video != NULL)
 		current_video->hidden->iNeedFullRedraw=ETrue;
 }
@@ -298,12 +298,12 @@ void CEBasicView::ConstructL()
 	{
 		Window().SetRequiredDisplayMode(EColor64K); // Try to set 64K color mode
 	}
-#ifdef S60V3
+#ifdef __SERIES60_3X__
 	iTouchKeys = new (ELeave) CArrayFixFlat<TKeyboardData>(5);
 #endif
 }
 
-#ifdef S60V3
+#ifdef __SERIES60_3X__
 void CEBasicView::DrawVKeyBoard(CBitmapContext& aGc) const
 {
 	if(current_video &&  current_video->hidden)
@@ -511,7 +511,7 @@ void CEBasicView::PutBitmap(CFbsBitmap* aBitmap,TPoint aPoint,TRect aRect)
 	{
 		iDsa->Gc()->BitBlt(aPoint+current_video->hidden->iVKBOffset,aBitmap,aRect);
 		current_video->hidden->iCursorPos = TPoint();
-#ifdef S60V3
+#ifdef __SERIES60_3X__
 		if(current_video->hidden->iHasMouseOrTouch && !current_video->hidden->iVirtualKeyBoardActive && aRect.Intersects(iToggleVKBStateRect))
 				{
 				iDsa->Gc()->SetPenColor(KRgbGray);
@@ -529,7 +529,7 @@ void CEBasicView::PutBitmap(CFbsBitmap* aBitmap,TPoint aPoint,TRect aRect)
 	}
 }
 
-#if defined (S60) || defined (S60V3)
+#if defined (S60) || defined (__SERIES60_3X__)
 void CEBasicView::DrawScreenStatus(CBitmapContext& aGc) const
 {
 	if(current_video != NULL)
@@ -537,11 +537,11 @@ void CEBasicView::DrawScreenStatus(CBitmapContext& aGc) const
 		if(current_video->hidden->iInputMode ==EKeyboard)
 		{
 			const CFont* fnt = iEikonEnv->DenseFont();
-	#ifdef S60V3
+#ifdef __SERIES60_3X__
 			TInt heightInPixels = fnt->HeightInPixels()+fnt->FontMaxDescent();
-	#else
+#else
 			TInt heightInPixels = fnt->HeightInPixels()+fnt->DescentInPixels();
-	#endif
+#endif
 			TInt maxNormalCharWidth = fnt->MaxCharWidthInPixels();
 			if(maxNormalCharWidth == 0)
 				maxNormalCharWidth = 18;
@@ -566,13 +566,13 @@ void CEBasicView::DrawScreenStatus(CBitmapContext& aGc) const
 			aGc.SetPenColor(KRgbWhite);
 			TBuf<16> charBuf;
 			charBuf.Format(_L("%c"),current_video->hidden->iCurrentChar.operator TUint());
-#ifdef S60V3
+#ifdef __SERIES60_3X__
 			if(current_video->hidden->iSX0Mode & ESX0Portrait)
 #endif
 			{
 				aGc.DrawText(charBuf,box,heightInPixels-fnt->DescentInPixels(),CGraphicsContext::ECenter);
 			}
-#ifdef S60V3
+#ifdef __SERIES60_3X__
 			else
 			{
 				aGc.DrawTextVertical(charBuf,box.iTl+TPoint(heightInPixels-fnt->DescentInPixels(), maxNormalCharWidth-2), ETrue);
@@ -583,11 +583,11 @@ void CEBasicView::DrawScreenStatus(CBitmapContext& aGc) const
 		else if(current_video->hidden->iInputModeTimer>0)
 		{
 		const CFont* fnt = iEikonEnv->DenseFont();
-		#ifdef S60V3
+#ifdef __SERIES60_3X__
 				TInt heightInPixels = fnt->HeightInPixels()+fnt->FontMaxDescent();
-		#else
+#else
 				TInt heightInPixels = fnt->HeightInPixels()+fnt->DescentInPixels();
-		#endif
+#endif
 				TInt maxNormalCharWidth = fnt->MaxCharWidthInPixels();
 				if(maxNormalCharWidth == 0)
 					maxNormalCharWidth = 18;
@@ -617,7 +617,7 @@ void CEBasicView::DrawScreenStatus(CBitmapContext& aGc) const
 				{
 					aGc.SetPenColor(KRgbYellow);
 				}
-#ifdef S60V3
+#ifdef __SERIES60_3X__
 				if(!(current_video->hidden->iSX0Mode & ESX0Portrait))
 				{
 					aGc.DrawTextVertical(current_video->hidden->iStatusChar,box.iTl+TPoint(heightInPixels-fnt->DescentInPixels(), maxNormalCharWidth-2), ETrue);
@@ -639,7 +639,7 @@ void CEBasicView::DrawScreenStatus(CBitmapContext& aGc) const
 			const CFont* fnt = iEikonEnv->DenseFont();
 			aGc.UseFont(fnt);
 			aGc.SetPenColor(KRgbGreen);
-#ifdef S60V3
+#ifdef __SERIES60_3X__
 			if(!(current_video->hidden->iSX0Mode & ESX0Portrait))
 				aGc.DrawTextVertical(_L("CTRL") ,TPoint(64,current_video->hidden->iStretchSize.iWidth-3),ETrue);
 			else
@@ -713,7 +713,7 @@ EXPORT_C TInt WinsMain()
 #endif
 #endif
 
-#if defined(__S60_3X__)
+#if defined(__SERIES60_3X__)
 extern "C" void EPOC_GenerateKeyEvent(_THIS,int aScanCode,int aIsDown, TBool aShiftOn);
 enum TKeysBits
 	{
@@ -726,47 +726,47 @@ enum TKeysBits
 
 TBool CEBasicView::TouchPointerEventL(const TPointerEvent& aPointerEvent)
 	{
-	if(current_video->hidden->iVKBState == EDisplayControls)
+	if(current_video->hidden->iVKBState != EDisplayControls)
+		return EFalse;
+	
+	// the user wants to control the game
+	TBool isDown = EFalse;
+	TBool newkeyevent = EFalse;
+	TInt key = 0;
+
+	if (aPointerEvent.iType == TPointerEvent::EButton1Down
+			|| aPointerEvent.iType == TPointerEvent::EDrag)
 		{
-		// the user wants to control the game
-		TBool isDown = EFalse;
-		TBool newkeyevent = EFalse;
-		TInt key = 0;
-
-		if (aPointerEvent.iType == TPointerEvent::EButton1Down
-				|| aPointerEvent.iType == TPointerEvent::EDrag)
+		if (iControlRect.Contains(aPointerEvent.iPosition))
 			{
-			if (iControlRect.Contains(aPointerEvent.iPosition))
+			key = GetGameKeys(aPointerEvent.iPosition);
+			//if new key is pressed
+			if (key != iSimulatedKey)
 				{
-				key = GetGameKeys(aPointerEvent.iPosition);
-				//if new key is pressed
-				if (key != iSimulatedKey)
-					{
-					//release the old key
-					SimulateKeyEvent(iSimulatedKey, EFalse);
-					iSimulatedKey = key;
-					newkeyevent = ETrue;
-					}
-				isDown = ETrue;
+				//release the old key
+				SimulateKeyEvent(iSimulatedKey, EFalse);
+				iSimulatedKey = key;
+				newkeyevent = ETrue;
 				}
-
+			isDown = ETrue;
 			}
 
-		//the control is released release all buttons
-		if (aPointerEvent.iType == TPointerEvent::EButton1Up && iSimulatedKey != 0)
-			{
-			isDown = EFalse;
+		}
 
-			key = iSimulatedKey;
-			newkeyevent = ETrue;
-			iSimulatedKey = 0;
-			}
+	//the control is released release all buttons
+	if (aPointerEvent.iType == TPointerEvent::EButton1Up && iSimulatedKey != 0)
+		{
+		isDown = EFalse;
 
-		if (newkeyevent)
-			{
-			SimulateKeyEvent(key, isDown);
-			return ETrue;
-			}
+		key = iSimulatedKey;
+		newkeyevent = ETrue;
+		iSimulatedKey = 0;
+		}
+
+	if (newkeyevent)
+		{
+		SimulateKeyEvent(key, isDown);
+		return ETrue;
 		}
 	return EFalse;
 }

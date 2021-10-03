@@ -5,7 +5,7 @@
 #if defined (UIQ3)
 #include <sdldemo.rsg>
 #endif
-#if defined (EPOC_AS_APP) && !defined (UIQ3) && !defined (S60V3)
+#if defined (EPOC_AS_APP) && !defined (UIQ3) && !defined (__SERIES60_3X__)
 #include "ECompXL.h"
 #endif
 
@@ -24,7 +24,7 @@ public:
 		}
 #endif
 	TUid AppDllUid() const;
-#if defined (EPOC_AS_APP) && !defined (UIQ3) && !defined (S60V3)
+#if defined (EPOC_AS_APP) && !defined (UIQ3) && !defined (__SERIES60_3X__)
 	TECompXL    iECompXL;
 #endif
 };
@@ -32,7 +32,7 @@ public:
 #ifdef EPOC_AS_APP
 
 // this function is called automatically by the SymbianOS to deliver the new CApaApplication object
-#if !defined (UIQ3) && !defined (S60V3)
+#if !defined (UIQ3) && !defined (__SERIES60_3X__)
 EXPORT_C 
 #endif
 CApaApplication* NewApplication() {
@@ -40,7 +40,7 @@ CApaApplication* NewApplication() {
 	return new CSDLDemoApp;
 }
 
-#if defined (UIQ3) || defined (S60V3)
+#if defined (UIQ3) || defined (__SERIES60_3X__)
 #include <eikstart.h>
 // E32Main() contains the program's start up code, the entry point for an EXE.
 GLDEF_C TInt E32Main() {
@@ -50,7 +50,7 @@ GLDEF_C TInt E32Main() {
 
 #endif // EPOC_AS_APP
 
-#if !defined (UIQ3) && !defined (S60V3)
+#if !defined (UIQ3) && !defined (__SERIES60_3X__)
 GLDEF_C  TInt E32Dll(TDllReason) {
 	return KErrNone;
 }

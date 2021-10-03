@@ -16,6 +16,6 @@ library  bafl.lib
 // UIQ2
 //library qikctl.lib
 STATICLIBRARY esdl.lib
-// Change MACRO depending on target S60,S60V3,UIQ3 or UIQ2
+// Change MACRO depending on target S60,UIQ3 or UIQ2. S60V3 sets by build system.
 //MACRO S60
 MACRO S90

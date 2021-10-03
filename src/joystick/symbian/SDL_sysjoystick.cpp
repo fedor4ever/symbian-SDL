@@ -42,7 +42,7 @@ extern "C"
 #include "SDL_sysjoystick.h"
 #include "SDL_joystick_c.h"
 #include "SDL_sysvideo.h"
-#if defined (S60) || defined (S80) || defined (S90) || defined (__S60_3X__) || defined (UIQ3)
+#if defined (S60) || defined (S80) || defined (S90) || defined (__SERIES60_3X__) || defined (UIQ3)
 extern void SetJoystickState(TBool aJoystickOn);
 #endif
 
@@ -72,13 +72,13 @@ int SDL_SYS_JoystickOpen(SDL_Joystick * joystick)
 {
 #if defined (UIQ)
     joystick->nbuttons=1;
-#elif defined (S60) || defined (__S60_3X__) || defined (S80)
+#elif defined (S60) || defined (__SERIES60_3X__) || defined (S80)
     joystick->nbuttons=3;
 #elif defined (S90) || defined (UIQ3)
     joystick->nbuttons=2;
 #endif
     
-#if defined (S60) || defined (__S60_3X__) || defined (S80) ||\
+#if defined (S60) || defined (__SERIES60_3X__) || defined (S80) ||\
 	defined (S90) || defined (UIQ) || defined (UIQ3)
     if(current_video && current_video->hidden)
     { // Joystick is opened set it as default and disable cursor keys
@@ -142,7 +142,7 @@ void SDL_SYS_JoystickUpdate(SDL_Joystick * joystick)
 /* Function to close a joystick after use */
 void SDL_SYS_JoystickClose(SDL_Joystick * /*joystick*/)
 {
-#if defined (S60) || defined (S80) || defined (__S60_3X__) || defined (UIQ3)
+#if defined (S60) || defined (S80) || defined (__SERIES60_3X__) || defined (UIQ3)
     SetJoystickState(EFalse);
 #endif
 }

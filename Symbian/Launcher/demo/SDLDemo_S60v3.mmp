@@ -16,8 +16,7 @@ library  bafl.lib remconcoreapi.lib remconinterfacebase.lib
 library avkon.lib
 
 STATICLIBRARY esdl.lib
-// Change MACRO depending on target S60,S60V3,UIQ3 or UIQ2
-MACRO S60V3
+// Change MACRO depending on target S60,UIQ3 or UIQ2. S60V3 sets by build system.
 UID				0x100039ce KSDLAppLauncherUid
 sourcepath ..
 START RESOURCE  SDLDEMO_reg.rss
