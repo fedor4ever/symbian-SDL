@@ -202,7 +202,7 @@ Uint32 SDL_SemValue(SDL_sem *sem)
 
 int SDL_SemPost(SDL_sem *sem)
 {
-	if ( ! sem ) {
+	if (!sem) {
 		SDL_SetError(EMPTY_sem);
 		return -1;
 	}
