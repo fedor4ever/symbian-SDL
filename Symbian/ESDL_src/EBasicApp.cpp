@@ -19,7 +19,7 @@
 #include <bautils.h>
 #include <unistd.h>
 
-#ifdef __S60_3X__
+#ifdef __SERIES60_3X__
 #include "remotectrlmonitor.h"
 #endif
 
@@ -52,6 +52,7 @@ const char KMultiTapKeys[8][6]=
 		"WXYZ9"
 };
 
+//< store string to display activated settings when used shortcuts CTRL+key
 void SetStatusCharAndTimer(TPtrC aValue)
 {
 	current_video->hidden->iInputModeTimer=80;
@@ -60,7 +61,7 @@ void SetStatusCharAndTimer(TPtrC aValue)
 
 #ifdef __WINS__
 static RHeap* gHeap = NULL;
-void*	symbian_malloc	(size_t _size)
+void* symbian_malloc(size_t _size)
 {
 	void * p = malloc(_size);
 	if(_size>64000)
@@ -70,7 +71,7 @@ void*	symbian_malloc	(size_t _size)
 	return p;
 }
 
-void	symbian_free	(void * p)
+void symbian_free(void * p)
 {
 	if(p != NULL)
 	{
@@ -83,7 +84,7 @@ void	symbian_free	(void * p)
 	}
 }
 
-void*	symbian_calloc	(size_t _nmemb, size_t _size) {
+void* symbian_calloc(size_t _nmemb, size_t _size) {
 
 	void *p = symbian_malloc(_nmemb * _size);	//gpcalloc doesnt clear?
 
@@ -159,24 +160,9 @@ CEikAppUi* CEBasicDoc::CreateAppUiL()
 	return new (ELeave) CEBasicAppUi;
 }
 
-void CEBasicDoc::SaveL(MSaveObserver::TSaveType aSaveType)
+void CEBasicDoc::SaveL(MSaveObserver::TSaveType /*aSaveType*/)
 {
-	switch(aSaveType)
-	{
-	case MSaveObserver::EReleaseRAM:
-		{
-			//	CEikonEnv::Static()->InfoWinL(_L("CEBasicDoc::SaveL"),_L("Release RAM"));
-		}break;
-
-	case MSaveObserver::EReleaseDisk:
-		{
-			//CEikonEnv::Static()->InfoWinL(_L("CEBasicDoc::SaveL"),_L("Release disk"));
-		}break;
-	default:
-		{
-			//CEikonEnv::Static()->InfoWinL(_L("CEBasicDoc::SaveL"),_L("Save before turnoff"));
-		}break;
-	}
+	//TODO: Force to save app settings, data, etc
 }
 
 ////////// CEBasicAppUi /////////////////////////////////////////////////
@@ -184,7 +170,6 @@ CEBasicAppUi::CEBasicAppUi():iSDLstart(CActive::EPriorityLow)
 {
 #ifdef UIQ
 	iCapKey1=-1;
-#else
 #endif
 }
 
@@ -201,18 +186,18 @@ CEBasicAppUi::~CEBasicAppUi()
 	CancelCaptureKeys();
 
 #endif
-#ifdef __S60_3X__
+#ifdef __SERIES60_3X__
 	delete iRemoteCtrlMonitor;
 #endif
 	if(iMultitapTimer)
 	{
-	iMultitapTimer->Cancel();
-	delete iMultitapTimer;
+		iMultitapTimer->Cancel();
+		delete iMultitapTimer;
 	}
 
 	iReleaseKeys.Close();
 
-	if (iConfig) {
+	if(iConfig) {
 		delete iConfig;
 	}
 }
@@ -367,7 +352,7 @@ TKeyResponse CEBasicAppUi::HandleMultiTapInput(const TKeyEvent& aKeyEvnt,TEventC
 	return EKeyWasNotConsumed;
 }
 
-#if defined (S60) || defined (__S60_3X__) || defined (UIQ3) // Special multitap handling for non touch devices
+#if defined (S60) || defined (__SERIES60_3X__) || defined (UIQ3) // Special multitap handling for non touch devices
 void CEBasicAppUi::HandleScreenDeviceChangedL()
 {
 #ifdef UIQ3
@@ -389,14 +374,14 @@ void CEBasicAppUi::UpdateInputState()
 	{
 	SetTextInputState(current_video->hidden->iInputMode==EKeyboard);
 	SetJoystickState((current_video->hidden->iInputMode==EJoystick));
-#if defined(UIQ3) || defined(S60) || defined(__S60_3X__)
+#if defined(UIQ3) || defined(S60) || defined(__SERIES60_3X__)
 	iView->UpdateClipRect();
-#if defined(S60) || defined(__S60_3X__)
+#if defined(S60) || defined(__SERIES60_3X__)
 	iView->UpdateScreen();
 #else
 	iView->UpdateVKeyBoard();
 #endif
-#endif // UIQ3 , S60 __S60_3X__
+#endif // UIQ3 , S60 __SERIES60_3X__
 	}
 
 void CEBasicAppUi::UpdateScreenOffset(TInt aKeyCode)
@@ -772,7 +757,7 @@ TKeyResponse CEBasicAppUi::HandleControlKeyKeysL(const TKeyEvent& aKeyEvent,TEve
 			UpdateAndRedrawScreenL();
 			SetStatusCharAndTimer((current_video->hidden->iSX0Mode&ESX0KeepAspect)?_L("ASPECT"):_L("MAX"));
 			}break;
-#ifdef __S60_3X__
+#ifdef __SERIES60_3X__
 		case EStdKeyNkpAsterisk:
 		case '*':
 			current_video->hidden->iVKBTopLeft = !current_video->hidden->iVKBTopLeft;
@@ -802,7 +787,7 @@ TBool HandleJoyAndMouseKeys(const TInt aSwitchCode ,TBool aDown)
 #if defined (UIQ)
 			case EStdQuartzKeyConfirm:
 #endif
-#if defined (UIQ3) || defined (S60) || defined (__S60_3X__)
+#if defined (UIQ3) || defined (S60) || defined (__SERIES60_3X__)
 			case KRightButtonCodeCase: // Joystick button 2 or keyboard space
 				if(current_video->hidden->iInputMode == EJoystick) {
 					current_video->hidden->iJoystickStatus[EJoyBUT2]=aDown;
@@ -813,7 +798,7 @@ TBool HandleJoyAndMouseKeys(const TInt aSwitchCode ,TBool aDown)
 					return ETrue;
 				}
 			case KLeftButtonCodeCase:// Joystick button 2 or keyboard return
-#endif // defined (UIQ3) || defined (S60) || defined (__S60_3X__)
+#endif // defined (UIQ3) || defined (S60) || defined (__SERIES60_3X__)
 				if(current_video->hidden->iInputMode==EJoystick) {
 					current_video->hidden->iJoystickStatus[EJoyBUT1]=aDown;
 					return ETrue;
@@ -833,8 +818,8 @@ TBool HandleJoyAndMouseKeys(const TInt aSwitchCode ,TBool aDown)
 			case EStdKeyNkp2:
 #endif
 			case EStdKeyUpArrow:
-#if defined(S60) || defined (S80) || defined (S90) || defined (__S60_3X__) || defined (UIQ3)
-#if defined (S60) || defined (__S60_3X__) || defined (UIQ3)
+#if defined(S60) || defined (S80) || defined (S90) || defined (__SERIES60_3X__) || defined (UIQ3)
+#if defined (S60) || defined (__SERIES60_3X__) || defined (UIQ3)
 				if(current_video->hidden->iInputMode == EMouseMode)
 				{
 					if(!(current_video->hidden->iSX0Mode & ESX0Portrait))
@@ -856,7 +841,7 @@ TBool HandleJoyAndMouseKeys(const TInt aSwitchCode ,TBool aDown)
 #endif
 				if(current_video->hidden->iInputMode == EJoystick)
 				{
-#if defined (S60) || defined (__S60_3X__) || defined (UIQ3)
+#if defined (S60) || defined (__SERIES60_3X__) || defined (UIQ3)
 					if(!(current_video->hidden->iSX0Mode & ESX0Portrait))
 					{
 						if(current_video->hidden->iSX0Mode & ESX0Flipped)
@@ -865,9 +850,9 @@ TBool HandleJoyAndMouseKeys(const TInt aSwitchCode ,TBool aDown)
 							current_video->hidden->iJoystickStatus[EJoyRIGHT]=aDown;
 					}
 					else
-#endif // defined (S60) || defined (__S60_3X__) || defined (UIQ3)
+#endif // defined (S60) || defined (__SERIES60_3X__) || defined (UIQ3)
 #endif
-					current_video->hidden->iJoystickStatus[EJoyUP]=aDown;
+						current_video->hidden->iJoystickStatus[EJoyUP]=aDown;
 					return ETrue;
 				}
 #if defined (UIQ)
@@ -878,8 +863,8 @@ TBool HandleJoyAndMouseKeys(const TInt aSwitchCode ,TBool aDown)
 			case EStdKeyNkp8:
 #endif
 			case EStdKeyDownArrow:
-#if defined(S60) || defined (S80) || defined (S90) || defined (__S60_3X__) || defined (UIQ3)
-#if defined (S60) || defined (__S60_3X__) || defined (UIQ3)
+#if defined(S60) || defined (S80) || defined (S90) || defined (__SERIES60_3X__) || defined (UIQ3)
+#if defined (S60) || defined (__SERIES60_3X__) || defined (UIQ3)
 				if(current_video->hidden->iInputMode == EMouseMode)
 				{
 					if(!(current_video->hidden->iSX0Mode & ESX0Portrait))
@@ -903,7 +888,7 @@ TBool HandleJoyAndMouseKeys(const TInt aSwitchCode ,TBool aDown)
 #endif
 				if(current_video->hidden->iInputMode == EJoystick)
 					{
-#if defined (S60) || defined (__S60_3X__) || defined (UIQ3)
+#if defined (S60) || defined (__SERIES60_3X__) || defined (UIQ3)
 					if(!(current_video->hidden->iSX0Mode & ESX0Portrait))
 					{
 						if(current_video->hidden->iSX0Mode & ESX0Flipped)
@@ -929,7 +914,7 @@ TBool HandleJoyAndMouseKeys(const TInt aSwitchCode ,TBool aDown)
 #endif
 
 			case EStdKeyLeftArrow:
-#if defined(S60) || defined (__S60_3X__) || defined (UIQ3)
+#if defined(S60) || defined (__SERIES60_3X__) || defined (UIQ3)
 				if(current_video->hidden->iInputMode == EKeyboard)
 				{
 					if( current_video->hidden->iCurrentChar>32 && aDown)
@@ -979,7 +964,7 @@ TBool HandleJoyAndMouseKeys(const TInt aSwitchCode ,TBool aDown)
 #endif
 
 			case EStdKeyRightArrow:
-#if defined(S60)  || defined (__S60_3X__) || defined (UIQ3)
+#if defined(S60)  || defined (__SERIES60_3X__) || defined (UIQ3)
 				if(current_video->hidden->iInputMode == EKeyboard)
 				{
 					if(current_video->hidden->iCurrentChar<125 && aDown)
@@ -1045,13 +1030,13 @@ TKeyResponse CEBasicAppUi::HandleKeyEventL(const TKeyEvent& aKeyEvent,TEventCode
 		}*/
 			TBool on=aType ==EEventKeyDown;
 			TInt switchCode = aKeyEvent.iScanCode;
-#if defined (S60) || defined (__S60_3X__) || defined (UIQ3)// Special multitap handling for S60 and UIQ3
+#if defined (S60) || defined (__SERIES60_3X__) || defined (UIQ3)// Special multitap handling for S60 and UIQ3
 			if(current_video->hidden->iInputMode == EKeyboard && !current_video->hidden->iControlKeyDown)
 			{
 				TKeyResponse response = HandleMultiTapInput(aKeyEvent, aType);
 				if(response == EKeyWasConsumed)
 				{
-#if defined (S60) || defined (__S60_3X__)
+#if defined (S60) || defined (__SERIES60_3X__)
 					iView->UpdateScreen();
 #endif
 					iWasControlEvent = ETrue;
@@ -1083,7 +1068,7 @@ TKeyResponse CEBasicAppUi::HandleKeyEventL(const TKeyEvent& aKeyEvent,TEventCode
 			switch(switchCode)
 			{
 
-#ifdef __S60_3X__
+#ifdef __SERIES60_3X__
 			  case EStdKeyRightFunc:
 				  {
 				  if(on)
@@ -1196,7 +1181,7 @@ TKeyResponse CEBasicAppUi::HandleKeyEventL(const TKeyEvent& aKeyEvent,TEventCode
 
 		}
 	  }
-#if defined (S60) || defined (__S60_3X__) || defined (UIQ3)
+#if defined (S60) || defined (__SERIES60_3X__) || defined (UIQ3)
 	  else if(aType == EEventKey)
 	  {
 		  switch(aKeyEvent.iScanCode)
@@ -1251,7 +1236,7 @@ TInt CEBasicAppUi::StaticSDLStartL(TAny* aAppUi)
 
 void CEBasicAppUi::SDLStartL()
 {
-#if defined (S60) || defined (__S60_3X__)
+#if defined (S60) || defined (__SERIES60_3X__)
 	SetKeyBlockMode(ENoKeyBlock);
 #endif
 #if defined (UIQ)
@@ -1293,7 +1278,7 @@ void CEBasicAppUi::symbian_at_exit()
 void CEBasicAppUi::SetExecutablePathL()
 {
 #ifdef __WINS__
-#if defined UIQ3 || defined __S60_3X__
+#if defined UIQ3 || defined __SERIES60_3X__
 #ifdef UIQ3
 	iExecutablePath.Append(_L("C:\\Shared\\"));
 #else
@@ -1336,7 +1321,7 @@ void CEBasicAppUi::SetExecutablePathL()
 	RProcess process;
 #if defined (UIQ)  // only UIQ uses APP, process.FileName() refers to Z:\System\Programs\AppRun.exe
 	fname = Application()->AppFullName();
-#elif defined(UIQ3)	|| defined (__S60_3X__)
+#elif defined(UIQ3)	|| defined (__SERIES60_3X__)
 #ifdef UIQ3
 	fname = _L("C:\\Shared\\");
 #else
@@ -1406,9 +1391,9 @@ void CEBasicAppUi::ConstructL()
 	AddToStackL(iView);
 #endif
 
-#if defined (S60) || defined (__S60_3X__)
+#if defined (S60) || defined (__SERIES60_3X__)
 	SetKeyBlockMode(ENoKeyBlock);
-#ifdef __S60_3X__
+#ifdef __SERIES60_3X__
 	iRemoteCtrlMonitor = CRemoteCtrlEventMonitor::NewL();
 #endif
 #endif
@@ -1431,7 +1416,7 @@ void CEBasicAppUi::ConstructL()
 void CEBasicAppUi::HandleForegroundEventL(TBool aForeground)
 {
 	iView->iForeground=aForeground;
-#if defined (S60) || defined (__S60_3X__)
+#if defined (S60) || defined (__SERIES60_3X__)
 	CAknAppUi::HandleForegroundEventL(aForeground);
 
 	if(aForeground)
@@ -1499,7 +1484,7 @@ void CEBasicAppUi::SetConfig()
 	iConfig->WriteInt("Video","RightButtonCode",priv->iRightButtonCode);
 #if defined (S80) || defined(S90) || defined (UIQ3)	|| defined (UIQ)
 	iConfig->WriteInt("Video","ScreenMode", priv->iSX0Mode);
-#else // S60 & __S60_3X__
+#else // S60 & __SERIES60_3X__
 	iConfig->WriteInt("Video","ScreenMode",priv->iSX0Mode);
 	iConfig->WriteInt("Video","OffsetX",priv->iPutOffset.iX);
 	iConfig->WriteInt("Video","OffsetY",priv->iPutOffset.iY);
@@ -1519,7 +1504,7 @@ void CEBasicAppUi::GetConfig(SDL_VideoDevice* aDevice)
 	priv->iSX0Mode = iConfig->ReadInt("Video","ScreenMode",ESX0Stretched);
 #elif defined (S80) || defined(S90)|| defined (UIQ)
 	priv->iSX0Mode = iConfig->ReadInt("Video","ScreenMode",0);
-#else // (S60) (__S60_3X__)
+#else // (S60) (__SERIES60_3X__)
 	if(fileExist)
 		{
 		priv->iSX0Mode = iConfig->ReadInt("Video","ScreenMode", ESX0Stretched|ESX0Flipped);
@@ -1534,10 +1519,10 @@ void CEBasicAppUi::GetConfig(SDL_VideoDevice* aDevice)
 	priv->iShiftOn = ETrue;
 	priv->iActivateButtonSize = iConfig->ReadInt("Video","ActivateButtonSize", KDefaultActivateButtonSize);
 	SetKeyBlockMode(ENoKeyBlock); // Just as a precaution
-#endif // S60|| __S60_3X__
+#endif // S60|| __SERIES60_3X__
 }
 
-#if defined(S60) || defined(__S60_3X__)
+#if defined(S60) || defined(__SERIES60_3X__)
 void CEBasicAppUi::SetKeyBlockMode(TAknKeyBlockMode aMode)
 {
 	CAknAppUi::SetKeyBlockMode(aMode);
