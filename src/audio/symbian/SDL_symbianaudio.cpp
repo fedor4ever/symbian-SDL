@@ -76,7 +76,7 @@ public:
 
 	void WaitForOpenToComplete();
 	void ThreadDied();
-#if defined (UIQ3) || defined (S60V3)
+#if defined (UIQ3) || defined (__S60_3X__)
 	void WaitForAudio();
 #endif
 
@@ -122,7 +122,7 @@ protected:
 	RTimer						iProtectionTimer;
 
 	TBool						iThreadDied;
-#if defined (UIQ3) || defined (S60V3)
+#if defined (UIQ3) || defined (__S60_3X__)
 	TInt32						iBytesWritten;
 	TInt32						iLastWritten;
 #endif
@@ -132,37 +132,34 @@ protected:
 
 void IncreaseVolume()
 {
-	if(current_audio != NULL)
-	{
-		if(current_audio->hidden->iVolume < KMaxVolume)
-		{
-			current_audio->hidden->iVolume = current_audio->hidden->iVolume+1;
-			Configuration->WriteInt("Audio", "Volume", current_audio->hidden->iVolume);
-#if defined (S60V3)
-			TBuf<2> format;
-			format.Format(_L("%02d"), current_audio->hidden->iVolume);
-			SetStatusCharAndTimer(format);
-#endif
-		}
+	if((current_audio == NULL) ||
+		(current_audio->hidden->iVolume == KMaxVolume)) return;
 
-	}
+	if(current_audio->hidden->iVolume < KMaxVolume)
+		current_audio->hidden->iVolume = current_audio->hidden->iVolume+1;
+	else if(current_audio->hidden->iVolume > KMaxVolume)
+		current_audio->hidden->iVolume = KMaxVolume;
+
+	Configuration->WriteInt("Audio", "Volume", current_audio->hidden->iVolume);
+#ifdef __S60_3X__
+	TBuf<2> format;
+	format.Format(_L("%02d"), current_audio->hidden->iVolume);
+	SetStatusCharAndTimer(format);
+#endif
 }
 
 void DecreaseVolume()
 {
-	if(current_audio != NULL)
-	{
-		if(current_audio->hidden->iVolume>0)
-		{
-			current_audio->hidden->iVolume = current_audio->hidden->iVolume-1;
-			Configuration->WriteInt("Audio", "Volume", current_audio->hidden->iVolume);
-#if defined (S60V3)
-			TBuf<2> format;
-			format.Format(_L("%02d"), current_audio->hidden->iVolume);
-			SetStatusCharAndTimer(format);
+	if((current_audio == NULL) ||
+		(current_audio->hidden->iVolume <=0)) return;
+
+	current_audio->hidden->iVolume = current_audio->hidden->iVolume-1;
+	Configuration->WriteInt("Audio", "Volume", current_audio->hidden->iVolume);
+#ifdef __S60_3X__
+	TBuf<2> format;
+	format.Format(_L("%02d"), current_audio->hidden->iVolume);
+	SetStatusCharAndTimer(format);
 #endif
-		}
-	}
 }
 
 void CStreamEngine::ThreadDied()
@@ -178,7 +175,6 @@ CStreamEngine *CStreamEngine::NewL()
 	CleanupStack::PushL( self );
 	self->ConstructL();
 	CleanupStack::Pop();
-
 	return self;
 }
 
@@ -194,7 +190,7 @@ CStreamEngine::~CStreamEngine()
 	RThread currentThread;
 	if(currentThread.Id() == iSndThreadId)
 	{
-		if( iAudioStreamPlayer )
+		if(iAudioStreamPlayer)
 		{
 			delete iAudioStreamPlayer;
 			iAudioStreamPlayer = NULL;
@@ -202,20 +198,16 @@ CStreamEngine::~CStreamEngine()
 		Cancel();
 		iProtectionTimer.Close();
 	}
-	else
+	else if(!iThreadDied)
 	{
-		if(!iThreadDied)
+		iDestroyEngine = ETrue;
+		TInt ticks = 0;
+		while(iDestroyEngine && ticks<32)
 		{
-			iDestroyEngine = ETrue;
-			TInt ticks = 0;
-			while(iDestroyEngine && ticks<32)
-			{
-				User::After(31249);
-				ticks++;
-			}
+			User::After(31249);
+			ticks++;
 		}
 	}
-
 	delete iBuffer;
 	iBuffer = NULL;
 }
