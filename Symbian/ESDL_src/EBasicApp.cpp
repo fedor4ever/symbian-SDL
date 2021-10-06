@@ -376,7 +376,7 @@ void CEBasicAppUi::UpdateInputState()
 	SetJoystickState((current_video->hidden->iInputMode==EJoystick));
 #if defined(UIQ3) || defined(S60) || defined(__SERIES60_3X__)
 	iView->UpdateClipRect();
-#if defined(S60) || defined(__SERIES60_3X__)
+#ifndef UIQ3
 	iView->UpdateScreen();
 #else
 	iView->UpdateVKeyBoard();
