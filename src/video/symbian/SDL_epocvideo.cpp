@@ -472,7 +472,7 @@ void EPOC_SetCaption(_THIS, const char * title, const char * /*icon*/)
 	}
 }
 
-#if defined  (__WINS__) ||  defined (S60) ||  defined (S80) ||  defined (S90) ||  defined (UIQ3) || defined(__SERIES60_3X__)
+#ifndef UIQ
 void EPOC_ReconfigureVideo(_THIS)
 {
     /* Initialise Epoc frame buffer */
@@ -488,7 +488,7 @@ void EPOC_ReconfigureVideo(_THIS)
 	}
 #if defined (S60)||defined (__SERIES60_3X__) // this needs to be atleast 320x200 to cope
 #ifdef __SERIES60_3X__
-  Private->EPOC_ScreenSize = Private->iEikEnv->ScreenDevice()->SizeInPixels();// TSize(256,320);
+	Private->EPOC_ScreenSize = Private->iEikEnv->ScreenDevice()->SizeInPixels();// TSize(256,320);
 	Private->EPOC_DisplaySize = Private->EPOC_ScreenSize;
 	// Must ensure that the height is at least 320 pixels height and 240 width
 	TSize createSize = Private->EPOC_ScreenSize;
@@ -1018,9 +1018,9 @@ SDL_Surface *EPOC_SetVideoMode(_THIS, SDL_Surface *current,
 
     /* Must buffer height be shrinked to screen by 2 ? */
     if (current->h >= 400)
-        Private->EPOC_ShrinkedHeight = ETrue;
+		Private->EPOC_ShrinkedHeight = ETrue;
 	else
-		 Private->EPOC_ShrinkedHeight = EFalse;
+		Private->EPOC_ShrinkedHeight = EFalse;
 
 	Private->iModeSize = TSize(current->w,current->h);
 #if !defined (S80) && !defined(S90)
@@ -1054,7 +1054,7 @@ SDL_Surface *EPOC_SetVideoMode(_THIS, SDL_Surface *current,
 		}
 	}
 #elif defined (S60) || defined(__SERIES60_3X__)
-	Private->iIs240Mode = (current->h==240 || current->h == 480);
+	Private->iIs240Mode = ((current->h == 240) || (current->h == 480));
 #elif defined (S90)
 		for(TInt loop=0;loop<240;loop++)
 		{
