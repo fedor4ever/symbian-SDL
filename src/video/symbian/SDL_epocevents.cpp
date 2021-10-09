@@ -226,16 +226,16 @@ TBool IsScreenKeysL(_THIS,const TPointerEvent& aPointerEvent)
 					}
 
 				if (current_video->hidden->iControlKeyDown)
-						{
-						TKeyEvent event;
-						event.iScanCode = iLastChar1;
-						event.iCode = 0;
-						static_cast<CEBasicAppUi*> (current_video->hidden->iEikEnv->EikAppUi())->HandleControlKeyKeysL(
-								event, EEventKeyDown);
-						iLastChar1 = -1;
-						iLastChar2 = -1;
-						return ETrue;
-						}
+					{
+					TKeyEvent event;
+					event.iScanCode = iLastChar1;
+					event.iCode = 0;
+					static_cast<CEBasicAppUi*> (current_video->hidden->iEikEnv->EikAppUi())->HandleControlKeyKeysL(
+							event, EEventKeyDown);
+					iLastChar1 = -1;
+					iLastChar2 = -1;
+					return ETrue;
+					}
 				}
 				break;
 			case EStdKeyCapsLock:
@@ -310,7 +310,6 @@ TBool IsScreenKeysL(_THIS,const TPointerEvent& aPointerEvent)
 		break;
 	case TPointerEvent::EButton1Up:
 		{
-
 			if( _this->hidden->iWindowCreator->iToggleVKBStateRect.Contains(aPointerEvent.iPosition))
 			{
 				current_video->hidden->iVirtualKeyBoardActive = !current_video->hidden->iVirtualKeyBoardActive;
@@ -319,25 +318,25 @@ TBool IsScreenKeysL(_THIS,const TPointerEvent& aPointerEvent)
 				return ETrue;
 			}
 			else if((iLastChar1 == '*' || iLastChar1 ==  EStdKeyNkpAsterisk) && Private->iMouseButtonSet == ENoMouseButton)
-				{
-						SDL_PrivateMouseButton(SDL_RELEASED, SDL_BUTTON_LEFT, 0, 0);
-						iLastChar1=-1;
-						return ETrue;
-				}
+			{
+				SDL_PrivateMouseButton(SDL_RELEASED, SDL_BUTTON_LEFT, 0, 0);
+				iLastChar1=-1;
+				return ETrue;
+			}
 			else if((iLastChar1 ==  EStdKeyHash || iLastChar1 == '#') && Private->iMouseButtonSet == ENoMouseButton)
-				{
-						SDL_PrivateMouseButton(SDL_RELEASED, SDL_BUTTON_RIGHT, 0, 0);
-						iLastChar1=-1;
-						return ETrue;
-				}
+			{
+				SDL_PrivateMouseButton(SDL_RELEASED, SDL_BUTTON_RIGHT, 0, 0);
+				iLastChar1=-1;
+				return ETrue;
+			}
 			else if(iLastChar1 == EStdKeyKeyboardExtend)
-				{
-					current_video->hidden->iVirtualKeyBoardActive = !current_video->hidden->iVirtualKeyBoardActive;
-					UpdateScaleFactors();
-					RedrawWindowL(current_video);
-					iLastChar1=-1;
-					return ETrue;
-				}
+			{
+				current_video->hidden->iVirtualKeyBoardActive = !current_video->hidden->iVirtualKeyBoardActive;
+				UpdateScaleFactors();
+				RedrawWindowL(current_video);
+				iLastChar1=-1;
+				return ETrue;
+			}
 			else if(iLastChar1!=-1 || iLastChar2 != -1)
 			{
 				SDLKey oldBackSpace = keymap[EStdKeyBackspace];
@@ -345,9 +344,9 @@ TBool IsScreenKeysL(_THIS,const TPointerEvent& aPointerEvent)
 				if(iLastChar1 != -1)
 				{
 					if(!HandleJoyAndMouseKeys(iLastChar1, EFalse))
-						{
-							EPOC_GenerateKeyEvent(_this, iLastChar1, EFalse, current_video->hidden->iShiftOn);
-						}
+					{
+						EPOC_GenerateKeyEvent(_this, iLastChar1, EFalse, current_video->hidden->iShiftOn);
+					}
 					iLastChar1=-1;
 				}
 
@@ -360,7 +359,7 @@ TBool IsScreenKeysL(_THIS,const TPointerEvent& aPointerEvent)
 					iLastChar2=-1;
 				}
 
-				keymap[EStdKeyBackspace]    = oldBackSpace;
+				keymap[EStdKeyBackspace] = oldBackSpace;
 				return ETrue;
 			}
 
@@ -383,7 +382,6 @@ TBool IsScreenKeysL(_THIS,const TPointerEvent& aPointerEvent)
 	case TPointerEvent::EButton3Down:
 	case TPointerEvent::EButton3Up:
 		break;
-
 	}
 	return EFalse;
 }
@@ -392,153 +390,148 @@ TBool IsScreenKeysL(_THIS,const TPointerEvent& aPointerEvent)
 TBool IsScreenKeysL(_THIS,const TPointerEvent& aPointerEvent)
 {
 	switch(aPointerEvent.iType)
+	{
+		case TPointerEvent::EButton1Down:
+		{
+			if(KOnScreenOffsetStartVar >= KOnScreenOffsetStartVal)
+			{
+				TRect rect;
+				for(TInt loop = 0;loop < 20;loop++)
 				{
-				case TPointerEvent::EButton1Down:
-					{
-						if(KOnScreenOffsetStartVar>=KOnScreenOffsetStartVal)
-						{
-							TRect rect;
-							for(TInt loop=0;loop<20;loop++)
-							{
 #ifdef UIQ
-								rect=TRect(TPoint(KOnScreenOffsetStartVal,loop*16),TSize(KScreenKeySize,KScreenKeySize));
+					rect=TRect(TPoint(KOnScreenOffsetStartVal,loop*16),TSize(KScreenKeySize,KScreenKeySize));
 #elif defined (UIQ3)
-								rect=TRect(TPoint(KOnScreenOffsetStartVal,loop*16),TSize(KScreenKeySize,KScreenKeySize));
+					rect=TRect(TPoint(KOnScreenOffsetStartVal,loop*16),TSize(KScreenKeySize,KScreenKeySize));
 #else
-								rect=TRect(TPoint(loop*32,KOnScreenOffsetStartVal),TSize(32,32));
+					rect=TRect(TPoint(loop*32,KOnScreenOffsetStartVal),TSize(32,32));
 #endif
-								if(rect.Contains(aPointerEvent.iPosition))
-								{
-									switch(loop)
-									{
-									case 3:
-										_this->hidden->iVirtualKeyBoardActive = !_this->hidden->iVirtualKeyBoardActive;
+					if(rect.Contains(aPointerEvent.iPosition))
+					{
+						switch(loop)
+						{
+						case 3:
+							_this->hidden->iVirtualKeyBoardActive = !_this->hidden->iVirtualKeyBoardActive;
 #ifdef UIQ3
-										static_cast<CEBasicAppUi*>(CEikonEnv::Static()->EikAppUi())->View()->UpdateClipRect();
+							static_cast<CEBasicAppUi*>(CEikonEnv::Static()->EikAppUi())->View()->UpdateClipRect();
 #endif
-										static_cast<CEBasicAppUi*>(CEikonEnv::Static()->EikAppUi())->View()->UpdateVKeyBoard();
-										break;
-									case 1: //rightclick set
-										((TInt&)_this->hidden->iMouseButtonSet)++;
-										if(_this->hidden->iMouseButtonSet == ELastMouseButton )
-											_this->hidden->iMouseButtonSet = ELeftMouseButton;
-										// need to repaint lower bottom
-										static_cast<CEBasicAppUi*>(CEikonEnv::Static()->EikAppUi())->View()->UpdateVKeyBoard();
-										break;
-									case 2: // Escape
-										iLastChar1 = EStdKeyEscape;
-										break;
-									case 0:
-										current_video->hidden->iControlKeyDown = !current_video->hidden->iControlKeyDown;
-										static_cast<CEBasicAppUi*>(CEikonEnv::Static()->EikAppUi())->View()->UpdateVKeyBoard();
-										break;
-									case 4: // enter
-										if(!_this->hidden->iVirtualKeyBoardActive)
-											return EFalse;
-										iLastChar1=EStdKeyEnter;
-										break;
-									case 5: // Delete char
-										if(!_this->hidden->iVirtualKeyBoardActive)
-											return EFalse;
-										iLastChar1 = EStdKeyBackspace;
-										break;
+							static_cast<CEBasicAppUi*>(CEikonEnv::Static()->EikAppUi())->View()->UpdateVKeyBoard();
+							break;
+						case 1: //rightclick set
+							((TInt&)_this->hidden->iMouseButtonSet)++;
+							if(_this->hidden->iMouseButtonSet == ELastMouseButton )
+								_this->hidden->iMouseButtonSet = ELeftMouseButton;
+							// need to repaint lower bottom
+							static_cast<CEBasicAppUi*>(CEikonEnv::Static()->EikAppUi())->View()->UpdateVKeyBoard();
+							break;
+						case 2: // Escape
+							iLastChar1 = EStdKeyEscape;
+							break;
+						case 0:
+							current_video->hidden->iControlKeyDown = !current_video->hidden->iControlKeyDown;
+							static_cast<CEBasicAppUi*>(CEikonEnv::Static()->EikAppUi())->View()->UpdateVKeyBoard();
+							break;
+						case 4: // enter
+							if(!_this->hidden->iVirtualKeyBoardActive)
+								return EFalse;
+							iLastChar1 = EStdKeyEnter;
+							break;
+						case 5: // Delete char
+							if(!_this->hidden->iVirtualKeyBoardActive)
+								return EFalse;
+							iLastChar1 = EStdKeyBackspace;
+							break;
 
-									case 6: // prev
-										if(!_this->hidden->iVirtualKeyBoardActive)
-											return EFalse;
-										if(iLetterOffset>0)
-										{
-											iLetterOffset-=8;
-											if(iLetterOffset<0)
-												iLetterOffset=0;
-											static_cast<CEBasicAppUi*>(CEikonEnv::Static()->EikAppUi())->View()->UpdateCharSelector(iLetterOffset);
-										}
-										break;
-									case 19:// next
-										if(!_this->hidden->iVirtualKeyBoardActive)
-											return EFalse;
-										if(iLetterOffset<KOnScreenChars().Length()-1)
-										{
-											iLetterOffset+=8;
-											if(iLetterOffset>KOnScreenChars().Length()-1)
-												iLetterOffset=KOnScreenChars().Length()-1;
+						case 6: // prev
+							if(!_this->hidden->iVirtualKeyBoardActive)
+								return EFalse;
+							if(iLetterOffset > 0)
+							{
+								iLetterOffset -= 8;
+								if(iLetterOffset < 0)
+									iLetterOffset = 0;
+								static_cast<CEBasicAppUi*>(CEikonEnv::Static()->EikAppUi())->View()->UpdateCharSelector(iLetterOffset);
+							}
+							break;
+						case 19:// next
+							if(!_this->hidden->iVirtualKeyBoardActive)
+								return EFalse;
+							if(iLetterOffset < KOnScreenChars().Length() - 1)
+							{
+								iLetterOffset += 8;
+								if(iLetterOffset > KOnScreenChars().Length() - 1)
+									iLetterOffset = KOnScreenChars().Length() - 1;
 
-											static_cast<CEBasicAppUi*>(CEikonEnv::Static()->EikAppUi())->View()->UpdateCharSelector(iLetterOffset);
-										}
-										break;
+								static_cast<CEBasicAppUi*>(CEikonEnv::Static()->EikAppUi())->View()->UpdateCharSelector(iLetterOffset);
+							}
+							break;
 
-									default: // chars in array
-										{
-											if(!_this->hidden->iVirtualKeyBoardActive)
-												return EFalse;
-											TInt charIndex=(loop-7)+iLetterOffset;
-											if(charIndex<KOnScreenChars().Length())
-											{
-												iLastChar1=KOnScreenChars()[charIndex];
-											}
-										}
-										break;
-									}
-									break;
+						default: // chars in array
+							{
+								if(!_this->hidden->iVirtualKeyBoardActive)
+									return EFalse;
+								TInt charIndex=(loop - 7) + iLetterOffset;
+								if(charIndex < KOnScreenChars().Length())
+								{
+									iLastChar1 = KOnScreenChars()[charIndex];
 								}
 							}
-							if(iLastChar1!=-1)
-							{
-								SDLKey oldBackSpace = keymap[EStdKeyBackspace];
-								keymap[EStdKeyBackspace]    = SDLK_BACKSPACE;
-								TChar mychar(iLastChar1);
-								TBool shift = mychar.IsUpper();
-								EPOC_GenerateKeyEvent(_this, mychar.GetUpperCase(), ETrue, shift);
-								keymap[EStdKeyBackspace]    = oldBackSpace;
-								return ETrue;
-							}
-							return ETrue;
-						}
-
-					}
-					break;
-				case TPointerEvent::EButton1Up:
-					{
-						if(iLastChar1!=-1)
-						{
-							SDLKey oldBackSpace = keymap[EStdKeyBackspace];
-							keymap[EStdKeyBackspace]    = SDLK_BACKSPACE;
-							TChar mychar(iLastChar1);
-							TBool shift = mychar.IsUpper();
-							EPOC_GenerateKeyEvent(_this, mychar.GetUpperCase(), EFalse, shift);
-							iLastChar1=-1;
-							keymap[EStdKeyBackspace]    = oldBackSpace;
-							return ETrue;
-						}
-						if(KOnScreenOffsetStartVar>KOnScreenOffsetStartVal)
-						{
-							return ETrue;
-						}
-					}
-					break;
-				case TPointerEvent::EDrag:
-					{
-						if(iLastChar1!=-1)
-						{
-							return ETrue;
-
-						}
-					}
-					break;
-				default:
-				case TPointerEvent::EButton2Down:
-				case TPointerEvent::EButton3Down:
-				case TPointerEvent::EButton3Up:
-					break;
-
+							break;
+						} //switch(loop)
+						break; //TODO: may be remove break?
+					} //if(rect.Contains(aPointerEvent.iPosition))
+				} //for(TInt loop = 0;loop < 20;loop++)
+				
+				if(iLastChar1!=-1)
+				{
+					SDLKey oldBackSpace = keymap[EStdKeyBackspace];
+					keymap[EStdKeyBackspace]   = SDLK_BACKSPACE;
+					TChar mychar(iLastChar1);
+					TBool shift = mychar.IsUpper();
+					EPOC_GenerateKeyEvent(_this, mychar.GetUpperCase(), ETrue, shift);
+					keymap[EStdKeyBackspace]   = oldBackSpace;
+					return ETrue;
 				}
-				return EFalse;
+				return ETrue;
+			} //if(KOnScreenOffsetStartVar >= KOnScreenOffsetStartVal)
+
+		} //case TPointerEvent::EButton1Down:
+			break;
+		case TPointerEvent::EButton1Up:
+			{
+				if(iLastChar1 != -1)
+				{
+					SDLKey oldBackSpace = keymap[EStdKeyBackspace];
+					keymap[EStdKeyBackspace]    = SDLK_BACKSPACE;
+					TChar mychar(iLastChar1);
+					TBool shift = mychar.IsUpper();
+					EPOC_GenerateKeyEvent(_this, mychar.GetUpperCase(), EFalse, shift);
+					iLastChar1=-1;
+					keymap[EStdKeyBackspace]    = oldBackSpace;
+					return ETrue;
+				}
+				if(KOnScreenOffsetStartVar > KOnScreenOffsetStartVal)
+				{
+					return ETrue;
+				}
+			}
+			break;
+		case TPointerEvent::EDrag:
+			{
+				if(iLastChar1 != -1)
+					return ETrue;
+			}
+			break;
+		case TPointerEvent::EButton2Down:
+		case TPointerEvent::EButton3Down:
+		case TPointerEvent::EButton3Up:
+		default:
+			break;
+	} //switch(aPointerEvent.iType)
+	return EFalse;
 }
 #endif
 
-
 #if defined (S60) || defined(__SERIES60_3X__)
-
 extern "C" void EPOC_CalcScaleFactors(_THIS);
 void EPOC_SetS60Mode(_THIS,TInt aS60Mode)
 {
@@ -553,9 +546,9 @@ void EPOC_SetS60Mode(_THIS,TInt aS60Mode)
 		Private->iWindowCreator->ClearScreen();
 	}
 	EPOC_CalcScaleFactors(_this);
-
 }
 #endif
+
 int EPOC_HandleWsEvent(_THIS, const TWsEvent& aWsEvent)
 {
     int posted = 0;
@@ -573,9 +566,9 @@ int EPOC_HandleWsEvent(_THIS, const TWsEvent& aWsEvent)
         advPointerEvent->PointerNumber();
 #endif
 #ifdef __SERIES60_3X__
-		if(!Private->iHasMouseOrTouch
-				&& ((Private->EPOC_ScreenSize.iWidth > 320 && Private->EPOC_ScreenSize.iHeight>240)|| (Private->EPOC_ScreenSize.iWidth>240 && Private->EPOC_ScreenSize.iHeight>320))
-		   )
+		if(  !Private->iHasMouseOrTouch &&
+			((Private->EPOC_ScreenSize.iWidth > 320 && Private->EPOC_ScreenSize.iHeight > 240) ||
+				(Private->EPOC_ScreenSize.iWidth > 240 && Private->EPOC_ScreenSize.iHeight > 320))  )
 		{
 			Private->iHasMouseOrTouch = ETrue;
 			UpdateScaleFactors();
@@ -676,7 +669,7 @@ int EPOC_HandleWsEvent(_THIS, const TWsEvent& aWsEvent)
 				}
 #elif defined (__SERIES60_3X__)
 			if(Private->iSX0Mode & ESX0Portrait)
-				{
+			{
 				if (Private->iSX0Mode & ESX0Stretched && !(Private->EPOC_ShrinkedHeight || Private->EPOC_ShrinkedWidth))
 					{
 					mousePos.iX = (TInt) (pointerEvent.iPosition.iY/Private->iYScale);
@@ -694,29 +687,28 @@ int EPOC_HandleWsEvent(_THIS, const TWsEvent& aWsEvent)
 					{
 					mousePos.iY= pointerEvent.iPosition.iX;
 					}
-
-				}
+			}
 			else
-				{
+			{
 				if (Private->iSX0Mode & ESX0Stretched)
 					{
 					if((Private->iSX0Mode & ESX0Flipped))
 						{
-						mousePos.iX =  ( (_this->hidden->iStretchSize.iHeight-1) - mousePos.iX);
+						mousePos.iX = ( (_this->hidden->iStretchSize.iHeight - 1) - mousePos.iX);
 						}
 					else
 						{
-						mousePos.iY = (_this->hidden->iStretchSize.iWidth-1)-mousePos.iY;
+						mousePos.iY = (this->hidden->iStretchSize.iWidth - 1) - mousePos.iY;
 						}
 
 
 					if(!Private->EPOC_ShrinkedHeight)
 						{
-						mousePos.iX = (TInt) (mousePos.iX/Private->iYScale);
+						mousePos.iX = (TInt)(mousePos.iX/Private->iYScale);
 						}
 					if(!Private->EPOC_ShrinkedWidth)
 						{
-						mousePos.iY = (TInt)( mousePos.iY/Private->iXScale);
+						mousePos.iY = (TInt)(mousePos.iY/Private->iXScale);
 						}
 					}
 				else
@@ -730,20 +722,19 @@ int EPOC_HandleWsEvent(_THIS, const TWsEvent& aWsEvent)
 						mousePos.iY = (_this->hidden->iModeSize.iWidth-1)-mousePos.iY;
 						}
 					}
+			}
 
-				}
-
-			if (Private->EPOC_ShrinkedHeight || Private->EPOC_ShrinkedWidth)
-				{
+			if(Private->EPOC_ShrinkedHeight || Private->EPOC_ShrinkedWidth)
+			{
 				if (Private->iSX0Mode & ESX0Stretched)
 				{
-					mousePos.iX =(TInt) (mousePos.iX/Private->iYScale);
-					mousePos.iY =(TInt) (mousePos.iY/Private->iXScale);
+					mousePos.iX = (TInt)(mousePos.iX/Private->iYScale);
+					mousePos.iY = (TInt)(mousePos.iY/Private->iXScale);
 				}
 				else
 				{
-					mousePos.iX+=Private->iPutOffset.iY;
-					mousePos.iY+=Private->iPutOffset.iX;
+					mousePos.iX += Private->iPutOffset.iY;
+					mousePos.iY += Private->iPutOffset.iX;
 				}
 			}
 #endif
@@ -802,7 +793,7 @@ int EPOC_HandleWsEvent(_THIS, const TWsEvent& aWsEvent)
 			_this->hidden->iMouseLeftOrRight = !_this->hidden->iMouseLeftOrRight;
 			}
 			//!!posted += SDL_PrivateKeyboard(SDL_PRESSED, TranslateKey(aWsEvent.Key()->iScanCode, &keysym));
-		}
+		} //if(!IsScreenKeysL(_this,pointerEvent))
         break;
     }
 
@@ -813,7 +804,8 @@ int EPOC_HandleWsEvent(_THIS, const TWsEvent& aWsEvent)
        (void*)TranslateKey(_this,scancode, &keysym);
 
         /* Special handling */
-        switch((int)keysym.sym) {
+        switch((int)keysym.sym)
+		{
         case SDLK_ASTERISK:
         case SDLK_LSHIFT:
         case SDLK_RSHIFT:
@@ -888,7 +880,7 @@ int EPOC_HandleWsEvent(_THIS, const TWsEvent& aWsEvent)
 		   }
 		   break;
 #endif
-        }
+        } //switch((int)keysym.sym)
 
         if(keysym.sym != SDLK_UNKNOWN)
 		{
@@ -896,7 +888,7 @@ int EPOC_HandleWsEvent(_THIS, const TWsEvent& aWsEvent)
 		}
 
         break;
-	}
+	} //case EEventKeyDown:
 
     case EEventKeyUp: /* Key events */
     {
@@ -953,17 +945,17 @@ int EPOC_HandleWsEvent(_THIS, const TWsEvent& aWsEvent)
 			}
 
 #endif
-		 switch((int)keysym.sym) {
-		        case SDLK_ASTERISK:
-		        case SDLK_LSHIFT:
-		        case SDLK_RSHIFT:
-		        	if(current_video->hidden->iInputMode != EKeyboard)
-		        	{
-		        		keymap[EStdKeyBackspace] = SDLK_ESCAPE;
-		        		keymap[EStdKeyDelete]    =	 SDLK_ESCAPE;
-		        	}
-		        	break;
-		 }
+		switch((int)keysym.sym) {
+			case SDLK_ASTERISK:
+			case SDLK_LSHIFT:
+			case SDLK_RSHIFT:
+				if(current_video->hidden->iInputMode != EKeyboard)
+				{
+					keymap[EStdKeyBackspace] = SDLK_ESCAPE;
+					keymap[EStdKeyDelete]    =	 SDLK_ESCAPE;
+				}
+				break;
+		}
 		if(keysym.sym != SDLK_UNKNOWN)
 		{
 			posted += SDL_PrivateKeyboard(SDL_RELEASED, &keysym);
@@ -1041,7 +1033,6 @@ int EPOC_HandleWsEvent(_THIS, const TWsEvent& aWsEvent)
     default:
         break;
 	}
-
     return posted;
 }
 
@@ -1070,7 +1061,6 @@ CWaitForActivate::~CWaitForActivate()
 {
 	iTimer.Close();
 }
-
 
 void CWaitForActivate::RunL()
 {
@@ -1119,9 +1109,10 @@ static TInt StopSchedulerTimeOut(TAny* /*any*/)
 	return 0;
 }
 
-void UpdateKbdMouse() {
-TUint32 curTime = SDL_GetTicks();
-if (curTime >= current_video->hidden->_km.last_time + current_video->hidden->_km.delay_time)
+void UpdateKbdMouse()
+{
+	TUint32 curTime = SDL_GetTicks();
+	if (curTime >= current_video->hidden->_km.last_time + current_video->hidden->_km.delay_time)
 	{
 	current_video->hidden->_km.last_time = curTime;
 	if (current_video->hidden->_km.x_down_count == 1)
@@ -1136,7 +1127,7 @@ if (curTime >= current_video->hidden->_km.last_time + current_video->hidden->_km
 		}
 
 	if (current_video->hidden->_km.x_vel || current_video->hidden->_km.y_vel)
-		{
+	{
 		if (current_video->hidden->_km.x_down_count)
 			{
 			if (curTime > current_video->hidden->_km.x_down_time + current_video->hidden->_km.delay_time * 12)
@@ -1154,7 +1145,7 @@ if (curTime >= current_video->hidden->_km.last_time + current_video->hidden->_km
 					}
 			}
 		if (current_video->hidden->_km.y_down_count)
-			{
+		{
 			if (curTime > current_video->hidden->_km.y_down_time + current_video->hidden->_km.delay_time * 12)
 				{
 				if (current_video->hidden->_km.y_vel > 0)
@@ -1168,7 +1159,7 @@ if (curTime >= current_video->hidden->_km.last_time + current_video->hidden->_km
 					else
 						current_video->hidden->_km.y_vel = -5;
 					}
-			}
+		}
 		SDL_PrivateMouseMotion(0 , 1, current_video->hidden->_km.x_vel, current_video->hidden->_km.y_vel);
 		}
 	}
@@ -1189,9 +1180,9 @@ void EPOC_PumpEvents(_THIS)
 #if defined (__WINS__ ) || defined(S60) || defined (S80) || defined(S90) || defined (UIQ3) || defined (__SERIES60_3X__)
 #if  defined (UIQ3) || defined (__SERIES60_3X__) || defined (S60)
 	if(Private->iInputMode == EMouseMode)
-		{
+	{
 		UpdateKbdMouse();
-		}
+	}
 #endif
 	if(Private->iNeedUpdate) // Update is needed.. done out of this thread.
 	{
@@ -1566,7 +1557,7 @@ TInt TKeyMapItem::Compare(const TKeyMapItem& aFirst, const TKeyMapItem& aSecond)
 	}
 
 static const  SDLKey KNumberToCharMappings[10] =
-{SDLK_m, SDLK_r,SDLK_t, SDLK_y, SDLK_f, SDLK_g, SDLK_h, SDLK_v, SDLK_b, SDLK_n };
+		{SDLK_m, SDLK_r,SDLK_t, SDLK_y, SDLK_f, SDLK_g, SDLK_h, SDLK_v, SDLK_b, SDLK_n };
 
 static SDL_keysym *TranslateKey(_THIS, int scancode, SDL_keysym *keysym)
 {
@@ -1580,8 +1571,8 @@ static SDL_keysym *TranslateKey(_THIS, int scancode, SDL_keysym *keysym)
 	TBool isMappingFound = EFalse;
 
 	/* Search mapping from the map file */
-	if (iKeyMapping.Count() > 0) {
-
+	if (iKeyMapping.Count() > 0)
+	{
 		TKeyMapItem keyMapItem(EKeyMapFlagNone, scancode);
 		TInt index = KErrNone;
 		//ELOG3(_L8("Find key mapping for: %d (flag: %d)\n"),keyMapItem.iOldCode, keyMapItem.iOldFlag);
@@ -1595,10 +1586,10 @@ static SDL_keysym *TranslateKey(_THIS, int scancode, SDL_keysym *keysym)
 	}
 
 	/* If mapping is not found from the file, use the default map table */
-	if (!isMappingFound) {
-
+	if (!isMappingFound)
+	{
 		if ((scancode >= MAX_SCANCODE) &&
-			((scancode - ENonCharacterKeyBase + 0x0081) >= MAX_SCANCODE)) {
+			( (scancode - ENonCharacterKeyBase + 0x0081) >= MAX_SCANCODE) ) {
 			SDL_SetError("Too big scancode");
 			keysym->scancode = SDLK_UNKNOWN;
 			keysym->mod = KMOD_NONE;
@@ -1689,7 +1680,7 @@ static SDL_keysym *TranslateKey(_THIS, int scancode, SDL_keysym *keysym)
 			keysym->sym = keymap[scancode -
 				ENonCharacterKeyBase + 0x0081]; // !!hard coded
 		} else if(keysym->sym == SDLK_UNKNOWN){
-			if(scancode<MAX_SCANCODE)
+			if(scancode < MAX_SCANCODE)
 				keysym->sym = keymap[scancode];
 			else // not mapped
 			{
@@ -1744,66 +1735,62 @@ static SDL_keysym *TranslateKey(_THIS, int scancode, SDL_keysym *keysym)
 #endif
 	/* Remap the arrow keys if the device is rotated */
 #if defined (S60) || defined (__SERIES60_3X__) || defined (UIQ3)
-	if(((keysym->scancode>='0' && keysym->scancode<='9') || (keysym->scancode>=EStdKeyNkp1 && keysym->scancode<=EStdKeyNkp9))&& Private->iFNModeOn)
+	if(((keysym->scancode >= '0' && keysym->scancode <= '9') || (keysym->scancode >= EStdKeyNkp1 && keysym->scancode <= EStdKeyNkp9))&& Private->iFNModeOn)
+	{
+		if(keysym->scancode >= '0' && keysym->scancode <= '9')
 		{
-		if(keysym->scancode>='0' && keysym->scancode<='9')
-			{
-
+	
 			if(keysym->scancode != '0')
-				{
-				keysym->scancode-='1';
-				keysym->scancode+=EStdKeyF1;
-				}
-			else
-				{
-				keysym->scancode = EStdKeyF10;
-				}
-			}
-		else
 			{
-			keysym->scancode-=EStdKeyNkp1;
-			keysym->scancode+=EStdKeyF1;
+				keysym->scancode -= '1';
+				keysym->scancode += EStdKeyF1;
 			}
-
-			keysym->sym = keymap[keysym->scancode];
-			keysym->unicode = keysym->sym;
+			else
+				keysym->scancode = EStdKeyF10;
 		}
+		else
+		{
+			keysym->scancode -= EStdKeyNkp1;
+			keysym->scancode += EStdKeyF1;
+		}
+		keysym->sym = keymap[keysym->scancode];
+		keysym->unicode = keysym->sym;
+	}
 
 	if((current_video->hidden->iInputMode==EJoystick || current_video->hidden->iInputMode==EMouseMode)
 		&&(keysym->sym == SDLK_UP|| keysym->sym == SDLK_DOWN|| keysym->sym == SDLK_LEFT|| keysym->sym == SDLK_RIGHT
 		|| keysym->scancode == KLeftButtonCode1 || keysym->scancode == KLeftButtonCode2 || keysym->scancode == KRightButtonCode ))
-		{
+	{
 		keysym->sym = SDLK_UNKNOWN;
-		}
-	else if ((!(Private->iSX0Mode & ESX0Portrait)) && (Private->iSX0Mode & ESX0Flipped)) {
-			switch(keysym->sym) {
-			case SDLK_UP:	keysym->sym = SDLK_LEFT;  break;
-			case SDLK_DOWN: keysym->sym = SDLK_RIGHT; break;
-			case SDLK_LEFT: keysym->sym = SDLK_DOWN;  break;
-			case SDLK_RIGHT:keysym->sym = SDLK_UP;   break;
-			default:
-				break;
+	}
+	else if ((!(Private->iSX0Mode & ESX0Portrait)) && (Private->iSX0Mode & ESX0Flipped))
+	{
+		switch(keysym->sym) {
+		case SDLK_UP:	keysym->sym = SDLK_LEFT;  break;
+		case SDLK_DOWN: keysym->sym = SDLK_RIGHT; break;
+		case SDLK_LEFT: keysym->sym = SDLK_DOWN;  break;
+		case SDLK_RIGHT:keysym->sym = SDLK_UP;    break;
+		default:                                  break;
 		}
 	}
-	else if (!(Private->iSX0Mode & ESX0Portrait)) {
+	else if (!(Private->iSX0Mode & ESX0Portrait)) //{
 #else
-	if(Private->EPOC_IsFlipped && !(Private->iSX0Mode & ESX0Portrait)){
+	if(Private->EPOC_IsFlipped && !(Private->iSX0Mode & ESX0Portrait)) //{
 #endif
+	{
 		switch(keysym->sym) {
-			case SDLK_UP:	keysym->sym = SDLK_RIGHT;  break;
-			case SDLK_DOWN: keysym->sym = SDLK_LEFT; break;
-			case SDLK_LEFT: keysym->sym = SDLK_UP;  break;
-			case SDLK_RIGHT:keysym->sym = SDLK_DOWN;   break;
-			default:
-				break;
+			case SDLK_UP:	keysym->sym = SDLK_RIGHT; break;
+			case SDLK_DOWN: keysym->sym = SDLK_LEFT;  break;
+			case SDLK_LEFT: keysym->sym = SDLK_UP;    break;
+			case SDLK_RIGHT:keysym->sym = SDLK_DOWN;  break;
+			default:                                  break;
 		}
 	}
 
 	/* If UNICODE is on, get the UNICODE value for the key */
-
 	keysym->unicode = 0;
 
-	if ( SDL_TranslateUNICODE )
+	if (SDL_TranslateUNICODE)
     {
 		/* Populate the unicode field with the ASCII value */
 		switch (keysym->scancode)
@@ -1838,10 +1825,8 @@ static SDL_keysym *TranslateKey(_THIS, int scancode, SDL_keysym *keysym)
 		case EStdKeyBackSlash:
 			keysym->unicode = '\\';
 			break;
-
 		case EStdKeyForwardSlash:
 			keysym->unicode = '/';
-
 			break;
 		default:
 			TChar chr(keysym->scancode);
@@ -1862,7 +1847,7 @@ static SDL_keysym *TranslateKey(_THIS, int scancode, SDL_keysym *keysym)
 				{
 					if(keysym->sym<128)
 					{
-					keysym->unicode = keysym->sym;
+						keysym->unicode = keysym->sym;
 					}
 					else
 					{
@@ -1872,9 +1857,7 @@ static SDL_keysym *TranslateKey(_THIS, int scancode, SDL_keysym *keysym)
 			}
 			break;
 		}
-
-
-	}
+	} //if (SDL_TranslateUNICODE)
 
     //!!
     //sprintf(debug, "SDL: TranslateKey: keysym->scancode=%d, keysym->sym=%d, keysym->mod=%d",
@@ -2080,7 +2063,7 @@ void HID_GenerateKeyEvent(_THIS,int aScanCode,int aIsDown, TBool aShiftOn)
 }
 
 void CHIDEventMonitor::RunL()
-    {
+{
     THIDEvent hidEvent;
     iHIDClient->GetEvent( hidEvent );
     switch (hidEvent.Type())
@@ -2136,7 +2119,7 @@ void CHIDEventMonitor::RunL()
                     break;
                 default:
                     break;
-                }
+                } //switch (mouse->Type())
             }
             break;
         case THIDEvent::EKeyEvent:
@@ -2148,17 +2131,16 @@ void CHIDEventMonitor::RunL()
                 case EEventHIDKeyUp:
 
                     if (key->ScanCode() == 0xE1 || key->ScanCode() == 0xE5)
-                        {
+					{
                         shift_down = EFalse;
-                        }
+					}
                     HID_GenerateKeyEvent(current_video, key->ScanCode(), EFalse, shift_down);
                     break;
                 case EEventHIDKeyDown:
                 	if (key->ScanCode() == 0xE1 || key->ScanCode() == 0xE5)
-                        {
+					{
                         shift_down = ETrue;
-                        }
-
+					}
 					HID_GenerateKeyEvent(current_video, key->ScanCode(), ETrue, shift_down);
                     break;
                 default:
@@ -2168,65 +2150,64 @@ void CHIDEventMonitor::RunL()
             break;
         case THIDEvent::EConsumerEvent:
             {
-            THIDConsumerEvent* consumer = hidEvent.Consumer();
-            //Com_Printf( "consumer, code %d\n",consumer->ButtonCode());
-            break;
+				THIDConsumerEvent* consumer = hidEvent.Consumer();
+				//Com_Printf( "consumer, code %d\n",consumer->ButtonCode());
+				break;
             }
         default:
             break;
         }
     iHIDClient->EventReady( &iStatus );
     SetActive();
-    }
+}
 
-void CHIDEventMonitor::DoCancel()
-    {
+void CHIDEventMonitor::DoCancel() {
     iHIDClient->EventReadyCancel();
-    }
+}
 
 CHIDEventMonitor* CHIDEventMonitor::NewL()
-    {
+{
     CHIDEventMonitor* self = new (ELeave) CHIDEventMonitor;
     CleanupStack::PushL(self);
     self->ConstructL();
     CleanupStack::Pop();
     return self;
-    }
+}
 
 CHIDEventMonitor::~CHIDEventMonitor()
-    {
+{
     Cancel();
     delete iHIDClient;
-    }
+}
 
 CHIDEventMonitor::CHIDEventMonitor()
         :CActive(CActive::EPriorityUserInput)
-    {
+{
 	shift_down = EFalse;
-    }
+}
 
 void CHIDEventMonitor::ConstructL()
-    {
+{
     TInt error = iHidLibrary.Load(_L("hidsrv.dll"));
     User::LeaveIfError( error );
     TLibraryFunction entry = iHidLibrary.Lookup(1);
     if (entry)
-        {
+	{
         iHIDClient = (MHIDSrvClient*) entry();
         if (iHIDClient)
-            {
+		{
             error = iHIDClient->Connect();
             User::LeaveIfError( error );
             iHIDClient->EventReady( &iStatus );
             CActiveScheduler::Add( this );
             SetActive();
-            }
-        }
+		}
+	}
     else
-        {
+	{
         User::Leave(KErrNotFound);
-        }
-    }
+	}
+}
 
 #endif
 
