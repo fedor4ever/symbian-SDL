@@ -309,14 +309,13 @@ extern "C" void EPOC_CalcScaleFactors(_THIS)
 
 inline void EPOC_S60PortraitStretchUpdate(_THIS, int numrects, SDL_Rect *rects)
 {
-	TBool lockedHeap=EFalse;
+	TBool lockedHeap = EFalse;
 
-	TInt i;
     TInt screenW = _this->screen->w;
     TInt screenH = _this->screen->h;
     TInt sourceScanlineLength = screenW;
-
 	TInt targetScanlineLength = Private->EPOC_ScreenSize.iWidth;
+
 	TBitmapUtil lock(Private->EPOC_Bitmap);
 	if(!gHeapIsLocked)
 	{
@@ -327,7 +326,8 @@ inline void EPOC_S60PortraitStretchUpdate(_THIS, int numrects, SDL_Rect *rects)
 
 	/* Render the rectangles in the list */
 
-	for ( i=0; i < numrects; ++i ) {
+	for (TInt i=0; i < numrects; ++i )
+	{
         SDL_Rect rect2;
         const SDL_Rect& currentRect = rects[i];
         rect2.x = currentRect.x;
@@ -354,8 +354,8 @@ inline void EPOC_S60PortraitStretchUpdate(_THIS, int numrects, SDL_Rect *rects)
 		sourceRectHeight += rect2.y;
 		TBool interpolate = EFalse;
 
-        if (_this->screen->format->BitsPerPixel == GetBpp(Private->EPOC_DisplayMode)) {
-
+        if (_this->screen->format->BitsPerPixel == GetBpp(Private->EPOC_DisplayMode))
+		{
 			TUint16* bitmapLine = (TUint16*)_this->screen->pixels + sourceStartOffset;
             TUint16* screenMemory = screenBuffer + targetStartOffset;
 			TUint16* polateMem1= NULL;
@@ -364,12 +364,13 @@ inline void EPOC_S60PortraitStretchUpdate(_THIS, int numrects, SDL_Rect *rects)
 			TUint16* screenPtr = NULL;
 			TUint16* bitmapPtr = NULL;
 
-            for(TInt y = rect2.y ; y < sourceRectHeight ; y++) {
+            for(TInt y = rect2.y ; y < sourceRectHeight ; y++)
+			{
 				if(interpolate)
 				{
 					screenPtr = screenMemory;
 					bitmapPtr = bitmapLine;
-					for(TInt index =0;index<sourceRectWidth;index++){
+					for(TInt index = 0; index < sourceRectWidth; index++){
 						*screenPtr = CalcAverage16(*screenPtr,*bitmapPtr);
 						bitmapPtr++;
 						screenPtr+=gScaleStep[index+rect2.x];
@@ -380,9 +381,10 @@ inline void EPOC_S60PortraitStretchUpdate(_THIS, int numrects, SDL_Rect *rects)
 					screenPtr = screenMemory;
 					bitmapPtr = bitmapLine;
 					TInt step = 0;
-					for(TInt index =0;index<sourceRectWidth;index++){
+					for(TInt index = 0; index<sourceRectWidth; index++)
+					{
 						// Last step is 0
-						if(step==0 && index>0)
+						if(step == 0 && index > 0)
 						{
 							*(screenPtr) = CalcAverage16(*screenPtr,*(bitmapPtr));
 						}
@@ -391,32 +393,34 @@ inline void EPOC_S60PortraitStretchUpdate(_THIS, int numrects, SDL_Rect *rects)
 							*screenPtr = *bitmapPtr;
 						}
 
-						step =gScaleStep[index+rect2.x];
+						step = gScaleStep[index + rect2.x];
 
-						if(step>1)
+						if(step > 1)
 						{
 							*(screenPtr+1) = CalcAverage16(*bitmapPtr,*(bitmapPtr+1));
 						}
 
 						bitmapPtr++;
-						screenPtr+=step;
+						screenPtr += step;
 					}
 				}
 
 				bitmapLine += sourceScanlineLength;
 
-				if(y>rect2.y){
-					if(i240StartTable[y] != i240StartTable[y-1]){
-
-						if(gScaleYStep[y-1]>Private->
-							EPOC_ScreenSize.iWidth) // more than one line of screen // last line  skip was bigger than one line
+				if(y > rect2.y)
+				{
+					if(i240StartTable[y] != i240StartTable[y-1])
+					{
+						if(gScaleYStep[y-1] >
+							Private->EPOC_ScreenSize.iWidth) // more than one line of screen // last line  skip was bigger than one line
 						{
-							polateTrg = screenMemory-Private->EPOC_ScreenSize.iWidth;
+							polateTrg = screenMemory - Private->EPOC_ScreenSize.iWidth;
 							polateMem1 = screenMemory;
-							polateMem2 = screenMemory-(Private->EPOC_ScreenSize.iWidth*2);
+							polateMem2 = screenMemory - (Private->EPOC_ScreenSize.iWidth*2);
 							TInt scaledSourceRectWidth = gScaleXPos[sourceRectWidth];
-							for(TInt index =0;index<scaledSourceRectWidth;index++){
-								*polateTrg =  CalcAverage16(*polateMem1,*polateMem2);
+							for(TInt index = 0; index < scaledSourceRectWidth; index++)
+							{
+								*polateTrg = CalcAverage16(*polateMem1,*polateMem2);
 								polateTrg++;
 								polateMem1++;
 								polateMem2++;
@@ -434,7 +438,7 @@ inline void EPOC_S60PortraitStretchUpdate(_THIS, int numrects, SDL_Rect *rects)
 					screenMemory += gScaleYStep[y];
 				}
 			}
-        }
+		} //if (_this->screen->format->BitsPerPixel == GetBpp(Private->EPOC_DisplayMode))
         // !! 256 color paletted mode: 8 bpp  --> xx bpp
         else {
 			TUint8* bitmapLine = (TUint8*)_this->screen->pixels + sourceStartOffset;
@@ -484,24 +488,25 @@ inline void EPOC_S60PortraitStretchUpdate(_THIS, int numrects, SDL_Rect *rects)
 					}
 				}
 				bitmapLine += sourceScanlineLength;
-				if(y>rect2.y){
-					if(i240StartTable[y] != i240StartTable[y-1]){
-
+				if(y>rect2.y)
+				{
+					if(i240StartTable[y] != i240StartTable[y-1])
+					{
 						if(gScaleYStep[y-1]>Private->
 							EPOC_ScreenSize.iWidth) // more than one line of screen // last line  skip was bigger than one line
 						{
-							polateTrg = screenMemory-Private->EPOC_ScreenSize.iWidth;
+							polateTrg = screenMemory - Private->EPOC_ScreenSize.iWidth;
 							polateMem1 = screenMemory;
-							polateMem2 = screenMemory-(Private->EPOC_ScreenSize.iWidth*2);
+							polateMem2 = screenMemory - (Private->EPOC_ScreenSize.iWidth*2);
 							TInt scaledSourceRectWidth = gScaleXPos[sourceRectWidth];
-							for(TInt index =0;index<scaledSourceRectWidth;index++){
+							for(TInt index = 0; index < scaledSourceRectWidth; index++)
+							{
 								*polateTrg =  CalcAverage16(*polateMem1,*polateMem2);
 								polateTrg++;
 								polateMem1++;
 								polateMem2++;
 							}
 						}
-
 						screenMemory += gScaleYStep[y];
 						interpolate = EFalse;
 					}
@@ -516,7 +521,7 @@ inline void EPOC_S60PortraitStretchUpdate(_THIS, int numrects, SDL_Rect *rects)
             }
         }
 
-		}
+	} //for (TInt i=0; i < numrects; ++i )
 
 		if(lockedHeap)
 		{
@@ -546,11 +551,14 @@ inline void EPOC_S60PortraitStretchUpdate(_THIS, int numrects, SDL_Rect *rects)
 #endif
 }
 
+inline void PolateScreenMemory(_THIS)
+{
+	
+}
+
 inline void EPOC_S60LandscapeStretchUpdate(_THIS, int numrects, SDL_Rect *rects)
 {
-	TBool lockedHeap=EFalse;
-
-	TInt i;
+	TBool lockedHeap = EFalse;
     TInt screenW = _this->screen->w;
     TInt screenH = _this->screen->h;
     TInt sourceScanlineLength = screenW;
@@ -565,7 +573,8 @@ inline void EPOC_S60LandscapeStretchUpdate(_THIS, int numrects, SDL_Rect *rects)
 
 	/* Render the rectangles in the list */
 
-	for ( i=0; i < numrects; ++i ) {
+	for (TInt i = 0; i < numrects; ++i)
+	{
         SDL_Rect rect2;
         const SDL_Rect& currentRect = rects[i];
         rect2.x = currentRect.x;
@@ -634,7 +643,7 @@ inline void EPOC_S60LandscapeStretchUpdate(_THIS, int numrects, SDL_Rect *rects)
 
             	if(interpolate)
             	{
-					for(TInt index =0;index<sourceRectWidth;index++)
+					for(TInt index = 0; index < sourceRectWidth; index++)
 					{
 						*screenPtr = CalcAverage16(*screenPtr,*bitmapPtr);
 						bitmapPtr++;
@@ -644,11 +653,11 @@ inline void EPOC_S60LandscapeStretchUpdate(_THIS, int numrects, SDL_Rect *rects)
 				else
 				{
 					TInt step = 0;
-					for(TInt index =0;index<sourceRectWidth;index++)
+					for(TInt index = 0;index < sourceRectWidth; index++)
 					{
 
 						// Last step is 0
-						if(step==0 && index>0)
+						if(step == 0 && index > 0)
 						{
 							*(screenPtr) = CalcAverage16(*screenPtr,*(bitmapPtr));
 						}
@@ -657,34 +666,33 @@ inline void EPOC_S60LandscapeStretchUpdate(_THIS, int numrects, SDL_Rect *rects)
 
 						step =gScaleStep[index+rect2.x];
 
-						if(step> Private->EPOC_ScreenSize.iWidth || (-step)> Private->EPOC_ScreenSize.iWidth)
+						if((step > Private->EPOC_ScreenSize.iWidth) || ((-step) > Private->EPOC_ScreenSize.iWidth))
 						{
-							*(screenPtr+yInterpolatePixel) = CalcAverage16(*bitmapPtr,*(bitmapPtr+1));
+							*(screenPtr + yInterpolatePixel) = CalcAverage16(*bitmapPtr,*(bitmapPtr+1));
 						}
-
 						bitmapPtr++;
-						screenPtr+=step;
+						screenPtr += step;
 					}
 				}
 
 				bitmapLine += sourceScanlineLength;
-				if(y>rect2.y)
+				if(y > rect2.y)
 				{
 					if(i240StartTable[y] != i240StartTable[y-1])
 					{
 						// Next bit of functions interpolates between two lines
 						if(gScaleYStep[y-1]>1 || gScaleYStep[y-1]<-1) // more than one line of screen // last line  skip was bigger than one line
 						{
-							polateTrg = screenMemory-xInterpolatePixel;
+							polateTrg  = screenMemory - xInterpolatePixel;
 							polateMem1 = screenMemory;
-							polateMem2 = screenMemory-2*xInterpolatePixel;
+							polateMem2 = screenMemory - 2*xInterpolatePixel;
 							TInt scaledSourceRectWidth = gScaleXPos[sourceRectWidth];
 							for(TInt index =0;index<scaledSourceRectWidth;index++)
 							{
 								*polateTrg =  CalcAverage16(*polateMem1,*polateMem2);
-								polateTrg+=yInterpolatePixel;
-								polateMem1+=yInterpolatePixel;
-								polateMem2+=yInterpolatePixel;
+								polateTrg  += yInterpolatePixel;
+								polateMem1 += yInterpolatePixel;
+								polateMem2 += yInterpolatePixel;
 							}
 						}
 
@@ -710,35 +718,39 @@ inline void EPOC_S60LandscapeStretchUpdate(_THIS, int numrects, SDL_Rect *rects)
 			TUint16* polateMem2= NULL;
 			TUint16* polateTrg = NULL;
 
-           for(TInt y = rect2.y ; y < sourceRectHeight ; y++) {
+           for(TInt y = rect2.y; y < sourceRectHeight; y++)
+		   {
 				TUint16* screenPtr = screenMemory;
            		TUint8* bitmapPtr = bitmapLine;
-				if(interpolate){
-					for(TInt index =0;index<sourceRectWidth;index++){
+				if(interpolate)
+				{
+					for(TInt index = 0; index < sourceRectWidth; index++)
+					{
 						*screenPtr = CalcAverage16(*screenPtr,EPOC_HWPalette_256_to_DisplayMode[*bitmapPtr]);
 						bitmapPtr++;
-						screenPtr+=gScaleStep[index+rect2.x];
+						screenPtr += gScaleStep[index+rect2.x];
 					}
 				}
-				else{
+				else
+				{
 					TInt step = 0;
-					for(TInt index =0;index<sourceRectWidth;index++){
+					for(TInt index = 0; index < sourceRectWidth; index++){
 						// Last step is 0
-						if(step==0 && index>0)
+						if(step == 0 && index > 0)
 						{
 							*(screenPtr) = CalcAverage16(*screenPtr,EPOC_HWPalette_256_to_DisplayMode[*(bitmapPtr)]);
 						}
 						else
 							*screenPtr = EPOC_HWPalette_256_to_DisplayMode[*bitmapPtr];
 
-							step =gScaleStep[index+rect2.x];
-						if(step> Private->EPOC_ScreenSize.iWidth || (-step)> Private->EPOC_ScreenSize.iWidth)
+							step = gScaleStep[index+rect2.x];
+						if(step > Private->EPOC_ScreenSize.iWidth || (-step) > Private->EPOC_ScreenSize.iWidth)
 						{
 							*(screenPtr+yInterpolatePixel) = CalcAverage16(EPOC_HWPalette_256_to_DisplayMode[*bitmapPtr],EPOC_HWPalette_256_to_DisplayMode[*(bitmapPtr+1)]);
 						}
 
 						bitmapPtr++;
-						screenPtr+=step;
+						screenPtr += step;
 					}
 				}
 
@@ -750,9 +762,9 @@ inline void EPOC_S60LandscapeStretchUpdate(_THIS, int numrects, SDL_Rect *rects)
 						// Next bit of functions interpolates between two lines
 						if(gScaleYStep[y-1]>1 || gScaleYStep[y-1]<-1) // more than one line of screen // last line  skip was bigger than one line
 						{
-							polateTrg = screenMemory-xInterpolatePixel;
+							polateTrg = screenMemory - xInterpolatePixel;
 							polateMem1 = screenMemory;
-							polateMem2 = screenMemory-2*xInterpolatePixel;
+							polateMem2 = screenMemory - 2*xInterpolatePixel;
 							TInt scaledSourceRectWidth = gScaleXPos[sourceRectWidth];
 							for(TInt index =0;index<scaledSourceRectWidth;index++)
 							{
@@ -775,8 +787,7 @@ inline void EPOC_S60LandscapeStretchUpdate(_THIS, int numrects, SDL_Rect *rects)
 				}
 			}
 		}
-
-    }
+    } //for (TInt i = 0; i < numrects; ++i)
 
 	if(lockedHeap)
 	{
@@ -786,23 +797,24 @@ inline void EPOC_S60LandscapeStretchUpdate(_THIS, int numrects, SDL_Rect *rects)
 	if(Private->iNeedFullRedraw )
 	{
 		Private->iNeedFullRedraw=EFalse;
-		Private->iWindowCreator->PutBitmap(Private->EPOC_Bitmap,TPoint(0,0),TRect(0,0,Private->iStretchSize.iHeight,Private->iStretchSize.iWidth));
+		Private->iWindowCreator->PutBitmap(Private->EPOC_Bitmap,
+				TPoint(0,0), TRect(0, 0, Private->iStretchSize.iHeight, Private->iStretchSize.iWidth));
 	}
 	else
-		for(TInt loop=0;loop<numrects;loop++)
+		for(TInt loop = 0; loop < numrects; loop++)
 		{
-			SDL_Rect rect =rects[loop];
+			SDL_Rect rect = rects[loop];
 
-			if(_this->hidden->iSX0Mode&ESX0Flipped)
+			if(_this->hidden->iSX0Mode & ESX0Flipped)
 			{
 				rect.x = gScaleXPos[rect.x];
 				rect.y = Private->iStretchSize/*EPOC_DisplaySize*/.iHeight-gScaleYPos[rect.y];
 				rect.w = (gScaleXPos[rect.w])+1;
 				rect.h = (gScaleYPos[rect.h])+1;
 
-				TRect realRect(rect.y-rect.h,rect.x, rect.y+1, rect.x+rect.w+1 );
+				TRect realRect(rect.y-rect.h, rect.x, rect.y+1, rect.x+rect.w+1);
 
-				Private->iWindowCreator->PutBitmap(Private->EPOC_Bitmap,realRect.iTl,realRect);
+				Private->iWindowCreator->PutBitmap(Private->EPOC_Bitmap, realRect.iTl,realRect);
 			}
 			else
 			{
@@ -824,11 +836,9 @@ inline void EPOC_S60LandscapeStretchUpdate(_THIS, int numrects, SDL_Rect *rects)
 
 inline void EPOC_S60PortraitUpdate(_THIS, int numrects, SDL_Rect *rects)
 {
-	TInt i=0;
 	TInt screenW = _this->screen->w;
     TInt screenH = _this->screen->h;
-	TBool lockedHeap=EFalse;
-
+	TBool lockedHeap = EFalse;
     TInt sourceScanlineLength = screenW;
 
 	TBitmapUtil lock(Private->EPOC_Bitmap);
@@ -842,7 +852,7 @@ inline void EPOC_S60PortraitUpdate(_THIS, int numrects, SDL_Rect *rects)
 
 	/* Render the rectangles in the list */
 	bool isNotSameCurrentLine = false;
-	for ( i=0; i < numrects; ++i ) {
+	for (TInt i=0; i < numrects; ++i) {
 
 		SDL_Rect rect2;
         const SDL_Rect& currentRect = rects[i];
@@ -866,12 +876,12 @@ inline void EPOC_S60PortraitUpdate(_THIS, int numrects, SDL_Rect *rects)
         TInt sourceRectHeight = maxY - rect2.y + 1;
         TInt sourceStartOffset = rect2.x + rect2.y * sourceScanlineLength;
 
-		TUint16* xStart=NULL;
+		TUint16* xStart = NULL;
 
-		TUint16* xStartPos=screenBuffer+i320StartTable[rect2.x];
+		TUint16* xStartPos = screenBuffer+i320StartTable[rect2.x];
 		sourceRectHeight += rect2.y;
 		sourceRectWidth  += rect2.x;
-		TInt currentY=0;
+		TInt currentY = 0;
 		TInt lastY = -1;
         if (_this->screen->format->BitsPerPixel == GetBpp(Private->EPOC_DisplayMode))
 		{
@@ -948,11 +958,12 @@ inline void EPOC_S60PortraitUpdate(_THIS, int numrects, SDL_Rect *rects)
 		Private->iWindowCreator->PutBitmap(Private->EPOC_Bitmap,TPoint(0,0) ,realRect);
 	}
 	else
-		for(TInt loop=0;loop<numrects;loop++)
+		for(TInt loop = 0; loop < numrects; loop++)
 		{
-			SDL_Rect rect =rects[loop];
-			TRect realRect(i320StartTable[rect.x],i240StartPosition[rect.y] , i320StartTable[rect.x+rect.w-1]+1,(i240StartPosition[rect.y+rect.h-1])+1 );
-			Private->iWindowCreator->PutBitmap(Private->EPOC_Bitmap,realRect.iTl,realRect);
+			SDL_Rect rect = rects[loop];
+			TRect realRect(i320StartTable[rect.x], i240StartPosition[rect.y],
+					i320StartTable[rect.x+rect.w-1]+1,(i240StartPosition[rect.y+rect.h-1])+1);
+			Private->iWindowCreator->PutBitmap(Private->EPOC_Bitmap, realRect.iTl, realRect);
 		}
 
 		Private->iWindowCreator->UpdateScreen();
@@ -991,7 +1002,9 @@ static void EPOC_DirectUpdate(_THIS, int numrects, SDL_Rect *rects)
 		return; // Can't blit in other than main thread
 	}
 
-	if (Private->EPOC_ShrinkedHeight || Private->EPOC_ShrinkedWidth) {  /* simulate 400 pixel height in 200 pixel screen */
+	/* simulate 400 pixel height in 200 pixel screen */
+	if (Private->EPOC_ShrinkedHeight || Private->EPOC_ShrinkedWidth)
+	{ 
 		if(_this->hidden->iSX0Mode & ESX0Portrait)
 		{
 			if(_this->hidden->iSX0Mode & ESX0Stretched)
@@ -1036,13 +1049,13 @@ static void EPOC_DirectUpdate(_THIS, int numrects, SDL_Rect *rects)
 		if((_this->hidden->iSX0Mode&ESX0Stretched && !Private->EPOC_ShrinkedHeight && !Private->iNoStretch))
 		{
 			if(!(_this->hidden->iSX0Mode&ESX0DontInterpolate))
-				{
+			{
 				EPOC_S60PortraitStretchUpdate(_this,numrects,rects);
-				}
+			}
 			else
-				{
+			{
 				EPOC_S60PortraitStretchUglyUpdate(_this,numrects,rects);
-				}
+			}
 			return;
 		}
 		EPOC_S60PortraitUpdate(_this,numrects,rects);
@@ -1050,24 +1063,21 @@ static void EPOC_DirectUpdate(_THIS, int numrects, SDL_Rect *rects)
 	}
 
 	if(((_this->hidden->iSX0Mode&ESX0Stretched) && !Private->EPOC_ShrinkedHeight && !Private->iNoStretch))
-		{
+	{
 		if(!(_this->hidden->iSX0Mode&ESX0DontInterpolate))
-			{
+		{
 			EPOC_S60LandscapeStretchUpdate(_this,numrects,rects);
-			}
-		else
-			{
-			EPOC_S60LandscapeStretchUglyUpdate(_this,numrects,rects);
-			}
-		return;
 		}
-
-	TInt i;
+		else
+		{
+			EPOC_S60LandscapeStretchUglyUpdate(_this,numrects,rects);
+		}
+		return;
+	}
 
     TInt screenW = _this->screen->w;
     TInt screenH = _this->screen->h;
 	TBool lockedHeap=EFalse;
-
     TInt sourceScanlineLength = screenW;
 
 	TBitmapUtil lock(Private->EPOC_Bitmap);
@@ -1079,15 +1089,15 @@ static void EPOC_DirectUpdate(_THIS, int numrects, SDL_Rect *rects)
 	}
     TUint16* screenBuffer = (TUint16*)Private->EPOC_Bitmap->DataAddress();
 
-	TInt scrWidth=Private->EPOC_ScreenSize.iWidth;
+	TInt scrWidth = Private->EPOC_ScreenSize.iWidth;
 	if(_this->hidden->iSX0Mode & ESX0Flipped)
 	{
 		scrWidth=-scrWidth;
 	}
 	/* Render the rectangles in the list */
 	bool isNotSameCurrentLine = false;
-	for ( i=0; i < numrects; ++i ) {
-
+	for(TInt i = 0; i < numrects; ++i)
+	{
 		SDL_Rect rect2;
         const SDL_Rect& currentRect = rects[i];
         rect2.x = currentRect.x;
@@ -1161,14 +1171,14 @@ static void EPOC_DirectUpdate(_THIS, int numrects, SDL_Rect *rects)
 		{
 			TUint8* bitmapLine = (TUint8*)_this->screen->pixels + sourceStartOffset;
 
-            for(TInt y = rect2.y ; y < sourceRectHeight ; y++)
+            for(TInt y = rect2.y; y < sourceRectHeight; y++)
 			{
-				currentY= i240StartTable[y];
+				currentY = i240StartTable[y];
 				TUint8* bitmapPos = bitmapLine; /* 1 byte per pixel */
-				xStart=xStartPos+currentY;//currentY;
+				xStart = xStartPos+currentY;//currentY;
 				isNotSameCurrentLine = (lastY!=currentY);
 				bool steppedUplast =true;
-				for(TInt x = rect2.x ; x < sourceRectWidth ; x++)
+				for(TInt x = rect2.x; x < sourceRectWidth; x++)
 				{
 					if(isNotSameCurrentLine && steppedUplast)
 					{
@@ -1178,10 +1188,10 @@ static void EPOC_DirectUpdate(_THIS, int numrects, SDL_Rect *rects)
 					{
 						*xStart = CalcAverage16(*xStart,EPOC_HWPalette_256_to_DisplayMode[*bitmapPos]);
 					}
-					xStart=xStart-scrWidth*i320StepTable[x];
+					xStart = xStart - scrWidth*i320StepTable[x];
 					steppedUplast = i320StepTable[x];
 
-					bitmapPos+=1;
+					bitmapPos++;
 				}
 				lastY = currentY;
 				bitmapLine += sourceScanlineLength;
@@ -1191,21 +1201,21 @@ static void EPOC_DirectUpdate(_THIS, int numrects, SDL_Rect *rects)
 	if(lockedHeap)
 	{
 		lock.End();
-		gHeapIsLocked=EFalse;
+		gHeapIsLocked = EFalse;
 	}
 	if(Private->iNeedFullRedraw)
 	{
-		Private->iNeedFullRedraw=EFalse;
+		Private->iNeedFullRedraw = EFalse;
 		if(Private->iSX0Mode & ESX0Flipped)
 		{
 			TRect realRect(i240StartTable[199], i320StartTable[0],
 					i240StartTable[0] + 1, i320StartTable[319] + 1);
-			Private->iWindowCreator->PutBitmap(Private->EPOC_Bitmap,realRect.iTl,realRect);
+			Private->iWindowCreator->PutBitmap(Private->EPOC_Bitmap, realRect.iTl,realRect);
 		}
 		else
 		{
-			TRect realRect(i240StartTable[0],i320StartTable[0] , i240StartTable[199]+1,i320StartTable[319]+1 );
-			Private->iWindowCreator->PutBitmap(Private->EPOC_Bitmap,TPoint(0,0),realRect);
+			TRect realRect(i240StartTable[0], i320StartTable[0], i240StartTable[199]+1, i320StartTable[319]+1);
+			Private->iWindowCreator->PutBitmap(Private->EPOC_Bitmap, TPoint(0,0), realRect);
 		}
 	}
 	else
