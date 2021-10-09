@@ -472,11 +472,42 @@ void EPOC_SetCaption(_THIS, const char * title, const char * /*icon*/)
 	}
 }
 
+extern "C" void CreateBitmap(_THIS, TDisplayMode displayMode)
+{
+#if defined(S60)
+	Private->EPOC_ScreenSize = TSize(256,320);// TSize(256,320);
+#else
+	Private->EPOC_ScreenSize = Private->iEikEnv->ScreenDevice()->SizeInPixels();
+#endif
+
+	TSize createSize = Private->EPOC_ScreenSize;
+
+	// this needs to be atleast 320x200 to cope
+#if defined(UIQ3) || defined(UIQ) || defined(__SERIES60_3X__)
+	// Must ensure that the height is at least 320 pixels height and 240 width
+    Private->EPOC_DisplaySize = Private->EPOC_ScreenSize;
+	if(createSize.iHeight < 320)
+		createSize.iHeight = 320;
+	#if defined(UIQ) //|| defined(UIQ3)
+	Private->EPOC_ScreenSize.iWidth = Private->EPOC_ScreenSize.iWidth - 8;// Reserve lower 8 lines
+	createSize.iWidth = Private->EPOC_ScreenSize.iWidth;
+	#endif
+	#if defined(__SERIES60_3X__)
+	if(createSize.iWidth < 320)
+	{
+		Private->EPOC_ScreenSize.iWidth = 320;
+		createSize.iWidth = 320;
+	}
+	#endif
+#endif
+	Private->EPOC_Bitmap->Create(createSize, displayMode);
+}
+
 #ifndef UIQ
 void EPOC_ReconfigureVideo(_THIS)
 {
     /* Initialise Epoc frame buffer */
-    TDisplayMode displayMode =Private->iEikEnv->ScreenDevice()->DisplayMode();
+    TDisplayMode displayMode = Private->iEikEnv->ScreenDevice()->DisplayMode();
     /* Create bitmap, device and context for screen drawing */
 	delete Private->EPOC_Bitmap;
 	Private->EPOC_Bitmap = NULL;
@@ -486,46 +517,13 @@ void EPOC_ReconfigureVideo(_THIS)
 	{
 		displayMode=EColor64K;; // Also tried to switch to by the view.
 	}
-#if defined (S60)||defined (__SERIES60_3X__) // this needs to be atleast 320x200 to cope
-#ifdef __SERIES60_3X__
-	Private->EPOC_ScreenSize = Private->iEikEnv->ScreenDevice()->SizeInPixels();// TSize(256,320);
-	Private->EPOC_DisplaySize = Private->EPOC_ScreenSize;
-	// Must ensure that the height is at least 320 pixels height and 240 width
-	TSize createSize = Private->EPOC_ScreenSize;
 
-	if(createSize.iHeight<320)
-		createSize.iHeight = 320;
+	CreateBitmap(_this, displayMode);
 
-	if(createSize.iWidth<320)
-	{
-		Private->EPOC_ScreenSize.iWidth = 320;
-		createSize.iWidth = 320;
-	}
-
-	Private->EPOC_Bitmap->Create(createSize, displayMode);
-#else // S60
-    Private->EPOC_ScreenSize=TSize(256,320);// TSize(256,320);
-	Private->EPOC_Bitmap->Create(TSize(256,320), displayMode);
-#endif
-#elif defined (S80) || defined (S90)
-  Private->EPOC_ScreenSize        = Private->iEikEnv->ScreenDevice()->SizeInPixels();
-	Private->EPOC_Bitmap->Create(Private->EPOC_ScreenSize, displayMode);
-#else //UIQ
-    Private->EPOC_ScreenSize  = Private->iEikEnv->ScreenDevice()->SizeInPixels();
-    Private->EPOC_DisplaySize = Private->EPOC_ScreenSize;
-	TSize createSize = Private->EPOC_ScreenSize;
-	if(createSize.iHeight<320)
-		createSize.iHeight = 320;
-#ifndef UIQ3
-	Private->EPOC_ScreenSize.iWidth=Private->EPOC_ScreenSize.iWidth-8;// Reserve lower 8 lines
-	createSize.iWidth = Private->EPOC_ScreenSize.iWidth;
-#endif
-	Private->EPOC_Bitmap->Create(createSize, displayMode);
-#endif
-	Private->EPOC_DisplayMode	    = displayMode;
-	Private->EPOC_BytesPerPixel	    = ((GetBpp(displayMode)-1) / 8) + 1;
+	Private->EPOC_DisplayMode       = displayMode;
+	Private->EPOC_BytesPerPixel     = ((GetBpp(displayMode)-1) / 8) + 1;
 	Private->EPOC_BytesPerScanLine  = (Private->EPOC_ScreenSize.iWidth) * Private->EPOC_BytesPerPixel;
-	Private->EPOC_ScreenOffset = 0;
+	Private->EPOC_ScreenOffset      = 0;
 	/* Tell the system that something has been drawn */
 	TRect  rect = TRect(Private->iWindowCreator->Size());
  	Private->iWindowCreator->Win().Invalidate(rect);
@@ -558,7 +556,7 @@ int EPOC_VideoInit(_THIS, SDL_PixelFormat *vformat)
 	}
 
     /* Initialise Epoc frame buffer */
-    TDisplayMode displayMode =Private->iEikEnv->ScreenDevice()->DisplayMode();
+    TDisplayMode displayMode = Private->iEikEnv->ScreenDevice()->DisplayMode();
  #if !defined  (__WINS__) && !defined (S60) && !defined (S80) && !defined (S90) && !defined (UIQ3) && !defined(__SERIES60_3X__)
 
 	TInt value;
