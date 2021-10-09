@@ -472,6 +472,7 @@ void EPOC_SetCaption(_THIS, const char * title, const char * /*icon*/)
 	}
 }
 
+#ifndef UIQ
 extern "C" void CreateBitmap(_THIS, TDisplayMode displayMode)
 {
 #if defined(S60)
@@ -503,7 +504,6 @@ extern "C" void CreateBitmap(_THIS, TDisplayMode displayMode)
 	Private->EPOC_Bitmap->Create(createSize, displayMode);
 }
 
-#ifndef UIQ
 void EPOC_ReconfigureVideo(_THIS)
 {
     /* Initialise Epoc frame buffer */
