@@ -79,8 +79,9 @@ inline void EPOC_S60PortraitStretchUglyUpdate(_THIS, int numrects, SDL_Rect *rec
 
 				if(y>rect2.y)
 				{
-					if(i240StartTable[y] != i240StartTable[y-1]){
-
+					interpolate = ETrue; // We need to interpolate the next line with the current line.. or plainly skipit
+					if(i240StartTable[y] != i240StartTable[y-1])
+					{
 						if(gScaleYStep[y-1]>Private->
 							EPOC_ScreenSize.iWidth)
 							// more than one line of screen
@@ -95,10 +96,6 @@ inline void EPOC_S60PortraitStretchUglyUpdate(_THIS, int numrects, SDL_Rect *rec
 
 						screenMemory += gScaleYStep[y];
 						interpolate = EFalse;
-					}
-					else
-					{
-						interpolate = ETrue; // We need to interpolate the next line with the current line.. or plainly skipit
 					}
 				}
 				else
@@ -138,6 +135,7 @@ inline void EPOC_S60PortraitStretchUglyUpdate(_THIS, int numrects, SDL_Rect *rec
 				}
 				bitmapLine += sourceScanlineLength;
 				if(y>rect2.y){
+					interpolate = ETrue;
 					if(i240StartTable[y] != i240StartTable[y-1])
 					{
 						if(gScaleYStep[y-1]>Private->
@@ -150,10 +148,6 @@ inline void EPOC_S60PortraitStretchUglyUpdate(_THIS, int numrects, SDL_Rect *rec
 						}
 						screenMemory += gScaleYStep[y];
 						interpolate = EFalse;
-					}
-					else
-					{
-						interpolate = ETrue;;
 					}
 				}
 				else
@@ -296,6 +290,7 @@ inline void EPOC_S60LandscapeStretchUglyUpdate(_THIS, int numrects, SDL_Rect *re
 				bitmapLine += sourceScanlineLength;
 				if(y > rect2.y)
 				{
+					interpolate = ETrue;
 					if(i240StartTable[y] != i240StartTable[y-1])
 					{
 						// Next bit of functions interpolates between two lines
@@ -313,10 +308,6 @@ inline void EPOC_S60LandscapeStretchUglyUpdate(_THIS, int numrects, SDL_Rect *re
 						}
 						screenMemory += gScaleYStep[y];
 						interpolate = EFalse;
-					}
-					else
-					{
-						interpolate = ETrue;
 					}
 				}
 				else
@@ -356,6 +347,7 @@ inline void EPOC_S60LandscapeStretchUglyUpdate(_THIS, int numrects, SDL_Rect *re
 				bitmapLine += sourceScanlineLength;
 				if(y>rect2.y)
 				{
+					interpolate = ETrue;
 					if(i240StartTable[y] != i240StartTable[y-1])
 					{
 						// Next bit of functions interpolates between two lines
@@ -374,8 +366,6 @@ inline void EPOC_S60LandscapeStretchUglyUpdate(_THIS, int numrects, SDL_Rect *re
 						screenMemory += gScaleYStep[y];
 						interpolate = EFalse;
 					}
-					else
-						interpolate = ETrue;
 				}
 				else
 				{
