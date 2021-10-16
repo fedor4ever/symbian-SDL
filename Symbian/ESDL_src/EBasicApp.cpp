@@ -1416,9 +1416,9 @@ void CEBasicAppUi::ConstructL()
 void CEBasicAppUi::HandleForegroundEventL(TBool aForeground)
 {
 	iView->iForeground=aForeground;
-#if defined (S60) || defined (__SERIES60_3X__)
 	CAknAppUi::HandleForegroundEventL(aForeground);
 
+#if defined (S60) || defined (__SERIES60_3X__)
 	if(aForeground)
 	{
 		SetKeyBlockMode(ENoKeyBlock);
@@ -1434,7 +1434,6 @@ void CEBasicAppUi::HandleForegroundEventL(TBool aForeground)
 	}
 
 #elif defined(UIQ)
-	BaseAppUi_t::HandleForegroundEventL(aForeground);
 	if(aForeground)
 	{
 		CaptureKeysL();
@@ -1443,10 +1442,6 @@ void CEBasicAppUi::HandleForegroundEventL(TBool aForeground)
 	{
 		CancelCaptureKeys();
 	}
-#elif defined (UIQ3)
-	BaseAppUi_t::HandleForegroundEventL(aForeground);
-#else
-	BaseAppUi_t::HandleForegroundEventL(aForeground);
 #endif
 
 #if !defined(UIQ)
