@@ -96,9 +96,7 @@ void* symbian_calloc(size_t _nmemb, size_t _size) {
 ////////// CSDLApp //////////////////////////////////////////////////////
 MY_EXPORT_C CApaDocument* CSDLApp::CreateDocumentL()
 {
-	CEBasicDoc* doc = NULL;
-	doc = new (ELeave) CEBasicDoc(*this);
-	return doc;
+	return new (ELeave) CEBasicDoc(*this);
 }
 
 MY_EXPORT_C CSDLApp::CSDLApp() {}
@@ -157,7 +155,7 @@ void CEBasicDoc::ConstructL() {}
 
 CEikAppUi* CEBasicDoc::CreateAppUiL()
 {
-	return new (ELeave) CEBasicAppUi;
+	return new (ELeave) CEBasicAppUi();
 }
 
 void CEBasicDoc::SaveL(MSaveObserver::TSaveType /*aSaveType*/)
