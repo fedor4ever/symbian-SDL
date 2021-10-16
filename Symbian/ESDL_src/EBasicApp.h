@@ -49,9 +49,6 @@ public:
 	virtual CEikAppUi* CreateAppUiL();
 	CEBasicDoc(CEikApplication& aApp);
 	void SaveL(MSaveObserver::TSaveType aSaveType);
-
-private:
-	void ConstructL();
 };
 
 class CEBasicView;

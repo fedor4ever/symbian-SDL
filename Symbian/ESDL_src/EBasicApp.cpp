@@ -151,8 +151,6 @@ CEBasicDoc::CEBasicDoc(CEikApplication& aApp):BaseDocument_t(aApp) {}
 
 CEBasicDoc::~CEBasicDoc() {}
 
-void CEBasicDoc::ConstructL() {}
-
 CEikAppUi* CEBasicDoc::CreateAppUiL()
 {
 	return new (ELeave) CEBasicAppUi();
