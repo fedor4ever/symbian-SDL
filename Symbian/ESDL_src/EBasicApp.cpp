@@ -37,19 +37,19 @@ const TInt KMultitapTimeoutValue = 1500000;
 
 /////////////////////////////////////////////////////////////////////////
 
-bool gViewVisible=false;
-_LIT(KLitIniFileName,      "sdl.ini");
+bool gViewVisible = false;
+_LIT(KLitIniFileName, "sdl.ini");
 
 const char KMultiTapKeys[8][6]=
 {
 	"ABC2",
-		"DEF3",
-		"GHI4",
-		"JKL5",
-		"MNO6",
-		"PQRS7",
-		"TUV8",
-		"WXYZ9"
+	"DEF3",
+	"GHI4",
+	"JKL5",
+	"MNO6",
+	"PQRS7",
+	"TUV8",
+	"WXYZ9"
 };
 
 //< store string to display activated settings when used shortcuts CTRL+key
