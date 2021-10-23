@@ -1502,7 +1502,7 @@ void CEBasicAppUi::GetConfig(SDL_VideoDevice* aDevice)
 		}
 	else
 		{
-		priv->iSX0Mode = priv->EPOC_ScreenSize.iWidth > priv->EPOC_ScreenSize.iHeight?ESX0Stretched|ESX0Flipped|ESX0Portrait:ESX0Stretched|ESX0Flipped;
+		priv->iSX0Mode = priv->EPOC_ScreenSize.iWidth < priv->EPOC_ScreenSize.iHeight?ESX0Stretched|ESX0Flipped|ESX0Portrait:ESX0Stretched|ESX0Flipped;
 		}
 
 	priv->iPutOffset.iX = iConfig->ReadInt("Video","OffsetX",0);
