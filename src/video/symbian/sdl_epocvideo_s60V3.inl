@@ -158,153 +158,144 @@ extern "C" void EPOC_CalcScaleFactors(_THIS)
 {
 	TInt loop; // This is the startoffset for a 320 wide line
 	TInt lastx=-1;
-	if(Private->iModeSize != TSize(0,0))
+	if(Private->iModeSize == TSize(0,0))
+		return;
+
+	EPOC_CalcStretchFactors(_this,TSize());
+	if(_this->hidden->iSX0Mode & ESX0Portrait)// Portrait mode
 	{
-		EPOC_CalcStretchFactors(_this,TSize());
-		if((_this->hidden->iSX0Mode & ESX0Portrait))// Portrait mode
+		for(loop = 0; loop < 320; loop++)
 		{
-
-			for(loop=0;loop<320;loop++)
-			{
-				if(_this->hidden->iSX0Mode & ESX0Stretched)
-				{
-					TInt pos = (loop*Private->iXScale);
-					if(loop>0)
-					{
-						if (pos== lastx)
-							i320StepTable[loop-1]=0;
-						else
-						{
-							i320StepTable[loop-1]=1;
-							lastx=pos;
-						}
-					}
-					else
-					{
-						lastx=pos;
-					}
-					if(pos>loop)
-						pos = loop;
-					i320StartTable[loop]=pos;
-				}
-				else
-				{
-					i320StepTable[loop]=1;
-					i320StartTable[loop]=loop;
-				}
-			}
-
-			for(loop=0;loop<320;loop++)
-			{
-				if(_this->hidden->iSX0Mode & ESX0Stretched)
-				{
-					if(!_this->hidden->iIs240Mode)
-					{
-						i240StartTable[loop]=loop* _this->hidden->EPOC_ScreenSize.iWidth;
-						i240StartPosition[loop]=loop;
-					}
-					else
-					{
-						TInt pos = (loop*Private->iYScale);
-						i240StartTable[loop]=pos * _this->hidden->EPOC_ScreenSize.iWidth;
-						i240StartPosition[loop]=pos;
-					}
-				}
-				else
-				{
-					i240StartTable[loop]=loop* _this->hidden->EPOC_ScreenSize.iWidth;
-					i240StartPosition[loop]=loop;
-				}
-			}
-		}
-		// Compressed
-		else if(_this->hidden->iSX0Mode & ESX0Stretched)
-		{
-
-			for(loop=0;loop<320;loop++)
+			if(_this->hidden->iSX0Mode & ESX0Stretched)
 			{
 				TInt pos = (loop*Private->iXScale);
-				if(loop>0)
+				if(loop > 0)
 				{
-					if (pos== lastx)
-						i320StepTable[loop-1]=0;
+					if (pos == lastx)
+						i320StepTable[loop-1] = 0;
 					else
 					{
-						i320StepTable[loop-1]=1;
-						lastx=pos;
+						i320StepTable[loop-1] = 1;
+						lastx = pos;
 					}
 				}
 				else
 				{
-					lastx=pos;
+					lastx = pos;
 				}
-
-				i320StartTable[loop]=pos;
+				if(pos > loop)
+					pos = loop;
+				i320StartTable[loop] = pos;
 			}
-
-			if(_this->hidden->iIs240Mode || _this->hidden->EPOC_DisplaySize.iHeight> 240)
+			else
 			{
-				for(loop=0;loop<320;loop++)
+				i320StepTable[loop]  = 1;
+				i320StartTable[loop] = loop;
+			}
+		}
+
+		for(loop = 0; loop < 320; loop++)
+		{
+			if(_this->hidden->iSX0Mode & ESX0Stretched)
+			{
+				if(!_this->hidden->iIs240Mode)
+				{
+					i240StartTable[loop] = loop * _this->hidden->EPOC_ScreenSize.iWidth;
+					i240StartPosition[loop] = loop;
+				}
+				else
 				{
 					TInt pos = (loop*Private->iYScale);
-					if(_this->hidden->iSX0Mode&ESX0Flipped)
-					{
-						i240StartTable[loop]=(Private->EPOC_DisplaySize.iWidth-1)-pos;
-					}
-					else
-						i240StartTable[loop]=pos;
+					i240StartTable[loop] = pos * _this->hidden->EPOC_ScreenSize.iWidth;
+					i240StartPosition[loop] = pos;
 				}
 			}
 			else
 			{
-				for(loop=0;loop<200;loop++)
-				{
-					TInt pos=((loop*Private->iYScale));
-					if(_this->hidden->iSX0Mode  &ESX0Flipped)
-					{
-						i240StartTable[loop]=(Private->EPOC_DisplaySize.iWidth-1)-pos;
-					}
-					else
-						i240StartTable[loop]=pos;
-				}
+				i240StartTable[loop]=loop* _this->hidden->EPOC_ScreenSize.iWidth;
+				i240StartPosition[loop]=loop;
 			}
 		}
-		else // Full landscape.. i.e 1-1 cropped or not
+	}
+	// Compressed
+	else if(_this->hidden->iSX0Mode & ESX0Stretched)
+	{
+		for(loop=0;loop<320;loop++)
+		{
+			TInt pos = (loop*Private->iXScale);
+			if(loop>0)
+			{
+				if (pos == lastx)
+					i320StepTable[loop-1]=0;
+				else
+				{
+					i320StepTable[loop-1]=1;
+					lastx=pos;
+				}
+			}
+			else
+			{
+				lastx=pos;
+			}
+			i320StartTable[loop]=pos;
+		}
+
+		if(_this->hidden->iIs240Mode || _this->hidden->EPOC_DisplaySize.iHeight > 240)
 		{
 			for(loop=0;loop<320;loop++)
 			{
-				i320StepTable[loop]=1;
-				i320StartTable[loop]=loop;
-			}
-
-			for(loop=0;loop<320;loop++)
-			{
-				if(!_this->hidden->iIs240Mode && _this->hidden->EPOC_DisplaySize.iWidth>=240)
+				TInt pos = (loop*Private->iYScale);
+				i240StartTable[loop] = pos;
+				if(_this->hidden->iSX0Mode&ESX0Flipped)
 				{
-					if(_this->hidden->iSX0Mode&ESX0Flipped)
-					{
-						i240StartTable[loop]=320-loop;
-					}
-					else
-						i240StartTable[loop]=loop;
-				}
-				else
-				{
-					TReal factor = (TReal)_this->hidden->EPOC_DisplaySize.iWidth/(TReal)_this->hidden->iModeSize.iHeight;
-					TInt pos = ((loop*factor));
-
-					if(_this->hidden->iSX0Mode&ESX0Flipped)
-					{
-						i240StartTable[loop]=199-loop;
-					}
-					else
-						i240StartTable[loop]=pos;
+					i240StartTable[loop]=(Private->EPOC_DisplaySize.iWidth-1)-pos;
 				}
 			}
-
 		}
-}
+		else
+		{
+			for(loop=0;loop<200;loop++)
+			{
+				TInt pos = loop * Private->iYScale;
+				i240StartTable[loop] = pos;
+				if(_this->hidden->iSX0Mode & ESX0Flipped)
+				{
+					i240StartTable[loop]=(Private->EPOC_DisplaySize.iWidth-1)-pos;
+				}
+			}
+		}
+	}
+	else // Full landscape.. i.e 1-1 cropped or not
+	{
+		for(loop=0;loop<320;loop++)
+		{
+			i320StepTable[loop]=1;
+			i320StartTable[loop]=loop;
+		}
 
+		for(loop=0;loop<320;loop++)
+		{
+			if(!_this->hidden->iIs240Mode && _this->hidden->EPOC_DisplaySize.iWidth>=240)
+			{
+				i240StartTable[loop] = loop;
+				if(_this->hidden->iSX0Mode&ESX0Flipped)
+				{
+					i240StartTable[loop] = 320 - loop;
+				}
+			}
+			else
+			{
+				TReal factor = (TReal)_this->hidden->EPOC_DisplaySize.iWidth/(TReal)_this->hidden->iModeSize.iHeight;
+				TInt pos = ((loop*factor));
+
+				i240StartTable[loop] = pos;
+				if(_this->hidden->iSX0Mode&ESX0Flipped)
+				{
+					i240StartTable[loop] = 199 - loop;
+				}
+			}
+		}
+	}
 }
 
 inline void EPOC_S60PortraitStretchUpdate(_THIS, int numrects, SDL_Rect *rects)
@@ -394,7 +385,6 @@ inline void EPOC_S60PortraitStretchUpdate(_THIS, int numrects, SDL_Rect *rects)
 						}
 
 						step = gScaleStep[index + rect2.x];
-
 						if(step > 1)
 						{
 							*(screenPtr+1) = CalcAverage16(*bitmapPtr,*(bitmapPtr+1));
@@ -409,6 +399,7 @@ inline void EPOC_S60PortraitStretchUpdate(_THIS, int numrects, SDL_Rect *rects)
 
 				if(y > rect2.y)
 				{
+					interpolate = ETrue;;
 					if(i240StartTable[y] != i240StartTable[y-1])
 					{
 						if(gScaleYStep[y-1] >
@@ -430,8 +421,6 @@ inline void EPOC_S60PortraitStretchUpdate(_THIS, int numrects, SDL_Rect *rects)
 						screenMemory += gScaleYStep[y];
 						interpolate = EFalse;
 					}
-					else
-						interpolate = ETrue;;
 				}
 				else
 				{
@@ -490,6 +479,7 @@ inline void EPOC_S60PortraitStretchUpdate(_THIS, int numrects, SDL_Rect *rects)
 				bitmapLine += sourceScanlineLength;
 				if(y>rect2.y)
 				{
+					interpolate = ETrue;
 					if(i240StartTable[y] != i240StartTable[y-1])
 					{
 						if(gScaleYStep[y-1]>Private->
@@ -510,8 +500,6 @@ inline void EPOC_S60PortraitStretchUpdate(_THIS, int numrects, SDL_Rect *rects)
 						screenMemory += gScaleYStep[y];
 						interpolate = EFalse;
 					}
-					else
-						interpolate = ETrue;;
 				}
 				else
 				{
@@ -664,8 +652,7 @@ inline void EPOC_S60LandscapeStretchUpdate(_THIS, int numrects, SDL_Rect *rects)
 						else
 							*screenPtr = *bitmapPtr;
 
-						step =gScaleStep[index+rect2.x];
-
+						step = gScaleStep[index+rect2.x];
 						if((step > Private->EPOC_ScreenSize.iWidth) || ((-step) > Private->EPOC_ScreenSize.iWidth))
 						{
 							*(screenPtr + yInterpolatePixel) = CalcAverage16(*bitmapPtr,*(bitmapPtr+1));
@@ -678,6 +665,7 @@ inline void EPOC_S60LandscapeStretchUpdate(_THIS, int numrects, SDL_Rect *rects)
 				bitmapLine += sourceScanlineLength;
 				if(y > rect2.y)
 				{
+					interpolate = ETrue;
 					if(i240StartTable[y] != i240StartTable[y-1])
 					{
 						// Next bit of functions interpolates between two lines
@@ -698,10 +686,6 @@ inline void EPOC_S60LandscapeStretchUpdate(_THIS, int numrects, SDL_Rect *rects)
 
 						screenMemory += gScaleYStep[y];
 						interpolate = EFalse;
-					}
-					else
-					{
-						interpolate = ETrue;
 					}
 				}
 				else
@@ -743,7 +727,7 @@ inline void EPOC_S60LandscapeStretchUpdate(_THIS, int numrects, SDL_Rect *rects)
 						else
 							*screenPtr = EPOC_HWPalette_256_to_DisplayMode[*bitmapPtr];
 
-							step = gScaleStep[index+rect2.x];
+						step = gScaleStep[index+rect2.x];
 						if(step > Private->EPOC_ScreenSize.iWidth || (-step) > Private->EPOC_ScreenSize.iWidth)
 						{
 							*(screenPtr+yInterpolatePixel) = CalcAverage16(EPOC_HWPalette_256_to_DisplayMode[*bitmapPtr],EPOC_HWPalette_256_to_DisplayMode[*(bitmapPtr+1)]);
@@ -757,6 +741,7 @@ inline void EPOC_S60LandscapeStretchUpdate(_THIS, int numrects, SDL_Rect *rects)
 				bitmapLine += sourceScanlineLength;
 				if(y>rect2.y)
 				{
+					interpolate = ETrue;;
 					if(i240StartTable[y] != i240StartTable[y-1])
 					{
 						// Next bit of functions interpolates between two lines
@@ -778,8 +763,6 @@ inline void EPOC_S60LandscapeStretchUpdate(_THIS, int numrects, SDL_Rect *rects)
 						screenMemory += gScaleYStep[y];
 						interpolate = EFalse;
 					}
-					else
-						interpolate = ETrue;;
 				}
 				else
 				{
@@ -813,7 +796,6 @@ inline void EPOC_S60LandscapeStretchUpdate(_THIS, int numrects, SDL_Rect *rects)
 				rect.h = (gScaleYPos[rect.h])+1;
 
 				TRect realRect(rect.y-rect.h, rect.x, rect.y+1, rect.x+rect.w+1);
-
 				Private->iWindowCreator->PutBitmap(Private->EPOC_Bitmap, realRect.iTl,realRect);
 			}
 			else
@@ -1121,7 +1103,6 @@ static void EPOC_DirectUpdate(_THIS, int numrects, SDL_Rect *rects)
         TInt sourceStartOffset = rect2.x + rect2.y * sourceScanlineLength;
 
 		TUint16* xStart=NULL;
-
 		TUint16* xStartPos=NULL;
 
 		if(!(_this->hidden->iSX0Mode & ESX0Flipped))
