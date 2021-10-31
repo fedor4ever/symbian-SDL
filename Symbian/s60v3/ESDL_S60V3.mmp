@@ -5,7 +5,7 @@
 TARGET          ESDL.lib
 TARGETTYPE      lib
 
-MACRO			NO_SIGNAL_H
+MACRO			NO_SIGNAL_H TRACE_TO_FILE
 
 // *** General sources
 SOURCEPATH	..\ESDL_src
@@ -14,13 +14,13 @@ SOURCE		SDLSXXView.cpp
 SOURCE		IniFile.cpp
 SOURCE		remotectrlmonitor.cpp
 SOURCE		CEBasicView.cpp
-SOURCE		S90.cpp
 
 SOURCEPATH	..\..\src
 
 SOURCE		SDL.c
 SOURCE		SDL_error.c
 SOURCE		SDL_fatal.c
+SOURCE		SDL_log.c
 
 // *** CPU info sources
 SOURCE		cpuinfo\SDL_cpuinfo.c
@@ -109,3 +109,6 @@ USERINCLUDE		..\..\src\audio ..\..\src\audio\symbian
 //LIBRARY     euser.lib fbscli.lib estlib.lib ws32.LIB hal.lib gdi.lib
 //LIBRARY		bitgdi.lib mediaclientaudiostream.lib
 ALWAYS_BUILD_AS_ARM
+
+SOURCEPATH ..\ESDL_src
+SOURCE SDL_cpp_ext.cpp

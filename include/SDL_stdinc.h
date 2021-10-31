@@ -88,6 +88,51 @@
 #define SDL_static_cast(type, expression) ((type)(expression))
 #endif
 
+
+/* Annotations to help code analysis tools */
+#ifdef SDL_DISABLE_ANALYZE_MACROS
+#define SDL_IN_BYTECAP(x)
+#define SDL_INOUT_Z_CAP(x)
+#define SDL_OUT_Z_CAP(x)
+#define SDL_OUT_CAP(x)
+#define SDL_OUT_BYTECAP(x)
+#define SDL_OUT_Z_BYTECAP(x)
+#define SDL_PRINTF_FORMAT_STRING
+#define SDL_SCANF_FORMAT_STRING
+#define SDL_PRINTF_VARARG_FUNC( fmtargnumber )
+#define SDL_SCANF_VARARG_FUNC( fmtargnumber )
+#else
+#if defined(_MSC_VER) && (_MSC_VER >= 1600) /* VS 2010 and above */
+#include <sal.h>
+
+#define SDL_IN_BYTECAP(x) _In_bytecount_(x)
+#define SDL_INOUT_Z_CAP(x) _Inout_z_cap_(x)
+#define SDL_OUT_Z_CAP(x) _Out_z_cap_(x)
+#define SDL_OUT_CAP(x) _Out_cap_(x)
+#define SDL_OUT_BYTECAP(x) _Out_bytecap_(x)
+#define SDL_OUT_Z_BYTECAP(x) _Out_z_bytecap_(x)
+
+#define SDL_PRINTF_FORMAT_STRING _Printf_format_string_
+#define SDL_SCANF_FORMAT_STRING _Scanf_format_string_impl_
+#else
+#define SDL_IN_BYTECAP(x)
+#define SDL_INOUT_Z_CAP(x)
+#define SDL_OUT_Z_CAP(x)
+#define SDL_OUT_CAP(x)
+#define SDL_OUT_BYTECAP(x)
+#define SDL_OUT_Z_BYTECAP(x)
+#define SDL_PRINTF_FORMAT_STRING
+#define SDL_SCANF_FORMAT_STRING
+#endif
+#if defined(__GNUC__)
+#define SDL_PRINTF_VARARG_FUNC( fmtargnumber ) __attribute__ (( format( __printf__, fmtargnumber, fmtargnumber+1 )))
+#define SDL_SCANF_VARARG_FUNC( fmtargnumber ) __attribute__ (( format( __scanf__, fmtargnumber, fmtargnumber+1 )))
+#else
+#define SDL_PRINTF_VARARG_FUNC( fmtargnumber )
+#define SDL_SCANF_VARARG_FUNC( fmtargnumber )
+#endif
+#endif /* SDL_DISABLE_ANALYZE_MACROS */
+
 /** @name Basic data types */
 /*@{*/
 typedef enum {
