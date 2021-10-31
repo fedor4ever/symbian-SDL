@@ -941,6 +941,33 @@ extern DECLSPEC SDL_GrabMode SDLCALL SDL_WM_GrabInput(SDL_GrabMode mode);
 /** @internal Not in public API at the moment - do not use! */
 extern DECLSPEC int SDLCALL SDL_SoftStretch(SDL_Surface *src, SDL_Rect *srcrect,
                                     SDL_Surface *dst, SDL_Rect *dstrect);
+
+////SDL 2.x extensions
+/**
+ * Get the dots/pixels-per-inch for a display.
+ *
+ * Diagonal, horizontal and vertical DPI can all be optionally returned if the
+ * appropriate parameter is non-NULL.
+ *
+ * A failure of this function usually means that either no DPI information is
+ * available or the `displayIndex` is out of range.
+ *
+ * \param displayIndex the index of the display from which DPI information
+ *                     should be queried
+ * \param ddpi a pointer filled in with the diagonal DPI of the display; may
+ *             be NULL
+ * \param hdpi a pointer filled in with the horizontal DPI of the display; may
+ *             be NULL
+ * \param vdpi a pointer filled in with the vertical DPI of the display; may
+ *             be NULL
+ * \returns 0 on success or a negative error code on failure; call
+ *          SDL_GetError() for more information.
+ *
+ * \since This function is available since SDL 2.0.4.
+ *
+ * \sa SDL_GetNumVideoDisplays
+ */
+extern DECLSPEC int SDLCALL SDL_GetDisplayDPI(int displayIndex, float * ddpi, float * hdpi, float * vdpi);
                     
 /* Ends C function definitions when using C++ */
 #ifdef __cplusplus
