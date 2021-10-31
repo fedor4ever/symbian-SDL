@@ -60,5 +60,8 @@ public:
 #endif			
 	MY_IMPORT_C RWindow& MainWindow();
 };
+
+extern "C" const char* GetSystemFilePath(const char* filename);
+
 #endif
 

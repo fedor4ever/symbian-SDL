@@ -94,6 +94,20 @@ void* symbian_calloc(size_t _nmemb, size_t _size) {
 #endif
 
 ////////// CSDLApp //////////////////////////////////////////////////////
+_LIT8(KSEP,"\\");
+//FIXME: non ASCII not supported!
+extern "C" const char* GetSystemFilePath(const char* filename) {
+	TUint8 filepath[KMaxFileName + 1] = {"\n"};
+	TPtrC8 ptr((const TUint8*)filename);
+	TPtr8 path(filepath, 0, KMaxFileName + 1);
+	path.Copy(CSDLApp::GetExecutablePath());
+	if((path.Length() + ptr.Length() + 1) > KMaxFileName)
+		return NULL;
+	path.Append(KSEP);
+	path.Append(ptr);
+	return (const char*)path.PtrZ();
+}
+
 MY_EXPORT_C CApaDocument* CSDLApp::CreateDocumentL()
 {
 	return new (ELeave) CEBasicDoc(*this);
@@ -1486,6 +1500,10 @@ void CEBasicAppUi::SetConfig()
 void CEBasicAppUi::GetConfig(SDL_VideoDevice* aDevice)
 {
 	SDL_PrivateVideoData* priv = aDevice->hidden;
+	printf("Reading config from ini or creting new\n");
+	printf("screen size: width - %d, height - %d\n", priv->EPOC_ScreenSize.iWidth, priv->EPOC_ScreenSize.iHeight);
+	printf("has portrait mode: %d\n", priv->EPOC_ScreenSize.iWidth > priv->EPOC_ScreenSize.iHeight);
+	
 	TBool fileExist = iConfig->ReadFromFile();
 	priv->iInputMode =(TInputModes) iConfig->ReadInt("Video", "InputMode", ECursorKeys);
 	priv->iLeftButtonCode1 =(TInputModes) iConfig->ReadInt("Video", "LeftButtonCode1", KDefaultLeftButtonCode1);
