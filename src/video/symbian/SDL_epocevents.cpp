@@ -698,7 +698,7 @@ int EPOC_HandleWsEvent(_THIS, const TWsEvent& aWsEvent)
 						}
 					else
 						{
-						mousePos.iY = (this->hidden->iStretchSize.iWidth - 1) - mousePos.iY;
+						mousePos.iY = (_this->hidden->iStretchSize.iWidth - 1) - mousePos.iY;
 						}
 
 
